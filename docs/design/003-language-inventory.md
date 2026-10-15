@@ -35,6 +35,12 @@ Each language item should eventually record, where applicable:
 
 Complex grammar must not be forced into declarative metadata merely for convenience.
 
+## Verified ROM vocabulary baseline
+
+The exact 48K ROM token-byte mapping is now recorded in [004-rom-token-catalogue.md](004-rom-token-catalogue.md).
+
+A key modelling decision follows from the ROM: vocabulary and runtime capability are separate. The ROM contains tokens and syntax entries for Interface 1-oriented commands such as `CAT`, `FORMAT`, `MOVE`, `ERASE`, `OPEN #`, and `CLOSE #`. ZXCode should recognize these as authentic ROM vocabulary while the active target profile determines whether their execution environment is available.
+
 ## Initial categories
 
 ### Statements
