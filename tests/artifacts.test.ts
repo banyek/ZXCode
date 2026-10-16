@@ -6,7 +6,7 @@ import type {
   ParsedDocument,
   TapArtifact
 } from "../packages/core/src/index.js";
-import { encodeNumericLiteral } from "../packages/core/src/index.js";
+import { encodeBasicProgram, encodeNumericLiteral } from "../packages/core/src/index.js";
 
 interface Model { readonly lines: readonly unknown[] }
 
@@ -41,3 +41,5 @@ void wrongContainer;
 encodeNumericLiteral("1.25");
 // @ts-expect-error Raw storage has not passed semantic conversion.
 encodeNumericLiteral({ lexeme: "1", storage: [0, 0, 1, 0, 0] });
+// @ts-expect-error The real program encoder also rejects unvalidated source.
+encodeBasicProgram("10 STOP");

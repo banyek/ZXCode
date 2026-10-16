@@ -24,8 +24,8 @@ The language itself is not modernized. IDE features live around Sinclair BASIC r
 
 M1 implementation has started. Source/diagnostic and build-artifact contracts,
 recoverable parsing for the [M1 subset](docs/design/021-m1-supported-subset.md),
-semantic validation, TAP container writing, and CLI help are available.
-Source-to-TAP builds are not implemented yet. Unfinished design
+semantic validation, BASIC image encoding with source maps, TAP container writing,
+and CLI help are available. Source-to-TAP CLI builds are not implemented yet. Unfinished design
 notes remain proposals rather than implicit implementation contracts.
 
 Decimal numeric token conversion reproduces the original 48K ROM's storage and

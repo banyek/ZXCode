@@ -30,6 +30,12 @@ never a wrapped length field or a nominally successful TAP. Precise maximum-size
 and non-default-memory-layout support belongs to later fidelity work. TAP's
 65533-byte payload capacity is a separate container limit.
 
+The independent `scripts/research/probe-48k-memory.py` boots the pinned original
+ROM using SkoolKit 10.1 and confirms PROG=23755, RAMTOP=65367, and a margin of
+8844 bytes after the M1 budget. It imports no ZXCode implementation. This is a
+clean-boot capacity observation, not a promise about programs loaded alongside
+other resident data or reduced RAMTOP settings.
+
 ## Independent hello bytes
 
 `tests/fixtures/hello-program.hex` came from zmakebas 1.3.3, upstream revision
