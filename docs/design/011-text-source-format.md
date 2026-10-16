@@ -1,6 +1,7 @@
 # ZXCode Text Source Format v0.1
 
-Status: proposed contract.
+Status: M1 physical-line rules are an implementation contract; the escape and
+special-character proposals below remain provisional.
 
 ## Goals
 
@@ -28,15 +29,43 @@ Multiline continuation syntax is intentionally excluded from v1 because it would
 
 A source line begins with an explicit decimal Spectrum BASIC line number followed by BASIC source text.
 
-Rules to freeze during implementation:
+### M1 decision and evidence
 
-- accepted numeric range;
-- whitespace between line number and statement;
-- handling of blank/line-number-only lines;
-- duplicate numbers;
-- ordering of textual lines vs encoded program ordering.
+The [original Sinclair manual, chapter 2](https://worldofspectrum.org/ZXBasicManual/zxmanchap2.html)
+states that program line numbers are whole numbers from 1 through 9999 and shows
+that entering line 20 before line 10 still stores and lists them in numerical
+order. It also describes a number-only entry as an interactive deletion command.
+ZXCode source files are program snapshots rather than transcripts of interactive
+editing. The following explicit source-file policies settle the M1-04 gate:
 
-Duplicate line numbers are errors.
+- Each nonblank physical line has an ASCII decimal line number in **1..9999**.
+  Leading zeroes are permitted and preserved as source spelling; identity uses
+  the decimal value, so `0010` and `10` are duplicates. Signs, decimal points,
+  exponents, and non-ASCII digits are not line-number notation.
+- Leading ASCII spaces/tabs are source formatting. At least one ASCII space or
+  tab separates the line number from its BASIC body; `10PRINT` is diagnosed as
+  an invalid source line-number field. No Unicode whitespace is silently folded
+  into this prefix convention.
+- Empty and ASCII-space/tab-only physical lines are preserved in syntax but do
+  not create BASIC program lines. LF, CRLF, and CR are physical terminators; a
+  trailing terminator retains the final empty physical line for source locations.
+- A number-only line is an incomplete program line with a missing-statement
+  syntax diagnostic. It never deletes or replaces another line in a source file.
+- Duplicate numeric identities are errors with a related range pointing to the
+  first occurrence. There is no last-definition-wins interpretation.
+- Syntax retains **physical file order**, all ranges, and original text. File
+  order need not be ascending. Semantic/build output uses ascending BASIC line
+  numbers while keeping each node's original source identity/range. The scanner
+  does not sort or rewrite source and does not invent implicit numbers.
+- Missing/malformed headers produce recoverable invalid-line nodes. Scanning
+  resumes at the next physical line. Body spelling, case, strings, trailing
+  spaces, and potential REM content are untouched by header scanning.
+
+Whitespace separation, blank-line handling, and retaining unsorted source are
+text-file conventions, not new BASIC statements. Numeric ordering and the valid
+line-number range follow Sinclair's stored-program model. Syntax recovery can
+retain incomplete lines for editing without accepting them for a binary build.
+Other escape, normalization, and special-character questions remain open.
 
 ## Keyword case
 

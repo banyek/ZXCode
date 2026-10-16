@@ -11,3 +11,5 @@ export type { BasicTapMetadata } from "./tap/writer.js";
 export { convertNumericLiteral } from "./semantic/numeric.js";
 export type { NumericLiteralResult, NumericLiteralValue } from "./semantic/numeric.js";
 export { encodeNumericLiteral } from "./encoding/numeric.js";
+export { scanPhysicalLines } from "./syntax/physical-lines.js";
+export type { BlankPhysicalLine, InvalidPhysicalLine, NumberedPhysicalLine, PhysicalLine, PhysicalLineBase, PhysicalProgram } from "./syntax/physical-lines.js";
