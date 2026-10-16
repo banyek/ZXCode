@@ -6,3 +6,5 @@ export type { ParsedDocument } from "./syntax/document.js";
 export type { AnalyzedProgram, BuildableProgram } from "./semantic/program.js";
 export type { BasicProgramEncoder, EncodedLineMapping, EncodedProgram, EncodedRange, EncodedStatementMapping } from "./encoding/program.js";
 export type { TapArtifact } from "./tap/artifact.js";
+export { writeBasicTap, writeTapBlock } from "./tap/writer.js";
+export type { BasicTapMetadata } from "./tap/writer.js";
