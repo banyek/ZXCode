@@ -6,9 +6,10 @@ editor code. M1-03 defines artifact contracts and M1-06 implements validation.
 
 `AnalyzedProgram<TProgram>` retains the immutable source snapshot, semantic
 model, and diagnostics. `BuildableProgram<TProgram>` additionally requires a
-private validation brand. Ordinary parsed/analyzed values cannot satisfy it.
-M1-06 must introduce the validator here, after its fatal-diagnostic checks; no
-public cast/unchecked builder is provided. Non-fatal diagnostics remain attached.
+private validation brand. `analyzeBasic` issues it only after validation; runtime
+identity checks reject edited/copied values. No public cast/unchecked builder is
+provided. Non-fatal diagnostics remain attached.
 
-The generic model parameter lets M1-05/M1-06 define the actual syntax and semantic
-node unions without guessing the grammar in this contracts-only ticket.
+The generic artifact contract coexists with the concrete M1 `BasicProgram` model.
+Numeric tokens convert here once, and string content is checked against the
+documented M1 character subset before encoding.

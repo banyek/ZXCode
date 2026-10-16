@@ -2,6 +2,12 @@
 
 Status: draft.
 
+M1 implementation refinements are explicit in [physical source rules](011-text-source-format.md),
+[numeric conversion](020-numeric-literals.md), [supported syntax](021-m1-supported-subset.md),
+[BASIC image encoding](022-m1-basic-encoding.md), and [CLI build policy](023-m1-cli-build-policy.md).
+The [M1 acceptance proof](024-m1-acceptance.md) covers that subset; it does not
+resolve the remaining full-language or production-integration questions below.
+
 ## Target
 
 ZXCode v1 targets the original **Sinclair ZX Spectrum 48K and its ROM BASIC**.
@@ -82,5 +88,5 @@ The imported text does not need to reproduce original formatting byte-for-byte, 
 - canonical textual escape syntax for Spectrum control codes and special characters;
 - exact whitespace/case normalization policy;
 - degree of losslessness required from parser/AST;
-- autostart and TAP build defaults;
-- first supported external emulator.
+- full-fidelity TAP metadata beyond the explicit M1 build defaults;
+- first production external-emulator integration (M1's headless reference target is selected).
