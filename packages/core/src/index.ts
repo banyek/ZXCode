@@ -13,3 +13,7 @@ export type { NumericLiteralResult, NumericLiteralValue } from "./semantic/numer
 export { encodeNumericLiteral } from "./encoding/numeric.js";
 export { scanPhysicalLines } from "./syntax/physical-lines.js";
 export type { BlankPhysicalLine, InvalidPhysicalLine, NumberedPhysicalLine, PhysicalLine, PhysicalLineBase, PhysicalProgram } from "./syntax/physical-lines.js";
+export { lexBody } from "./syntax/lexer.js";
+export type { BodyToken, LexedBody, PlainToken, StringToken } from "./syntax/lexer.js";
+export { parseBasic } from "./syntax/parser.js";
+export type { BasicSyntaxLine, BasicSyntaxProgram, LiteralExpression, NumberedSyntaxLine, PrintItem, Statement } from "./syntax/parser.js";

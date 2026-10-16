@@ -10,7 +10,10 @@ export const DiagnosticCodes = Object.freeze({
   duplicateLineNumber: "ZX1003",
   unexpectedToken: "ZX1101",
   missingStatement: "ZX1102",
+  unterminatedString: "ZX1103",
+  invalidNumericLiteral: "ZX1104",
   unsupportedCharacter: "ZX2001",
+  unsupportedSyntax: "ZX2002",
   missingLineTarget: "ZX3001"
 } as const);
 
