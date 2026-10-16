@@ -17,3 +17,5 @@ export { lexBody } from "./syntax/lexer.js";
 export type { BodyToken, LexedBody, PlainToken, StringToken } from "./syntax/lexer.js";
 export { parseBasic } from "./syntax/parser.js";
 export type { BasicSyntaxLine, BasicSyntaxProgram, LiteralExpression, NumberedSyntaxLine, PrintItem, Statement } from "./syntax/parser.js";
+export { analyzeBasic } from "./semantic/program.js";
+export type { BasicAnalysisResult, BasicExpression, BasicLine, BasicPrintItem, BasicProgram, BasicStatement } from "./semantic/program.js";

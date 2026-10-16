@@ -1,4 +1,5 @@
 const literalBrand: unique symbol = Symbol("Spectrum numeric literal");
+const convertedLiterals = new WeakSet<object>();
 
 export interface NumericLiteralValue {
   readonly lexeme: string;
@@ -118,10 +119,9 @@ export function convertNumericLiteral(lexeme: string): NumericLiteralResult {
       remaining = Math.floor(remaining / 2);
       if (remaining !== 0) factor = multiply(factor, factor);
     }
-    return {
-      kind: "success",
-      value: Object.freeze({ lexeme, storage: storage(value), [literalBrand]: true as const })
-    };
+    const literal: NumericLiteralValue = Object.freeze({ lexeme, storage: storage(value), [literalBrand]: true as const });
+    convertedLiterals.add(literal);
+    return { kind: "success", value: literal };
   } catch (error) {
     if (error instanceof NumericOverflow) return { kind: "error", reason: "overflow" };
     throw error;
@@ -130,6 +130,6 @@ export function convertNumericLiteral(lexeme: string): NumericLiteralResult {
 
 /** Internal encoder boundary: fabricated/unconverted JS input cannot emit bytes. */
 export function checkedNumericStorage(value: NumericLiteralValue): readonly number[] {
-  if (value?.[literalBrand] !== true) throw new TypeError("Expected a converted numeric literal.");
+  if (!convertedLiterals.has(value)) throw new TypeError("Expected a converted numeric literal.");
   return value.storage;
 }
