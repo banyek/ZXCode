@@ -14,6 +14,7 @@ export const DiagnosticCodes = Object.freeze({
   invalidNumericLiteral: "ZX1104",
   unsupportedCharacter: "ZX2001",
   unsupportedSyntax: "ZX2002",
+  numericOverflow: "ZX2003",
   missingLineTarget: "ZX3001"
 } as const);
 

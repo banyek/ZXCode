@@ -40,6 +40,7 @@ test("numeric conversion is immutable and encoding returns independent buffers",
   assert.equal(value.lexeme, "0001.25e+0");
   assert.throws(() => { value.storage[0] = 0; }, TypeError);
   assert.throws(() => { value.lexeme = "2"; }, TypeError);
+  assert.throws(() => encodeNumericLiteral({ ...value, storage: [0, 0, 2, 0, 0] }), TypeError);
   const first = encodeNumericLiteral(value);
   first.fill(0);
   assert.deepEqual([...encodeNumericLiteral(value)], [0x0e, 0x81, 0x20, 0, 0, 0]);
