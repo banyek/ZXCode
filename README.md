@@ -27,6 +27,12 @@ TAP container writing, and CLI help are available. BASIC parsing, checking, and
 source-to-TAP builds are not implemented yet. Unfinished design
 notes remain proposals rather than implicit implementation contracts.
 
+Decimal numeric token conversion reproduces the original 48K ROM's storage and
+rounding, with independent ROM observations as fixtures. See the
+[numeric contract](docs/design/020-numeric-literals.md) for evidence and the
+optional Python/SkoolKit verification procedure. The production core and normal
+CI do not require an emulator or ROM.
+
 See [docs/design](docs/design/).
 
 ## Development
