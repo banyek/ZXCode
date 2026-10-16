@@ -8,3 +8,6 @@ export type { BasicProgramEncoder, EncodedLineMapping, EncodedProgram, EncodedRa
 export type { TapArtifact } from "./tap/artifact.js";
 export { writeBasicTap, writeTapBlock } from "./tap/writer.js";
 export type { BasicTapMetadata } from "./tap/writer.js";
+export { convertNumericLiteral } from "./semantic/numeric.js";
+export type { NumericLiteralResult, NumericLiteralValue } from "./semantic/numeric.js";
+export { encodeNumericLiteral } from "./encoding/numeric.js";

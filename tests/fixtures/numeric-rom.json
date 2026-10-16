@@ -1,0 +1,710 @@
+{
+  "provenance": "Original 48K ROM DEC-TO-FP at 0x2C9B, executed by SkoolKit 10.1; no ZXCode imports",
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "cases": [
+    {
+      "literal": "0",
+      "storage": "0000000000"
+    },
+    {
+      "literal": "1",
+      "storage": "0000010000"
+    },
+    {
+      "literal": "10",
+      "storage": "00000a0000"
+    },
+    {
+      "literal": "255",
+      "storage": "0000ff0000"
+    },
+    {
+      "literal": "256",
+      "storage": "0000000100"
+    },
+    {
+      "literal": "65535",
+      "storage": "0000ffff00"
+    },
+    {
+      "literal": "65536",
+      "storage": "9100000000"
+    },
+    {
+      "literal": "65537",
+      "storage": "9100008000"
+    },
+    {
+      "literal": "4294967294",
+      "storage": "a07ffffffe"
+    },
+    {
+      "literal": "4294967295",
+      "storage": "a07fffffff"
+    },
+    {
+      "literal": "4294967296",
+      "storage": "a100000000"
+    },
+    {
+      "literal": "4294967297",
+      "storage": "a100000001"
+    },
+    {
+      "literal": "4294967298",
+      "storage": "a100000001"
+    },
+    {
+      "literal": "00001",
+      "storage": "0000010000"
+    },
+    {
+      "literal": "1.",
+      "storage": "0000010000"
+    },
+    {
+      "literal": "0.",
+      "storage": "0000000000"
+    },
+    {
+      "literal": "0.0",
+      "storage": "0000000000"
+    },
+    {
+      "literal": ".5",
+      "storage": "7f7fffffff"
+    },
+    {
+      "literal": "0.5",
+      "storage": "7f7fffffff"
+    },
+    {
+      "literal": "0.1",
+      "storage": "7d4ccccccc"
+    },
+    {
+      "literal": ".25",
+      "storage": "7e7fffffff"
+    },
+    {
+      "literal": ".75",
+      "storage": "8040000000"
+    },
+    {
+      "literal": "1.25",
+      "storage": "8120000000"
+    },
+    {
+      "literal": "1.E4",
+      "storage": "0000102700"
+    },
+    {
+      "literal": "1e2",
+      "storage": "0000640000"
+    },
+    {
+      "literal": "1E+2",
+      "storage": "0000640000"
+    },
+    {
+      "literal": "1E-1",
+      "storage": "7d4ccccccc"
+    },
+    {
+      "literal": "10E-1",
+      "storage": "8100000000"
+    },
+    {
+      "literal": "1E38",
+      "storage": "ff16769951"
+    },
+    {
+      "literal": "1E39",
+      "romError": 5
+    },
+    {
+      "literal": "1E-38",
+      "storage": "0259c7dcec"
+    },
+    {
+      "literal": "1E-39",
+      "storage": "0000000000"
+    },
+    {
+      "literal": "2E-39",
+      "storage": "0100000000"
+    },
+    {
+      "literal": "3E-39",
+      "storage": "0102ab1e28"
+    },
+    {
+      "literal": "4E-39",
+      "storage": "012e397d89"
+    },
+    {
+      "literal": "5E-39",
+      "storage": "0159c7dcec"
+    },
+    {
+      "literal": "6E-39",
+      "storage": "0202ab1e28"
+    },
+    {
+      "literal": "1E63",
+      "romError": 5
+    },
+    {
+      "literal": "1E64",
+      "romError": 5
+    },
+    {
+      "literal": "0E64",
+      "romError": 5
+    },
+    {
+      "literal": "1E-64",
+      "romError": 5
+    },
+    {
+      "literal": "0E-127",
+      "romError": 5
+    },
+    {
+      "literal": "1E127",
+      "romError": 5
+    },
+    {
+      "literal": "1E128",
+      "romError": 5
+    },
+    {
+      "literal": "1E-128",
+      "romError": 5
+    },
+    {
+      "literal": "0E128",
+      "romError": 5
+    },
+    {
+      "literal": "1.701411834E38",
+      "storage": "ff7ffffffe"
+    },
+    {
+      "literal": "1.701411835E38",
+      "romError": 5
+    },
+    {
+      "literal": "999999999999999999999999999999999999999",
+      "romError": 5
+    },
+    {
+      "literal": "0.084E8",
+      "storage": "98002c7fff"
+    },
+    {
+      "literal": "78563857.3E-6",
+      "storage": "871d20b1e7"
+    },
+    {
+      "literal": "75392621887104175.99E-8",
+      "storage": "9e33c0012c"
+    },
+    {
+      "literal": "917472377.0619449",
+      "storage": "9e5abe11e4"
+    },
+    {
+      "literal": "9608737308.742393135337",
+      "storage": "a20f2e6c87"
+    },
+    {
+      "literal": "0.0873",
+      "storage": "7d32ca57a8"
+    },
+    {
+      "literal": "836009390671.03934948E19",
+      "storage": "e75309d734"
+    },
+    {
+      "literal": "565097808112.1671",
+      "storage": "a803927441"
+    },
+    {
+      "literal": "0.8",
+      "storage": "804ccccccc"
+    },
+    {
+      "literal": "3690540873.284775596E-5",
+      "storage": "90102968a2"
+    },
+    {
+      "literal": "253445.77846871407E-1",
+      "storage": "8f460127dc"
+    },
+    {
+      "literal": "16.8021982051",
+      "storage": "85066ae6e5"
+    },
+    {
+      "literal": "80697.7355961131782696E12",
+      "storage": "b90f5914dc"
+    },
+    {
+      "literal": "0.103985398E-8",
+      "storage": "630eea9bfe"
+    },
+    {
+      "literal": "2945947601.",
+      "storage": "a02f9797d1"
+    },
+    {
+      "literal": "1056115580672624782.5",
+      "storage": "bc6a813869"
+    },
+    {
+      "literal": "45816995064250.1950",
+      "storage": "ae26ae66dd"
+    },
+    {
+      "literal": "2837055940080.582",
+      "storage": "aa25236d89"
+    },
+    {
+      "literal": "40313947.970933E6",
+      "storage": "ae12a94a31"
+    },
+    {
+      "literal": "6115330378.494497E-28",
+      "storage": "44347e2143"
+    },
+    {
+      "literal": "60.67192E30",
+      "storage": "ea3f7262fd"
+    },
+    {
+      "literal": "75.000",
+      "storage": "00004b0000"
+    },
+    {
+      "literal": "8984.6149029584",
+      "storage": "8e0c6275a9"
+    },
+    {
+      "literal": "71094535.940E9",
+      "storage": "b87c941a91"
+    },
+    {
+      "literal": "470431.1605860",
+      "storage": "9365b3e524"
+    },
+    {
+      "literal": "8.96467",
+      "storage": "840f6f49ce"
+    },
+    {
+      "literal": "3705117693139.",
+      "storage": "aa57aa8e56"
+    },
+    {
+      "literal": "0.52725662E11",
+      "storage": "a4446b1c13"
+    },
+    {
+      "literal": "392.5",
+      "storage": "8944400000"
+    },
+    {
+      "literal": "1.00288E-5",
+      "storage": "7028415e36"
+    },
+    {
+      "literal": "42361830289476.56E0",
+      "storage": "ae1a1c8764"
+    },
+    {
+      "literal": "431921.E-2",
+      "storage": "8d06f9ae14"
+    },
+    {
+      "literal": "0.4070324",
+      "storage": "7f50668cfc"
+    },
+    {
+      "literal": "0.47",
+      "storage": "7f70a3d709"
+    },
+    {
+      "literal": "223738644038879.82207341",
+      "storage": "b04b7d3667"
+    },
+    {
+      "literal": "4184065123.0723884",
+      "storage": "a07963c463"
+    },
+    {
+      "literal": "4943667018.2E-12",
+      "storage": "7921fe7c15"
+    },
+    {
+      "literal": "8039.1E-15",
+      "storage": "5c0d6ce345"
+    },
+    {
+      "literal": "285.82254",
+      "storage": "890ee948fd"
+    },
+    {
+      "literal": "013.03E-30",
+      "storage": "210423d065"
+    },
+    {
+      "literal": "49.43737",
+      "storage": "8645bfdded"
+    },
+    {
+      "literal": "9602399141434.99427",
+      "storage": "ac0bbbb970"
+    },
+    {
+      "literal": "7826158845145.10",
+      "storage": "ab63c56d60"
+    },
+    {
+      "literal": "25551956409.7905281",
+      "storage": "a33e607d37"
+    },
+    {
+      "literal": "0.34050067284E5",
+      "storage": "9005021139"
+    },
+    {
+      "literal": "26.097526133793929E24",
+      "storage": "d52cb2edd0"
+    },
+    {
+      "literal": "12.659222240",
+      "storage": "844a8c2ca0"
+    },
+    {
+      "literal": "1853.768499349874",
+      "storage": "8b67b8978c"
+    },
+    {
+      "literal": "5989043494.831083671834",
+      "storage": "a1327cc693"
+    },
+    {
+      "literal": "9.35E-30",
+      "storage": "203da3f9c2"
+    },
+    {
+      "literal": "0.07462568",
+      "storage": "7d18d55938"
+    },
+    {
+      "literal": "0.0125969E33",
+      "storage": "e81efec775"
+    },
+    {
+      "literal": "13.570",
+      "storage": "84591eb852"
+    },
+    {
+      "literal": "3.89662934304026293448E22",
+      "storage": "cc0405df3b"
+    },
+    {
+      "literal": "006729172.2010",
+      "storage": "974d5ba867"
+    },
+    {
+      "literal": "3438135.78242595785E12",
+      "storage": "be3edad91d"
+    },
+    {
+      "literal": "81.817506630665811089",
+      "storage": "8723a2903a"
+    },
+    {
+      "literal": "92023421772755.597492E-16",
+      "storage": "7a16c56bad"
+    },
+    {
+      "literal": "49495.17E8",
+      "storage": "ab100cc67c"
+    },
+    {
+      "literal": "2558.1947582098442103483",
+      "storage": "8c1fe31dba"
+    },
+    {
+      "literal": "75.06",
+      "storage": "87161eb852"
+    },
+    {
+      "literal": "44329.155476628223594",
+      "storage": "902d2927ce"
+    },
+    {
+      "literal": "0766749516.757997E35",
+      "romError": 5
+    },
+    {
+      "literal": "7248771.067074381",
+      "storage": "975d370623"
+    },
+    {
+      "literal": "5473129474984999284.43",
+      "storage": "bf17e8ec86"
+    },
+    {
+      "literal": "1383.77527",
+      "storage": "8b2cf8cf03"
+    },
+    {
+      "literal": "1.40386154166723E-14",
+      "storage": "527ce5afb8"
+    },
+    {
+      "literal": "263607.55348442689E40",
+      "romError": 5
+    },
+    {
+      "literal": "2226446451939824825.7680E40",
+      "romError": 5
+    },
+    {
+      "literal": "47.9246604047056604444",
+      "storage": "863fb2da2d"
+    },
+    {
+      "literal": "0.793E24",
+      "storage": "d027ec9dbb"
+    },
+    {
+      "literal": "82797540923830.2814030E19",
+      "storage": "ee234a1359"
+    },
+    {
+      "literal": "82.02827561648101E-23",
+      "storage": "3a77ea4ddf"
+    },
+    {
+      "literal": "0.4",
+      "storage": "7f4ccccccc"
+    },
+    {
+      "literal": "986350076.94",
+      "storage": "9e6b2a07f4"
+    },
+    {
+      "literal": "4510118361105299656.9E40",
+      "romError": 5
+    },
+    {
+      "literal": "41117499828.0001439",
+      "storage": "a4192cb41c"
+    },
+    {
+      "literal": "263.8278",
+      "storage": "8903e9f559"
+    },
+    {
+      "literal": "457.7471761298404629783",
+      "storage": "8964dfa377"
+    },
+    {
+      "literal": "3415912182102931.9888E-21",
+      "storage": "6e653ceca9"
+    },
+    {
+      "literal": "085.66E-6",
+      "storage": "7333a45cc1"
+    },
+    {
+      "literal": "0.815361",
+      "storage": "8050bb7f9c"
+    },
+    {
+      "literal": "81844908665481.9522492433",
+      "storage": "af14e0016a"
+    },
+    {
+      "literal": "3.",
+      "storage": "0000030000"
+    },
+    {
+      "literal": "464038.22596655E39",
+      "romError": 5
+    },
+    {
+      "literal": "4.E-6",
+      "storage": "6f0637bd05"
+    },
+    {
+      "literal": "2609227937344302.",
+      "storage": "b414514385"
+    },
+    {
+      "literal": "4357.44338138402306234068E20",
+      "storage": "cf388b7eee"
+    },
+    {
+      "literal": "713214024084872744.41537",
+      "storage": "bc1e5d8604"
+    },
+    {
+      "literal": "0.907086959204",
+      "storage": "806836d9d8"
+    },
+    {
+      "literal": "9303.292275487227E-3",
+      "storage": "8414da48ff"
+    },
+    {
+      "literal": "389191953.41412931E18",
+      "storage": "d920f74d09"
+    },
+    {
+      "literal": "2.584",
+      "storage": "8225604189"
+    },
+    {
+      "literal": "5.39938289553844904131202E-1",
+      "storage": "800a39654f"
+    },
+    {
+      "literal": "701494.844706875E12",
+      "storage": "bc1bc35d84"
+    },
+    {
+      "literal": "5079350069.977",
+      "storage": "a117605d9b"
+    },
+    {
+      "literal": "7794684950614417.3E32",
+      "romError": 5
+    },
+    {
+      "literal": "5.34334686216157305E-17",
+      "storage": "4a766b1af5"
+    },
+    {
+      "literal": "1.2E-36",
+      "storage": "094c2b5f1f"
+    },
+    {
+      "literal": "790124.3054156731E32",
+      "storage": "fe6dc4f65f"
+    },
+    {
+      "literal": "8303666.35204661423134E-14",
+      "storage": "693251e377"
+    },
+    {
+      "literal": "9907717475.973829",
+      "storage": "a213a2f159"
+    },
+    {
+      "literal": "5.830494059",
+      "storage": "833a936846"
+    },
+    {
+      "literal": "409331.3",
+      "storage": "9347de699a"
+    },
+    {
+      "literal": "4698851731767.",
+      "storage": "ab08c12c6e"
+    },
+    {
+      "literal": "201.4253384416099",
+      "storage": "88496ce2fa"
+    },
+    {
+      "literal": "0.0591672E16",
+      "storage": "b20687d7d9"
+    },
+    {
+      "literal": "8036598049436.388147294E22",
+      "storage": "f477a59485"
+    },
+    {
+      "literal": "4.031041",
+      "storage": "8300fe49b2"
+    },
+    {
+      "literal": "524622882692.160068768",
+      "storage": "a7744bebcf"
+    },
+    {
+      "literal": "8.",
+      "storage": "0000080000"
+    },
+    {
+      "literal": "4806.383174844556E-17",
+      "storage": "545875d33f"
+    },
+    {
+      "literal": "382.6E-20",
+      "storage": "470d278c5f"
+    },
+    {
+      "literal": "926.8",
+      "storage": "8a67b33333"
+    },
+    {
+      "literal": "3657.59386349776E41",
+      "romError": 5
+    },
+    {
+      "literal": "8216416356172.9127450",
+      "storage": "ab6f211281"
+    },
+    {
+      "literal": "7536801743905626040.53497E16",
+      "storage": "f4683ee1e8"
+    },
+    {
+      "literal": "9652394.4",
+      "storage": "981348aa66"
+    },
+    {
+      "literal": "5153.9880167413105753E-17",
+      "storage": "54681d6fa7"
+    },
+    {
+      "literal": "702.803862459",
+      "storage": "8a2fb3727b"
+    },
+    {
+      "literal": "327.6336436E15",
+      "storage": "bb117fa205"
+    },
+    {
+      "literal": "016170247026.1",
+      "storage": "a270f498dd"
+    },
+    {
+      "literal": "7.3E-5",
+      "storage": "731917939a"
+    },
+    {
+      "literal": "5896.8526732855933508751",
+      "storage": "8d3846d247"
+    },
+    {
+      "literal": "5307918.E43",
+      "romError": 5
+    },
+    {
+      "literal": "3075947969750715.0859",
+      "storage": "b42ed8ef22"
+    },
+    {
+      "literal": "514.09117",
+      "storage": "8a0085d5ba"
+    }
+  ]
+}
