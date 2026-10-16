@@ -22,7 +22,7 @@ The language itself is not modernized. IDE features live around Sinclair BASIC r
 
 ## Status
 
-M1 implementation has started. The toolchain skeleton and CLI help are available;
+M1 implementation has started. Source/diagnostic contracts and CLI help are available;
 BASIC parsing, checking, and TAP builds are not implemented yet. Unfinished design
 notes remain proposals rather than implicit implementation contracts.
 
@@ -63,8 +63,8 @@ The repository uses two private npm workspaces with native ES modules:
 - `packages/cli`: host I/O and orchestration through core APIs.
 - `tests`: integration and core tests using Node's built-in test runner.
 
-The core directories currently contain boundary notes, not placeholder language
-implementations. Contracts are introduced by their own M1 issues. Dependency
+Source coordinates and diagnostics are implemented; the remaining core directories
+contain boundary notes. Contracts are introduced by their own M1 issues. Dependency
 direction is source → syntax → semantic → encoding, where an arrow means the
 right-hand layer may consume the left-hand layer. TAP handles bytes independently
 of grammar. CLI depends on core; core never depends on CLI or VS Code. Core is

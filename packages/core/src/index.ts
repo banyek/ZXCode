@@ -1,2 +1,4 @@
-// Public core contracts will be exported here as their M1 issues are implemented.
-export {};
+export { SourceDocument, SourceRange } from "./source/document.js";
+export type { SourcePosition } from "./source/document.js";
+export { createDiagnostic, DiagnosticCodes } from "./source/diagnostic.js";
+export type { Diagnostic, DiagnosticCategory, DiagnosticRelatedInformation, DiagnosticSeverity } from "./source/diagnostic.js";
