@@ -1,3 +1,5 @@
+import { romTokenBySpelling } from "../source/rom-tokens.js";
+import type { RomToken } from "../source/rom-tokens.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument, SourceRange } from "../source/document.js";
@@ -14,6 +16,7 @@ export interface StringToken extends TokenBase {
 }
 
 export interface PlainToken extends TokenBase {
+  readonly romToken?: RomToken;
   readonly kind: "word" | "number" | "whitespace" | "colon" | "punctuation" | "raw-tail" | "eof";
 }
 
@@ -31,7 +34,9 @@ export function lexBody(source: SourceDocument, bodyRange: SourceRange): LexedBo
   const diagnostics: Diagnostic[] = [];
   const range = (start: number, end: number): SourceRange => source.range(bodyRange.start + start, bodyRange.start + end);
   const plain = (kind: PlainToken["kind"], start: number, end: number): void => {
-    tokens.push(Object.freeze({ kind, text: text.slice(start, end), range: range(start, end) }));
+    const spelling = text.slice(start, end);
+    const romToken = kind === "word" ? romTokenBySpelling(spelling) : undefined;
+    tokens.push(Object.freeze({ kind, text: spelling, range: range(start, end), ...(romToken === undefined ? {} : { romToken }) }));
   };
   let cursor = 0;
   let statementStart = true;

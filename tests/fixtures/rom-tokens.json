@@ -1,0 +1,366 @@
+[
+  {
+    "byte": 165,
+    "spelling": "RND"
+  },
+  {
+    "byte": 166,
+    "spelling": "INKEY$"
+  },
+  {
+    "byte": 167,
+    "spelling": "PI"
+  },
+  {
+    "byte": 168,
+    "spelling": "FN"
+  },
+  {
+    "byte": 169,
+    "spelling": "POINT"
+  },
+  {
+    "byte": 170,
+    "spelling": "SCREEN$"
+  },
+  {
+    "byte": 171,
+    "spelling": "ATTR"
+  },
+  {
+    "byte": 172,
+    "spelling": "AT"
+  },
+  {
+    "byte": 173,
+    "spelling": "TAB"
+  },
+  {
+    "byte": 174,
+    "spelling": "VAL$"
+  },
+  {
+    "byte": 175,
+    "spelling": "CODE"
+  },
+  {
+    "byte": 176,
+    "spelling": "VAL"
+  },
+  {
+    "byte": 177,
+    "spelling": "LEN"
+  },
+  {
+    "byte": 178,
+    "spelling": "SIN"
+  },
+  {
+    "byte": 179,
+    "spelling": "COS"
+  },
+  {
+    "byte": 180,
+    "spelling": "TAN"
+  },
+  {
+    "byte": 181,
+    "spelling": "ASN"
+  },
+  {
+    "byte": 182,
+    "spelling": "ACS"
+  },
+  {
+    "byte": 183,
+    "spelling": "ATN"
+  },
+  {
+    "byte": 184,
+    "spelling": "LN"
+  },
+  {
+    "byte": 185,
+    "spelling": "EXP"
+  },
+  {
+    "byte": 186,
+    "spelling": "INT"
+  },
+  {
+    "byte": 187,
+    "spelling": "SQR"
+  },
+  {
+    "byte": 188,
+    "spelling": "SGN"
+  },
+  {
+    "byte": 189,
+    "spelling": "ABS"
+  },
+  {
+    "byte": 190,
+    "spelling": "PEEK"
+  },
+  {
+    "byte": 191,
+    "spelling": "IN"
+  },
+  {
+    "byte": 192,
+    "spelling": "USR"
+  },
+  {
+    "byte": 193,
+    "spelling": "STR$"
+  },
+  {
+    "byte": 194,
+    "spelling": "CHR$"
+  },
+  {
+    "byte": 195,
+    "spelling": "NOT"
+  },
+  {
+    "byte": 196,
+    "spelling": "BIN"
+  },
+  {
+    "byte": 197,
+    "spelling": "OR"
+  },
+  {
+    "byte": 198,
+    "spelling": "AND"
+  },
+  {
+    "byte": 199,
+    "spelling": "<="
+  },
+  {
+    "byte": 200,
+    "spelling": ">="
+  },
+  {
+    "byte": 201,
+    "spelling": "<>"
+  },
+  {
+    "byte": 202,
+    "spelling": "LINE"
+  },
+  {
+    "byte": 203,
+    "spelling": "THEN"
+  },
+  {
+    "byte": 204,
+    "spelling": "TO"
+  },
+  {
+    "byte": 205,
+    "spelling": "STEP"
+  },
+  {
+    "byte": 206,
+    "spelling": "DEF FN"
+  },
+  {
+    "byte": 207,
+    "spelling": "CAT"
+  },
+  {
+    "byte": 208,
+    "spelling": "FORMAT"
+  },
+  {
+    "byte": 209,
+    "spelling": "MOVE"
+  },
+  {
+    "byte": 210,
+    "spelling": "ERASE"
+  },
+  {
+    "byte": 211,
+    "spelling": "OPEN #"
+  },
+  {
+    "byte": 212,
+    "spelling": "CLOSE #"
+  },
+  {
+    "byte": 213,
+    "spelling": "MERGE"
+  },
+  {
+    "byte": 214,
+    "spelling": "VERIFY"
+  },
+  {
+    "byte": 215,
+    "spelling": "BEEP"
+  },
+  {
+    "byte": 216,
+    "spelling": "CIRCLE"
+  },
+  {
+    "byte": 217,
+    "spelling": "INK"
+  },
+  {
+    "byte": 218,
+    "spelling": "PAPER"
+  },
+  {
+    "byte": 219,
+    "spelling": "FLASH"
+  },
+  {
+    "byte": 220,
+    "spelling": "BRIGHT"
+  },
+  {
+    "byte": 221,
+    "spelling": "INVERSE"
+  },
+  {
+    "byte": 222,
+    "spelling": "OVER"
+  },
+  {
+    "byte": 223,
+    "spelling": "OUT"
+  },
+  {
+    "byte": 224,
+    "spelling": "LPRINT"
+  },
+  {
+    "byte": 225,
+    "spelling": "LLIST"
+  },
+  {
+    "byte": 226,
+    "spelling": "STOP"
+  },
+  {
+    "byte": 227,
+    "spelling": "READ"
+  },
+  {
+    "byte": 228,
+    "spelling": "DATA"
+  },
+  {
+    "byte": 229,
+    "spelling": "RESTORE"
+  },
+  {
+    "byte": 230,
+    "spelling": "NEW"
+  },
+  {
+    "byte": 231,
+    "spelling": "BORDER"
+  },
+  {
+    "byte": 232,
+    "spelling": "CONTINUE"
+  },
+  {
+    "byte": 233,
+    "spelling": "DIM"
+  },
+  {
+    "byte": 234,
+    "spelling": "REM"
+  },
+  {
+    "byte": 235,
+    "spelling": "FOR"
+  },
+  {
+    "byte": 236,
+    "spelling": "GO TO"
+  },
+  {
+    "byte": 237,
+    "spelling": "GO SUB"
+  },
+  {
+    "byte": 238,
+    "spelling": "INPUT"
+  },
+  {
+    "byte": 239,
+    "spelling": "LOAD"
+  },
+  {
+    "byte": 240,
+    "spelling": "LIST"
+  },
+  {
+    "byte": 241,
+    "spelling": "LET"
+  },
+  {
+    "byte": 242,
+    "spelling": "PAUSE"
+  },
+  {
+    "byte": 243,
+    "spelling": "NEXT"
+  },
+  {
+    "byte": 244,
+    "spelling": "POKE"
+  },
+  {
+    "byte": 245,
+    "spelling": "PRINT"
+  },
+  {
+    "byte": 246,
+    "spelling": "PLOT"
+  },
+  {
+    "byte": 247,
+    "spelling": "RUN"
+  },
+  {
+    "byte": 248,
+    "spelling": "SAVE"
+  },
+  {
+    "byte": 249,
+    "spelling": "RANDOMIZE"
+  },
+  {
+    "byte": 250,
+    "spelling": "IF"
+  },
+  {
+    "byte": 251,
+    "spelling": "CLS"
+  },
+  {
+    "byte": 252,
+    "spelling": "DRAW"
+  },
+  {
+    "byte": 253,
+    "spelling": "CLEAR"
+  },
+  {
+    "byte": 254,
+    "spelling": "RETURN"
+  },
+  {
+    "byte": 255,
+    "spelling": "COPY"
+  }
+]

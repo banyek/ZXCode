@@ -60,7 +60,7 @@ For the default bare-48K profile, ZXCode can recognize these tokens while warnin
 | `0xCB` | `THEN` | operator/syntax | verified from ROM token table |
 | `0xCC` | `TO` | operator/syntax | verified from ROM token table |
 | `0xCD` | `STEP` | operator/syntax | verified from ROM token table |
-| `0xCE` | `DEF FN` | Interface 1 vocabulary | verified from ROM token table |
+| `0xCE` | `DEF FN` | statement/modifier | verified from ROM token table |
 | `0xCF` | `CAT` | Interface 1 vocabulary | verified from ROM token table |
 | `0xD0` | `FORMAT` | Interface 1 vocabulary | verified from ROM token table |
 | `0xD1` | `MOVE` | Interface 1 vocabulary | verified from ROM token table |
@@ -167,3 +167,25 @@ Completion should use grammar position plus capability profile. It may know that
 4. Specify exact handling of REM, DATA and quoted strings.
 5. Define textual representation for Spectrum character/control codes.
 6. Cross-check generated token streams against an independent tokenizer.
+
+## M2-01 implementation contract
+
+The shared immutable catalogue lives in the source layer so lexer, parser and encoder
+can depend on it without reversing layer boundaries. Categories describe lexical
+roles, not complete grammar, expression signatures, or capability policy. `AT` and
+`TAB` are print controls; `BIN` introduces a binary literal; `DEF FN` is a standard
+ROM statement. Peripheral execution diagnostics remain M2-16 work.
+
+Byte and canonical-spelling lookup are exact (spelling lookup is ASCII case
+insensitive). No aliases or whitespace normalization are introduced. The lexer
+annotates complete word tokens only; it does not split identifiers, rewrite strings,
+join multiword commands, or scan REM tails. Multiword spellings remain available
+through the catalogue for dedicated grammar handling. Recognition never implies
+that the current parser accepts a statement.
+
+The independent fixture was decoded from the original 48K ROM at 0x0096..0x0204:
+bit 7 terminates each spelling. ROM SHA-256:
+`d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42`.
+The [ROM token table](https://www.skoolkit.ca/disassemblies/rom/hex/asm/0095.html)
+provides the corresponding disassembly. Fixture values must not be generated from
+the implementation catalogue.
