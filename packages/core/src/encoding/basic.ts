@@ -1,3 +1,4 @@
+import { romTokenBySpelling } from "../source/rom-tokens.js";
 import { assertBuildableProgram } from "../semantic/program.js";
 import type { BasicProgram, BuildableProgram } from "../semantic/program.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
@@ -37,9 +38,9 @@ export function encodeBasicProgram(program: BuildableProgram<BasicProgram>): Enc
       if (index !== 0) emit(0x3a);
       const statement = line.statements[index]!;
       const start = body.length;
-      if (statement.kind !== "print") emit(statement.kind === "cls" ? 0xfb : 0xe2);
+      if (statement.kind !== "print") emit(romTokenBySpelling(statement.kind)!.byte);
       else {
-        emit(0xf5);
+        emit(romTokenBySpelling("PRINT")!.byte);
         for (const item of statement.items) {
           if (item.kind === "print-separator") emit(item.separator.charCodeAt(0));
           else if (item.expression.kind === "string") {

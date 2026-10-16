@@ -22,3 +22,5 @@ export type { BasicAnalysisResult, BasicExpression, BasicLine, BasicPrintItem, B
 export { encodeBasicProgram, EncodingError, M1_BASIC_BYTE_LIMIT } from "./encoding/basic.js";
 export { buildTap, checkProgram } from "./build.js";
 export type { BuiltTap, CheckedProgram, PipelineFailure, TapBuildOptions } from "./build.js";
+export { ROM_TOKENS, romTokenByByte, romTokenBySpelling } from "./source/rom-tokens.js";
+export type { RomToken, RomTokenCategory } from "./source/rom-tokens.js";
