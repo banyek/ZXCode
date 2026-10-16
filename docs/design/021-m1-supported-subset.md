@@ -35,3 +35,18 @@ Semantic validation, numeric conversion, character representability and the
 BuildableProgram boundary remain M1-06. Parsing never certifies binary safety.
 New ROM statements and expression forms extend these same token/CST/statement
 interfaces; there is no alternate build-only tokenizer or disposable hello path.
+
+## M1 semantic boundary
+
+M1-06 converts numeric tokens once using the researched numeric contract. String
+content initially supports character codes 32..126 except 96: the ordinary
+ASCII-compatible portion of the [Sinclair character table](https://worldofspectrum.org/ZXBasicManual/zxmanappa.html).
+Code 96 is the pound glyph, so a UTF-8 backtick must not be silently mapped there.
+Other Unicode, control bytes and special Spectrum glyphs remain explicit M1
+coverage errors until character/escape work establishes their representations.
+Braces remain ordinary literal characters; provisional named escapes are inactive.
+
+Analysis consumes parsed nodes, retains source ranges, and orders semantic lines
+by BASIC line number. Error/incomplete nodes and any error-severity diagnostic
+prevent BuildableProgram creation. Warnings, information and hints remain attached
+without inherently blocking a build. No unchecked public builder is provided.
