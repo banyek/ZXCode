@@ -1,0 +1,11 @@
+{
+  "name": "@zxcode/core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" }
+  },
+  "files": ["dist"],
+  "engines": { "node": ">=24.0.0 <25" }
+}

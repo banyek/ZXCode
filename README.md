@@ -22,6 +22,55 @@ The language itself is not modernized. IDE features live around Sinclair BASIC r
 
 ## Status
 
-Design and research phase. No implementation contract should be inferred from unfinished design notes.
+M1 implementation has started. The toolchain skeleton and CLI help are available;
+BASIC parsing, checking, and TAP builds are not implemented yet. Unfinished design
+notes remain proposals rather than implicit implementation contracts.
 
 See [docs/design](docs/design/).
+
+## Development
+
+Use Node.js 24 LTS and npm (the repository includes an `.nvmrc`). From the root:
+
+```sh
+npm ci
+npm run check
+npm run zxcode -- --help
+```
+
+| Command | Purpose |
+| --- | --- |
+| `npm run build` | Compile core and CLI with TypeScript project references |
+| `npm run typecheck` | Check both workspaces without emitting code |
+| `npm run lint` | Run ESLint with zero warnings allowed |
+| `npm test` | Build and run Node's test runner |
+| `npm run check` | Run type checking, lint, build, and tests |
+| `npm run clean` | Remove TypeScript build outputs |
+| `npm run zxcode -- --help` | Run the compiled CLI (build first) |
+
+CI uses the same install/check commands on Node.js 24. Dependency versions are
+locked in `package-lock.json`; generated output is ignored by Git.
+
+## Implementation layout
+
+The repository uses two private npm workspaces with native ES modules:
+
+- `packages/core/src/source`: source identity/ranges and diagnostics.
+- `packages/core/src/syntax`: physical lines, lexer, recoverable CST, and parser.
+- `packages/core/src/semantic`: analysis and validated build model.
+- `packages/core/src/encoding`: Spectrum numeric/program bytes and source maps.
+- `packages/core/src/tap`: container writing from bytes and explicit metadata.
+- `packages/cli`: host I/O and orchestration through core APIs.
+- `tests`: integration and core tests using Node's built-in test runner.
+
+The core directories currently contain boundary notes, not placeholder language
+implementations. Contracts are introduced by their own M1 issues. Dependency
+direction is source → syntax → semantic → encoding, where an arrow means the
+right-hand layer may consume the left-hand layer. TAP handles bytes independently
+of grammar. CLI depends on core; core never depends on CLI or VS Code. Core is
+compiled without ambient Node/browser types, and lint rejects editor/CLI, Node
+built-ins, and reverse layer imports there. Future language-service and emulator adapters sit outside
+the parser/encoder pipeline.
+
+TypeScript 6.0.3 is pinned within the supported range of TypeScript ESLint 8.71.2.
+The skeleton uses no runtime framework dependencies.
