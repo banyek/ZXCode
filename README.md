@@ -23,7 +23,7 @@ The language itself is not modernized. IDE features live around Sinclair BASIC r
 ## Status
 
 M1 implementation has started. Source/diagnostic and build-artifact contracts,
-TAP container writing, and CLI help are available. BASIC parsing, checking, and
+physical-line scanning, TAP container writing, and CLI help are available. BASIC body parsing, checking, and
 source-to-TAP builds are not implemented yet. Unfinished design
 notes remain proposals rather than implicit implementation contracts.
 
