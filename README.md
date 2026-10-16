@@ -22,11 +22,13 @@ The language itself is not modernized. IDE features live around Sinclair BASIC r
 
 ## Status
 
-M1 implementation has started. Source/diagnostic and build-artifact contracts,
+M1 — Hello Spectrum is implemented and verified. Source/diagnostic and build-artifact contracts,
 recoverable parsing for the [M1 subset](docs/design/021-m1-supported-subset.md),
 semantic validation, BASIC image encoding with source maps, TAP container writing,
-and CLI check/build commands are available. Unfinished design notes remain proposals
-rather than implicit implementation contracts. M1 emulator acceptance is still pending.
+and CLI check/build commands are available. The generated hello TAP loads/runs in
+reference 48K emulation and prints `HELLO WORLD`. Unfinished design notes remain
+proposals rather than implicit implementation contracts; general BASIC grammar
+and the editor experience remain later milestones.
 
 Decimal numeric token conversion reproduces the original 48K ROM's storage and
 rounding, with independent ROM observations as fixtures. See the
@@ -41,9 +43,9 @@ See [docs/design](docs/design/).
 After building the toolchain:
 
 ```sh
-npm run zxcode -- check tests/fixtures/hello.bas
-npm run zxcode -- build tests/fixtures/hello.bas --output /tmp/hello.tap
-npm run zxcode -- build tests/fixtures/hello.bas --output /tmp/hello.tap --autostart 10
+npm run zxcode -- check examples/hello.bas
+npm run zxcode -- build examples/hello.bas --output /tmp/hello.tap
+npm run zxcode -- build examples/hello.bas --output /tmp/hello.tap --autostart 10
 ```
 
 `check` creates no TAP. Builds default to a `.tap` beside the source, a space-padded
@@ -53,6 +55,11 @@ Fatal diagnostics leave previous artifacts untouched; a successful build replace
 the output artifact. The source file and its existing aliases cannot be output
 destinations. See the [CLI policy](docs/design/023-m1-cli-build-policy.md) for exit
 codes, metadata, UTF-8 behavior, and output paths.
+
+The [M1 acceptance procedure](docs/design/024-m1-acceptance.md) documents independent
+golden provenance and an optional original-ROM load/run check with retained screen
+and snapshot evidence. Normal tests compare exact BASIC/TAP bytes without requiring
+an emulator installation.
 
 ## Development
 
