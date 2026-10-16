@@ -20,3 +20,5 @@ export type { BasicSyntaxLine, BasicSyntaxProgram, LiteralExpression, NumberedSy
 export { analyzeBasic } from "./semantic/program.js";
 export type { BasicAnalysisResult, BasicExpression, BasicLine, BasicPrintItem, BasicProgram, BasicStatement } from "./semantic/program.js";
 export { encodeBasicProgram, EncodingError, M1_BASIC_BYTE_LIMIT } from "./encoding/basic.js";
+export { buildTap, checkProgram } from "./build.js";
+export type { BuiltTap, CheckedProgram, PipelineFailure, TapBuildOptions } from "./build.js";

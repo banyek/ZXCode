@@ -25,8 +25,8 @@ The language itself is not modernized. IDE features live around Sinclair BASIC r
 M1 implementation has started. Source/diagnostic and build-artifact contracts,
 recoverable parsing for the [M1 subset](docs/design/021-m1-supported-subset.md),
 semantic validation, BASIC image encoding with source maps, TAP container writing,
-and CLI help are available. Source-to-TAP CLI builds are not implemented yet. Unfinished design
-notes remain proposals rather than implicit implementation contracts.
+and CLI check/build commands are available. Unfinished design notes remain proposals
+rather than implicit implementation contracts. M1 emulator acceptance is still pending.
 
 Decimal numeric token conversion reproduces the original 48K ROM's storage and
 rounding, with independent ROM observations as fixtures. See the
@@ -35,6 +35,24 @@ optional Python/SkoolKit verification procedure. The production core and normal
 CI do not require an emulator or ROM.
 
 See [docs/design](docs/design/).
+
+## Check and build
+
+After building the toolchain:
+
+```sh
+npm run zxcode -- check tests/fixtures/hello.bas
+npm run zxcode -- build tests/fixtures/hello.bas --output /tmp/hello.tap
+npm run zxcode -- build tests/fixtures/hello.bas --output /tmp/hello.tap --autostart 10
+```
+
+`check` creates no TAP. Builds default to a `.tap` beside the source, a space-padded
+Spectrum filename from the source basename (1..10 representable characters), and
+no autostart. Use `--output`/`-o`, `--name`, and `--autostart` to override these.
+Fatal diagnostics leave previous artifacts untouched; a successful build replaces
+the output artifact. The source file and its existing aliases cannot be output
+destinations. See the [CLI policy](docs/design/023-m1-cli-build-policy.md) for exit
+codes, metadata, UTF-8 behavior, and output paths.
 
 ## Development
 

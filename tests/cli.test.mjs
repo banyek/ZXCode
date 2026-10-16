@@ -16,12 +16,12 @@ for (const args of [[], ["--help"], ["-h"], ["help"]]) {
   });
 }
 
-for (const args of [["check", "missing.bas"], ["build", "missing.bas"], ["--unknown"], ["--help", "extra"]]) {
-  test(`unsupported arguments fail: ${JSON.stringify(args)}`, () => {
+for (const [args, status] of [[["check", "missing.bas"], 1], [["build", "missing.bas"], 1], [["--unknown"], 2], [["--help", "extra"], 2]]) {
+  test(`invalid invocation fails: ${JSON.stringify(args)}`, () => {
     const result = spawnSync(process.execPath, [entryPoint, ...args], { encoding: "utf8" });
     assert.ifError(result.error);
-    assert.equal(result.status, 1);
+    assert.equal(result.status, status);
     assert.equal(result.stdout, "");
-    assert.match(result.stderr, /zxcode --help/);
+    assert.ok(result.stderr.length > 0);
   });
 }
