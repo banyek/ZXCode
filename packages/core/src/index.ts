@@ -2,3 +2,7 @@ export { SourceDocument, SourceRange } from "./source/document.js";
 export type { SourcePosition } from "./source/document.js";
 export { createDiagnostic, DiagnosticCodes } from "./source/diagnostic.js";
 export type { Diagnostic, DiagnosticCategory, DiagnosticRelatedInformation, DiagnosticSeverity } from "./source/diagnostic.js";
+export type { ParsedDocument } from "./syntax/document.js";
+export type { AnalyzedProgram, BuildableProgram } from "./semantic/program.js";
+export type { BasicProgramEncoder, EncodedLineMapping, EncodedProgram, EncodedRange, EncodedStatementMapping } from "./encoding/program.js";
+export type { TapArtifact } from "./tap/artifact.js";
