@@ -22,11 +22,13 @@ The language itself is not modernized. IDE features live around Sinclair BASIC r
 
 ## Status
 
-M1 implementation has started. Source/diagnostic and build-artifact contracts,
+M1 — Hello Spectrum is implemented and verified. Source/diagnostic and build-artifact contracts,
 recoverable parsing for the [M1 subset](docs/design/021-m1-supported-subset.md),
 semantic validation, BASIC image encoding with source maps, TAP container writing,
-and CLI check/build commands are available. Unfinished design notes remain proposals
-rather than implicit implementation contracts. M1 emulator acceptance is still pending.
+and CLI check/build commands are available. The generated hello TAP loads/runs in
+reference 48K emulation and prints `HELLO WORLD`. Unfinished design notes remain
+proposals rather than implicit implementation contracts; general BASIC grammar
+and the editor experience remain later milestones.
 
 Decimal numeric token conversion reproduces the original 48K ROM's storage and
 rounding, with independent ROM observations as fixtures. See the
@@ -41,9 +43,9 @@ See [docs/design](docs/design/).
 After building the toolchain:
 
 ```sh
-npm run zxcode -- check tests/fixtures/hello.bas
-npm run zxcode -- build tests/fixtures/hello.bas --output /tmp/hello.tap
-npm run zxcode -- build tests/fixtures/hello.bas --output /tmp/hello.tap --autostart 10
+npm run zxcode -- check examples/hello.bas
+npm run zxcode -- build examples/hello.bas --output /tmp/hello.tap
+npm run zxcode -- build examples/hello.bas --output /tmp/hello.tap --autostart 10
 ```
 
 `check` creates no TAP. Builds default to a `.tap` beside the source, a space-padded
@@ -53,6 +55,11 @@ Fatal diagnostics leave previous artifacts untouched; a successful build replace
 the output artifact. The source file and its existing aliases cannot be output
 destinations. See the [CLI policy](docs/design/023-m1-cli-build-policy.md) for exit
 codes, metadata, UTF-8 behavior, and output paths.
+
+The [M1 acceptance procedure](docs/design/024-m1-acceptance.md) documents independent
+golden provenance and an optional original-ROM load/run check with retained screen
+and snapshot evidence. Normal tests compare exact BASIC/TAP bytes without requiring
+an emulator installation.
 
 ## Development
 
@@ -89,14 +96,14 @@ The repository uses two private npm workspaces with native ES modules:
 - `packages/cli`: host I/O and orchestration through core APIs.
 - `tests`: integration and core tests using Node's built-in test runner.
 
-Source coordinates, diagnostics, and artifact contracts are implemented; remaining
-language behavior is introduced by its own M1 issues. Dependency
-direction is source → syntax → semantic → encoding, where an arrow means the
+The M1 subset runs through the complete shared pipeline; later milestones extend
+language coverage on the same model. Dependency direction is source → syntax →
+semantic → encoding, where an arrow means the
 right-hand layer may consume the left-hand layer. TAP handles bytes independently
 of grammar. CLI depends on core; core never depends on CLI or VS Code. Core is
 compiled without ambient Node/browser types, and lint rejects editor/CLI, Node
-built-ins, and reverse layer imports there. Future language-service and emulator adapters sit outside
-the parser/encoder pipeline.
+built-ins, and reverse layer imports there. Future language-service and emulator
+adapters sit outside the parser/encoder pipeline.
 
 TypeScript 6.0.3 is pinned within the supported range of TypeScript ESLint 8.71.2.
-The skeleton uses no runtime framework dependencies.
+The toolchain uses no runtime framework dependencies.
