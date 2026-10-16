@@ -22,7 +22,7 @@ The language itself is not modernized. IDE features live around Sinclair BASIC r
 
 ## Status
 
-M1 implementation has started. Source/diagnostic contracts and CLI help are available;
+M1 implementation has started. Source/diagnostic and build-artifact contracts and CLI help are available;
 BASIC parsing, checking, and TAP builds are not implemented yet. Unfinished design
 notes remain proposals rather than implicit implementation contracts.
 
@@ -41,7 +41,7 @@ npm run zxcode -- --help
 | Command | Purpose |
 | --- | --- |
 | `npm run build` | Compile core and CLI with TypeScript project references |
-| `npm run typecheck` | Check both workspaces without emitting code |
+| `npm run typecheck` | Check both workspaces and compile-time contract tests without emitting code |
 | `npm run lint` | Run ESLint with zero warnings allowed |
 | `npm test` | Build and run Node's test runner |
 | `npm run check` | Run type checking, lint, build, and tests |
@@ -63,8 +63,8 @@ The repository uses two private npm workspaces with native ES modules:
 - `packages/cli`: host I/O and orchestration through core APIs.
 - `tests`: integration and core tests using Node's built-in test runner.
 
-Source coordinates and diagnostics are implemented; the remaining core directories
-contain boundary notes. Contracts are introduced by their own M1 issues. Dependency
+Source coordinates, diagnostics, and artifact contracts are implemented; remaining
+language behavior is introduced by its own M1 issues. Dependency
 direction is source → syntax → semantic → encoding, where an arrow means the
 right-hand layer may consume the left-hand layer. TAP handles bytes independently
 of grammar. CLI depends on core; core never depends on CLI or VS Code. Core is
