@@ -58,3 +58,4 @@ export type { FuseConfiguration } from "./fuse.js";
 export { RunCoordinator } from "./run.js";
 export type { RunSource, ManagedRun, BuildRunResult } from "./run.js";
 export type { RunBuildMetadata } from "./identity.js";
+export type { MachineFeature, Z80Register, MachinePhase, MachineFailureCode, MachineFailure, MachineResult, MachineOperationOptions, MachineCapabilities, MachineStop, MachineMemoryRequest, MachineMemoryRegion, MachineInspectionRequest, MachineInspection, MachineCondition, MachineBreakpointRequest, MachineBreakpoint, MachineImage, MachineExit, MachineEvent, DebugMachineSession, DebugMachineOpenOptions, DebugMachineBackend } from "./debug-machine.js";
