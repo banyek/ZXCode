@@ -190,3 +190,24 @@ line relation. A missing exact literal line produces a semantic warning, never a
 build error. The wording does not claim a runtime failure: the ROM selects the
 first line after that number when no exact line exists. No new static control-flow
 reachability, undefined-variable or subroutine-stack rule is introduced.
+
+## M2-08 FOR/NEXT contract
+
+Original Sinclair [chapter 4](https://worldofspectrum.org/ZXBasicManual/zxmanchap4.html)
+requires a single-letter control variable and numeric initial value, limit and
+optional STEP expression. These may be fractional, negative or variable-valued;
+STEP zero is authentic syntax, not a static error. Omitted STEP remains omitted
+in the source model/bytes; the ROM supplies one at runtime.
+
+FOR nodes retain the checked control-variable target, start, limit and optional
+step. NEXT requires exactly one single-letter variable (no omitted variable or
+comma-list shorthand). Control identity shares the numeric scalar family from
+M2-03. Each expression uses M2-04 type checks. Missing equals/TO/STEP values and
+extra operands retain recoverable incomplete nodes; stripped parser diagnostics
+cannot make them buildable. NEXT without a preceding statically visible FOR is
+not a syntax/type error: runtime control flow determines whether the loop state
+exists. No modern loop syntax or block-matching rule is introduced.
+
+Both commands remain ordinary statements inside colon/IF sequences. Independent
+program bytes and original-ROM syntax/type observations cover omitted/explicit
+STEP, numeric/string bounds, invalid names and NEXT's mandatory single variable.

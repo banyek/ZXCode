@@ -1,0 +1,75 @@
+{
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "cases": [
+    {
+      "source": "10 FOR a=b TO c",
+      "encoded": "eb613d62cc63",
+      "statements": 1
+    },
+    {
+      "source": "10 FOR a=b TO c STEP d",
+      "encoded": "eb613d62cc63cd64",
+      "statements": 1
+    },
+    {
+      "source": "10 FOR a=b TO c: NEXT a",
+      "encoded": "eb613d62cc633af361",
+      "statements": 2
+    },
+    {
+      "source": "10 NEXT a",
+      "encoded": "f361",
+      "statements": 1
+    },
+    {
+      "source": "10 FOR ab=b TO c",
+      "encoded": "eb61623d62cc63",
+      "romError": 11
+    },
+    {
+      "source": "10 FOR a$=b TO c",
+      "encoded": "eb61243d62cc63",
+      "romError": 11
+    },
+    {
+      "source": "10 FOR a=b$ TO c",
+      "encoded": "eb613d6224cc63",
+      "romError": 11
+    },
+    {
+      "source": "10 FOR a=b TO c$",
+      "encoded": "eb613d62cc6324",
+      "romError": 11
+    },
+    {
+      "source": "10 FOR a=b TO c STEP d$",
+      "encoded": "eb613d62cc63cd6424",
+      "romError": 11
+    },
+    {
+      "source": "10 NEXT",
+      "encoded": "f3",
+      "romError": 11
+    },
+    {
+      "source": "10 NEXT ab",
+      "encoded": "f36162",
+      "romError": 11
+    },
+    {
+      "source": "10 NEXT a,b",
+      "encoded": "f3612c62",
+      "romError": 11
+    },
+    {
+      "source": "10 FOR a=b",
+      "encoded": "eb613d62",
+      "romError": 11
+    },
+    {
+      "source": "10 FOR a=b TO c STEP",
+      "encoded": "eb613d62cc63cd",
+      "romError": 11
+    }
+  ]
+}
