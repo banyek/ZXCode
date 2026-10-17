@@ -163,6 +163,6 @@ The toolchain uses no runtime framework dependencies.
 
 The extension development scaffold targets VS Code 1.140.0; see its
 [development notes](packages/extension/README.md). The registered ZX Spectrum BASIC language highlights `.zxbas` automatically;
-generic `.bas` uses explicit or workspace language selection. Problems diagnostics
-update on edits; completion/navigation/build providers follow in the remaining M5
-tickets.
+generic `.bas` uses explicit or workspace language selection. Problems, completion, hover, navigation, references, outline and build/check
+commands share the core language model. Follow the [getting-started guide](docs/guides/getting-started.md)
+with [the sample](examples/getting-started.zxbas) to build your first TAP.
