@@ -9,7 +9,9 @@ For generic `.bas` files, choose the language mode or opt in per workspace:
 ```
 
 Generic `.bas` is not claimed globally. Highlighting is visual; shared core
-diagnostics remain authoritative. Editor providers follow in the next M5 tickets.
+diagnostics remain authoritative. Problems update on open/edit and clear when a
+document closes or leaves this language. Completion/navigation providers follow
+in the next M5 tickets.
 
 From the repository root, use Node 24, run `npm ci` and `npm run check`, then use
 F5 with **ZXCode Extension Development Host**. Opening a document in the registered language activates the extension.
