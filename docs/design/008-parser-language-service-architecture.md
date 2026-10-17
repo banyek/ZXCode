@@ -149,3 +149,7 @@ Three complementary fixture families:
 3. **editor fixtures** — incomplete source + cursor -> completion/navigation result.
 
 Binary expected values should come from independently validated Spectrum tooling/ROM behaviour wherever possible.
+
+The implemented M4 contract and snapshot/versioning decisions are recorded in
+[design 032](032-language-service-contract.md). It preserves this shared CST and
+semantic-model architecture for both complete and incomplete source.
