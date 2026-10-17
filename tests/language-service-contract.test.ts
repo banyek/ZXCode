@@ -1,4 +1,4 @@
-import { SourceDocument, parseBasic, analyzeBasic, SPECTRUM_48K_TARGET } from "../packages/core/src/index.js";
+import { SourceDocument, parseBasic, analyzeBasic, SPECTRUM_48K_TARGET, documentDiagnostics } from "../packages/core/src/index.js";
 import type { DocumentAnalysisSnapshot, DocumentAnalysisSession, LanguageServiceQueries, LanguageQueryResult, Diagnostic, LanguageTextEdit } from "../packages/core/src/index.js";
 
 const source = new SourceDocument("incomplete.bas", "10 PRINT AT 10,\n20 GO TO\n30 FOR i=1 TO\n");
@@ -26,3 +26,6 @@ queries.hover(snapshot, {line: 0, character: 2});
 // @ts-expect-error Edits require checked core ranges, not editor protocol ranges.
 const badEdit: LanguageTextEdit = {range: {start: {line: 0, character: 0}, end: {line: 0, character: 1}}, newText: "PRINT"};
 void badEdit;
+
+const diagnosticQuery: LanguageServiceQueries["diagnostics"] = documentDiagnostics;
+void diagnosticQuery;

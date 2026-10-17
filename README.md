@@ -28,8 +28,9 @@ numeric/string variables and arrays, slicing, control flow, PRINT/INPUT,
 DATA/READ/RESTORE, DEF FN/FN, REM, and listing/cassette forms. The CLI checks source
 and builds TAP files through that same model, retaining source maps and categorized
 diagnostics. The editor-independent language-service contract and versioned
-`createDocumentSession` analysis snapshots are implemented; query features and IDE
-integration follow. See the [service contract](docs/design/032-language-service-contract.md).
+`createDocumentSession` analysis snapshots are implemented. `documentDiagnostics`
+returns cached, versioned shared diagnostics including encoder limits; navigation,
+completion and IDE integration follow. See the [service contract](docs/design/032-language-service-contract.md).
 
 The [M2 acceptance corpus](docs/design/026-m2-core-acceptance.md) covers all commands
 and built-in signatures with independent byte fixtures. A combined arrays, DATA,
