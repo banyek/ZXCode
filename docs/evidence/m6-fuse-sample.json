@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "emulator": "Fuse 1.10.0 / libspectrum 1.7.0",
+  "host": "macOS arm64",
+  "target": "48",
+  "frames": 500,
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "source": "examples/getting-started.zxbas",
+  "sourceSha256": "05c8eda9d44edd0270847c8bb93001ae4bef9e288d99c8260502cbfaa0944f6e",
+  "tapSha256": "975c282990f43389e72aa154a1360676a993a0e76c08dcf2c72213ef3d140060",
+  "autostart": 10,
+  "tapeCrc32": "dd34ac5f",
+  "screenSha256": "48200ba82707c658eef0918c323e36d22e4510a893de646c0e75a0a98d96ce6a",
+  "screenPixelCrc32": "c3956903",
+  "observedRows": [
+    "ZXCODE: 1982 BASIC, 2026 TOOLS",
+    "COUNT 1",
+    "COUNT 2",
+    "COUNT 3",
+    "9 STOP statement, 60:1"
+  ],
+  "desktopProcessOwned": true,
+  "configurationUnchanged": true,
+  "screenBackend": "null UI development automation",
+  "desktopExitCode": 0,
+  "confirmActions": false
+}
