@@ -58,6 +58,15 @@ export async function run(): Promise<void> {
   assert.equal(await vscode.workspace.applyEdit(formatWorkspaceEdit),true);
   assert.equal(formatDocument.getText(),'0010 PRINT "keep  spaces": REM  tail   \r\n');
   assert.deepEqual((await vscode.commands.executeCommand("vscode.executeFormatDocumentProvider",formatDocument.uri,{tabSize:4,insertSpaces:true})) ?? [],[]);
+  const fixDocument = await vscode.workspace.openTextDocument({language:"zx-spectrum-basic",content:'10PRINT "£©↑"\r\n'});
+  const fixActions = await vscode.commands.executeCommand<vscode.CodeAction[]>("vscode.executeCodeActionProvider",fixDocument.uri,new vscode.Range(0,0,0,7),vscode.CodeActionKind.QuickFix.value);
+  const fixAction = fixActions?.find(action=>action.title === "Insert space after BASIC line number");
+  assert.ok(fixAction?.edit,"Native quick fix exposes edits for preview");
+  assert.ok(api.queries.diagnostics(api.documents.snapshot(fixDocument)).value.some(diagnostic=>diagnostic.code === "ZX1002"));
+  assert.equal(fixDocument.getText(),'10PRINT "£©↑"\r\n');
+  assert.equal(await vscode.workspace.applyEdit(fixAction.edit),true);
+  assert.equal(fixDocument.getText(),'10 PRINT "£©↑"\r\n');
+  assert.equal(api.queries.diagnostics(api.documents.snapshot(fixDocument)).value.length,0);
   const genericUri = vscode.Uri.file(join(testFiles, "generic.bas"));
   await vscode.workspace.fs.writeFile(genericUri, Buffer.from("10 STOP\n"));
   const generic = await vscode.workspace.openTextDocument(genericUri);
