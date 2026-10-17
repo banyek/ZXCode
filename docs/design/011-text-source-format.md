@@ -190,3 +190,11 @@ backtick (Spectrum 0x60 is pound). Tabs and other Unicode/control characters are
 preserved in the source node but receive precise compatibility diagnostics rather
 than substitution. Literal braces and backslashes remain literal. Arbitrary byte,
 Spectrum character mapping and escape-policy decisions remain deferred to M3.
+
+## M3-05 escape policy resolution
+
+The earlier open string/REM byte-escape questions are resolved by
+[028-text-source-escapes.md](028-text-source-escapes.md). Escapes are active only
+in quoted strings and REM tails; literal braces are doubled and backslashes stay
+literal. Source ranges/raw REM text remain preserved while source parts identify
+exact encoded bytes. Original-ROM string framing restrictions are explicit.

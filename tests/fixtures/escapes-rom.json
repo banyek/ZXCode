@@ -1,0 +1,1412 @@
+{
+  "provenance": "Pinned original 48K STMT-L-1 observations; source notation is the separately specified ZXCode literal transport; encoded inputs assembled from manual byte identities, with every quote doubled independently",
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "cases": [
+    {
+      "source": "10 PRINT \"{BYTE 0x00}\"",
+      "encoded": "f5220022",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x01}\"",
+      "encoded": "f5220122",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x02}\"",
+      "encoded": "f5220222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x03}\"",
+      "encoded": "f5220322",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x04}\"",
+      "encoded": "f5220422",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x05}\"",
+      "encoded": "f5220522",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x06}\"",
+      "encoded": "f5220622",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x07}\"",
+      "encoded": "f5220722",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x08}\"",
+      "encoded": "f5220822",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x09}\"",
+      "encoded": "f5220922",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x0A}\"",
+      "encoded": "f5220a22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x0B}\"",
+      "encoded": "f5220b22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x0C}\"",
+      "encoded": "f5220c22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x0D}\"",
+      "encoded": "f5220d22",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x0E}\"",
+      "encoded": "f5220e22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x0F}\"",
+      "encoded": "f5220f22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x10}\"",
+      "encoded": "f5221022",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x11}\"",
+      "encoded": "f5221122",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x12}\"",
+      "encoded": "f5221222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x13}\"",
+      "encoded": "f5221322",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x14}\"",
+      "encoded": "f5221422",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x15}\"",
+      "encoded": "f5221522",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x16}\"",
+      "encoded": "f5221622",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x17}\"",
+      "encoded": "f5221722",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x18}\"",
+      "encoded": "f5221822",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x19}\"",
+      "encoded": "f5221922",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x1A}\"",
+      "encoded": "f5221a22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x1B}\"",
+      "encoded": "f5221b22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x1C}\"",
+      "encoded": "f5221c22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x1D}\"",
+      "encoded": "f5221d22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x1E}\"",
+      "encoded": "f5221e22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x1F}\"",
+      "encoded": "f5221f22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x20}\"",
+      "encoded": "f5222022",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x21}\"",
+      "encoded": "f5222122",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x22}\"",
+      "encoded": "f522222222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x23}\"",
+      "encoded": "f5222322",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x24}\"",
+      "encoded": "f5222422",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x25}\"",
+      "encoded": "f5222522",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x26}\"",
+      "encoded": "f5222622",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x27}\"",
+      "encoded": "f5222722",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x28}\"",
+      "encoded": "f5222822",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x29}\"",
+      "encoded": "f5222922",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x2A}\"",
+      "encoded": "f5222a22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x2B}\"",
+      "encoded": "f5222b22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x2C}\"",
+      "encoded": "f5222c22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x2D}\"",
+      "encoded": "f5222d22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x2E}\"",
+      "encoded": "f5222e22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x2F}\"",
+      "encoded": "f5222f22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x30}\"",
+      "encoded": "f5223022",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x31}\"",
+      "encoded": "f5223122",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x32}\"",
+      "encoded": "f5223222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x33}\"",
+      "encoded": "f5223322",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x34}\"",
+      "encoded": "f5223422",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x35}\"",
+      "encoded": "f5223522",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x36}\"",
+      "encoded": "f5223622",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x37}\"",
+      "encoded": "f5223722",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x38}\"",
+      "encoded": "f5223822",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x39}\"",
+      "encoded": "f5223922",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x3A}\"",
+      "encoded": "f5223a22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x3B}\"",
+      "encoded": "f5223b22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x3C}\"",
+      "encoded": "f5223c22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x3D}\"",
+      "encoded": "f5223d22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x3E}\"",
+      "encoded": "f5223e22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x3F}\"",
+      "encoded": "f5223f22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x40}\"",
+      "encoded": "f5224022",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x41}\"",
+      "encoded": "f5224122",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x42}\"",
+      "encoded": "f5224222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x43}\"",
+      "encoded": "f5224322",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x44}\"",
+      "encoded": "f5224422",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x45}\"",
+      "encoded": "f5224522",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x46}\"",
+      "encoded": "f5224622",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x47}\"",
+      "encoded": "f5224722",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x48}\"",
+      "encoded": "f5224822",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x49}\"",
+      "encoded": "f5224922",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x4A}\"",
+      "encoded": "f5224a22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x4B}\"",
+      "encoded": "f5224b22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x4C}\"",
+      "encoded": "f5224c22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x4D}\"",
+      "encoded": "f5224d22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x4E}\"",
+      "encoded": "f5224e22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x4F}\"",
+      "encoded": "f5224f22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x50}\"",
+      "encoded": "f5225022",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x51}\"",
+      "encoded": "f5225122",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x52}\"",
+      "encoded": "f5225222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x53}\"",
+      "encoded": "f5225322",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x54}\"",
+      "encoded": "f5225422",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x55}\"",
+      "encoded": "f5225522",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x56}\"",
+      "encoded": "f5225622",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x57}\"",
+      "encoded": "f5225722",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x58}\"",
+      "encoded": "f5225822",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x59}\"",
+      "encoded": "f5225922",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x5A}\"",
+      "encoded": "f5225a22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x5B}\"",
+      "encoded": "f5225b22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x5C}\"",
+      "encoded": "f5225c22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x5D}\"",
+      "encoded": "f5225d22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x5E}\"",
+      "encoded": "f5225e22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x5F}\"",
+      "encoded": "f5225f22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x60}\"",
+      "encoded": "f5226022",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x61}\"",
+      "encoded": "f5226122",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x62}\"",
+      "encoded": "f5226222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x63}\"",
+      "encoded": "f5226322",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x64}\"",
+      "encoded": "f5226422",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x65}\"",
+      "encoded": "f5226522",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x66}\"",
+      "encoded": "f5226622",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x67}\"",
+      "encoded": "f5226722",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x68}\"",
+      "encoded": "f5226822",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x69}\"",
+      "encoded": "f5226922",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x6A}\"",
+      "encoded": "f5226a22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x6B}\"",
+      "encoded": "f5226b22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x6C}\"",
+      "encoded": "f5226c22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x6D}\"",
+      "encoded": "f5226d22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x6E}\"",
+      "encoded": "f5226e22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x6F}\"",
+      "encoded": "f5226f22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x70}\"",
+      "encoded": "f5227022",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x71}\"",
+      "encoded": "f5227122",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x72}\"",
+      "encoded": "f5227222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x73}\"",
+      "encoded": "f5227322",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x74}\"",
+      "encoded": "f5227422",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x75}\"",
+      "encoded": "f5227522",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x76}\"",
+      "encoded": "f5227622",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x77}\"",
+      "encoded": "f5227722",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x78}\"",
+      "encoded": "f5227822",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x79}\"",
+      "encoded": "f5227922",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x7A}\"",
+      "encoded": "f5227a22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x7B}\"",
+      "encoded": "f5227b22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x7C}\"",
+      "encoded": "f5227c22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x7D}\"",
+      "encoded": "f5227d22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x7E}\"",
+      "encoded": "f5227e22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x7F}\"",
+      "encoded": "f5227f22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x80}\"",
+      "encoded": "f5228022",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x81}\"",
+      "encoded": "f5228122",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x82}\"",
+      "encoded": "f5228222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x83}\"",
+      "encoded": "f5228322",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x84}\"",
+      "encoded": "f5228422",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x85}\"",
+      "encoded": "f5228522",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x86}\"",
+      "encoded": "f5228622",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x87}\"",
+      "encoded": "f5228722",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x88}\"",
+      "encoded": "f5228822",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x89}\"",
+      "encoded": "f5228922",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x8A}\"",
+      "encoded": "f5228a22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x8B}\"",
+      "encoded": "f5228b22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x8C}\"",
+      "encoded": "f5228c22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x8D}\"",
+      "encoded": "f5228d22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x8E}\"",
+      "encoded": "f5228e22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x8F}\"",
+      "encoded": "f5228f22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x90}\"",
+      "encoded": "f5229022",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x91}\"",
+      "encoded": "f5229122",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x92}\"",
+      "encoded": "f5229222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x93}\"",
+      "encoded": "f5229322",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x94}\"",
+      "encoded": "f5229422",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x95}\"",
+      "encoded": "f5229522",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x96}\"",
+      "encoded": "f5229622",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x97}\"",
+      "encoded": "f5229722",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x98}\"",
+      "encoded": "f5229822",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x99}\"",
+      "encoded": "f5229922",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x9A}\"",
+      "encoded": "f5229a22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x9B}\"",
+      "encoded": "f5229b22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x9C}\"",
+      "encoded": "f5229c22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x9D}\"",
+      "encoded": "f5229d22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x9E}\"",
+      "encoded": "f5229e22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x9F}\"",
+      "encoded": "f5229f22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xA0}\"",
+      "encoded": "f522a022",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xA1}\"",
+      "encoded": "f522a122",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xA2}\"",
+      "encoded": "f522a222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xA3}\"",
+      "encoded": "f522a322",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xA4}\"",
+      "encoded": "f522a422",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xA5}\"",
+      "encoded": "f522a522",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xA6}\"",
+      "encoded": "f522a622",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xA7}\"",
+      "encoded": "f522a722",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xA8}\"",
+      "encoded": "f522a822",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xA9}\"",
+      "encoded": "f522a922",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xAA}\"",
+      "encoded": "f522aa22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xAB}\"",
+      "encoded": "f522ab22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xAC}\"",
+      "encoded": "f522ac22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xAD}\"",
+      "encoded": "f522ad22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xAE}\"",
+      "encoded": "f522ae22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xAF}\"",
+      "encoded": "f522af22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xB0}\"",
+      "encoded": "f522b022",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xB1}\"",
+      "encoded": "f522b122",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xB2}\"",
+      "encoded": "f522b222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xB3}\"",
+      "encoded": "f522b322",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xB4}\"",
+      "encoded": "f522b422",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xB5}\"",
+      "encoded": "f522b522",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xB6}\"",
+      "encoded": "f522b622",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xB7}\"",
+      "encoded": "f522b722",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xB8}\"",
+      "encoded": "f522b822",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xB9}\"",
+      "encoded": "f522b922",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xBA}\"",
+      "encoded": "f522ba22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xBB}\"",
+      "encoded": "f522bb22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xBC}\"",
+      "encoded": "f522bc22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xBD}\"",
+      "encoded": "f522bd22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xBE}\"",
+      "encoded": "f522be22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xBF}\"",
+      "encoded": "f522bf22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xC0}\"",
+      "encoded": "f522c022",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xC1}\"",
+      "encoded": "f522c122",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xC2}\"",
+      "encoded": "f522c222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xC3}\"",
+      "encoded": "f522c322",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xC4}\"",
+      "encoded": "f522c422",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xC5}\"",
+      "encoded": "f522c522",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xC6}\"",
+      "encoded": "f522c622",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xC7}\"",
+      "encoded": "f522c722",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xC8}\"",
+      "encoded": "f522c822",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xC9}\"",
+      "encoded": "f522c922",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xCA}\"",
+      "encoded": "f522ca22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xCB}\"",
+      "encoded": "f522cb22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xCC}\"",
+      "encoded": "f522cc22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xCD}\"",
+      "encoded": "f522cd22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xCE}\"",
+      "encoded": "f522ce22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xCF}\"",
+      "encoded": "f522cf22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xD0}\"",
+      "encoded": "f522d022",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xD1}\"",
+      "encoded": "f522d122",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xD2}\"",
+      "encoded": "f522d222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xD3}\"",
+      "encoded": "f522d322",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xD4}\"",
+      "encoded": "f522d422",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xD5}\"",
+      "encoded": "f522d522",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xD6}\"",
+      "encoded": "f522d622",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xD7}\"",
+      "encoded": "f522d722",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xD8}\"",
+      "encoded": "f522d822",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xD9}\"",
+      "encoded": "f522d922",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xDA}\"",
+      "encoded": "f522da22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xDB}\"",
+      "encoded": "f522db22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xDC}\"",
+      "encoded": "f522dc22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xDD}\"",
+      "encoded": "f522dd22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xDE}\"",
+      "encoded": "f522de22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xDF}\"",
+      "encoded": "f522df22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xE0}\"",
+      "encoded": "f522e022",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xE1}\"",
+      "encoded": "f522e122",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xE2}\"",
+      "encoded": "f522e222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xE3}\"",
+      "encoded": "f522e322",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xE4}\"",
+      "encoded": "f522e422",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xE5}\"",
+      "encoded": "f522e522",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xE6}\"",
+      "encoded": "f522e622",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xE7}\"",
+      "encoded": "f522e722",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xE8}\"",
+      "encoded": "f522e822",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xE9}\"",
+      "encoded": "f522e922",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xEA}\"",
+      "encoded": "f522ea22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xEB}\"",
+      "encoded": "f522eb22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xEC}\"",
+      "encoded": "f522ec22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xED}\"",
+      "encoded": "f522ed22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xEE}\"",
+      "encoded": "f522ee22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xEF}\"",
+      "encoded": "f522ef22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xF0}\"",
+      "encoded": "f522f022",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xF1}\"",
+      "encoded": "f522f122",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xF2}\"",
+      "encoded": "f522f222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xF3}\"",
+      "encoded": "f522f322",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xF4}\"",
+      "encoded": "f522f422",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xF5}\"",
+      "encoded": "f522f522",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xF6}\"",
+      "encoded": "f522f622",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xF7}\"",
+      "encoded": "f522f722",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xF8}\"",
+      "encoded": "f522f822",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xF9}\"",
+      "encoded": "f522f922",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xFA}\"",
+      "encoded": "f522fa22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xFB}\"",
+      "encoded": "f522fb22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xFC}\"",
+      "encoded": "f522fc22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xFD}\"",
+      "encoded": "f522fd22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xFE}\"",
+      "encoded": "f522fe22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xFF}\"",
+      "encoded": "f522ff22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{{INK 2}}\"",
+      "encoded": "f5227b494e4b20327d22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"a\"\"b\"",
+      "encoded": "f5226122226222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"\\n\"",
+      "encoded": "f5225c6e22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{INK 2}A{PAPER 255}{AT 1,2}{TAB 258}{UDG A}{BLOCK 15}{BYTE 0xF5}\"",
+      "encoded": "f52210024111ff160102170201908ff522",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{INK 34}\"",
+      "encoded": "f52210222222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{AT 34,58}\"",
+      "encoded": "f5221622223a22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{AT 13,2}\"",
+      "encoded": "f522160d0222",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT \"{ENTER}\"",
+      "encoded": "f5220d22",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT \"{COMMA}\"",
+      "encoded": "f5220622",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{EDIT}\"",
+      "encoded": "f5220722",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{LEFT}\"",
+      "encoded": "f5220822",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{RIGHT}\"",
+      "encoded": "f5220922",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{DOWN}\"",
+      "encoded": "f5220a22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{UP}\"",
+      "encoded": "f5220b22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{DELETE}\"",
+      "encoded": "f5220c22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{ENTER}\"",
+      "encoded": "f5220d22",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT \"{INK 2}\"",
+      "encoded": "f522100222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{PAPER 2}\"",
+      "encoded": "f522110222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{FLASH 2}\"",
+      "encoded": "f522120222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BRIGHT 2}\"",
+      "encoded": "f522130222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{INVERSE 2}\"",
+      "encoded": "f522140222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{OVER 2}\"",
+      "encoded": "f522150222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{AT 1,2}\"",
+      "encoded": "f52216010222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{TAB 513}\"",
+      "encoded": "f52217010222",
+      "statements": 1
+    },
+    {
+      "source": "10 REM x{BYTE 0x00}{BYTE 0x01}{BYTE 0x02}{BYTE 0x03}{BYTE 0x04}{BYTE 0x05}{BYTE 0x06}{BYTE 0x07}{BYTE 0x08}{BYTE 0x09}{BYTE 0x0A}{BYTE 0x0B}{BYTE 0x0C}{BYTE 0x0D}{BYTE 0x0E}{BYTE 0x0F}{BYTE 0x10}{BYTE 0x11}{BYTE 0x12}{BYTE 0x13}{BYTE 0x14}{BYTE 0x15}{BYTE 0x16}{BYTE 0x17}{BYTE 0x18}{BYTE 0x19}{BYTE 0x1A}{BYTE 0x1B}{BYTE 0x1C}{BYTE 0x1D}{BYTE 0x1E}{BYTE 0x1F}{BYTE 0x20}{BYTE 0x21}{BYTE 0x22}{BYTE 0x23}{BYTE 0x24}{BYTE 0x25}{BYTE 0x26}{BYTE 0x27}{BYTE 0x28}{BYTE 0x29}{BYTE 0x2A}{BYTE 0x2B}{BYTE 0x2C}{BYTE 0x2D}{BYTE 0x2E}{BYTE 0x2F}{BYTE 0x30}{BYTE 0x31}{BYTE 0x32}{BYTE 0x33}{BYTE 0x34}{BYTE 0x35}{BYTE 0x36}{BYTE 0x37}{BYTE 0x38}{BYTE 0x39}{BYTE 0x3A}{BYTE 0x3B}{BYTE 0x3C}{BYTE 0x3D}{BYTE 0x3E}{BYTE 0x3F}{BYTE 0x40}{BYTE 0x41}{BYTE 0x42}{BYTE 0x43}{BYTE 0x44}{BYTE 0x45}{BYTE 0x46}{BYTE 0x47}{BYTE 0x48}{BYTE 0x49}{BYTE 0x4A}{BYTE 0x4B}{BYTE 0x4C}{BYTE 0x4D}{BYTE 0x4E}{BYTE 0x4F}{BYTE 0x50}{BYTE 0x51}{BYTE 0x52}{BYTE 0x53}{BYTE 0x54}{BYTE 0x55}{BYTE 0x56}{BYTE 0x57}{BYTE 0x58}{BYTE 0x59}{BYTE 0x5A}{BYTE 0x5B}{BYTE 0x5C}{BYTE 0x5D}{BYTE 0x5E}{BYTE 0x5F}{BYTE 0x60}{BYTE 0x61}{BYTE 0x62}{BYTE 0x63}{BYTE 0x64}{BYTE 0x65}{BYTE 0x66}{BYTE 0x67}{BYTE 0x68}{BYTE 0x69}{BYTE 0x6A}{BYTE 0x6B}{BYTE 0x6C}{BYTE 0x6D}{BYTE 0x6E}{BYTE 0x6F}{BYTE 0x70}{BYTE 0x71}{BYTE 0x72}{BYTE 0x73}{BYTE 0x74}{BYTE 0x75}{BYTE 0x76}{BYTE 0x77}{BYTE 0x78}{BYTE 0x79}{BYTE 0x7A}{BYTE 0x7B}{BYTE 0x7C}{BYTE 0x7D}{BYTE 0x7E}{BYTE 0x7F}{BYTE 0x80}{BYTE 0x81}{BYTE 0x82}{BYTE 0x83}{BYTE 0x84}{BYTE 0x85}{BYTE 0x86}{BYTE 0x87}{BYTE 0x88}{BYTE 0x89}{BYTE 0x8A}{BYTE 0x8B}{BYTE 0x8C}{BYTE 0x8D}{BYTE 0x8E}{BYTE 0x8F}{BYTE 0x90}{BYTE 0x91}{BYTE 0x92}{BYTE 0x93}{BYTE 0x94}{BYTE 0x95}{BYTE 0x96}{BYTE 0x97}{BYTE 0x98}{BYTE 0x99}{BYTE 0x9A}{BYTE 0x9B}{BYTE 0x9C}{BYTE 0x9D}{BYTE 0x9E}{BYTE 0x9F}{BYTE 0xA0}{BYTE 0xA1}{BYTE 0xA2}{BYTE 0xA3}{BYTE 0xA4}{BYTE 0xA5}{BYTE 0xA6}{BYTE 0xA7}{BYTE 0xA8}{BYTE 0xA9}{BYTE 0xAA}{BYTE 0xAB}{BYTE 0xAC}{BYTE 0xAD}{BYTE 0xAE}{BYTE 0xAF}{BYTE 0xB0}{BYTE 0xB1}{BYTE 0xB2}{BYTE 0xB3}{BYTE 0xB4}{BYTE 0xB5}{BYTE 0xB6}{BYTE 0xB7}{BYTE 0xB8}{BYTE 0xB9}{BYTE 0xBA}{BYTE 0xBB}{BYTE 0xBC}{BYTE 0xBD}{BYTE 0xBE}{BYTE 0xBF}{BYTE 0xC0}{BYTE 0xC1}{BYTE 0xC2}{BYTE 0xC3}{BYTE 0xC4}{BYTE 0xC5}{BYTE 0xC6}{BYTE 0xC7}{BYTE 0xC8}{BYTE 0xC9}{BYTE 0xCA}{BYTE 0xCB}{BYTE 0xCC}{BYTE 0xCD}{BYTE 0xCE}{BYTE 0xCF}{BYTE 0xD0}{BYTE 0xD1}{BYTE 0xD2}{BYTE 0xD3}{BYTE 0xD4}{BYTE 0xD5}{BYTE 0xD6}{BYTE 0xD7}{BYTE 0xD8}{BYTE 0xD9}{BYTE 0xDA}{BYTE 0xDB}{BYTE 0xDC}{BYTE 0xDD}{BYTE 0xDE}{BYTE 0xDF}{BYTE 0xE0}{BYTE 0xE1}{BYTE 0xE2}{BYTE 0xE3}{BYTE 0xE4}{BYTE 0xE5}{BYTE 0xE6}{BYTE 0xE7}{BYTE 0xE8}{BYTE 0xE9}{BYTE 0xEA}{BYTE 0xEB}{BYTE 0xEC}{BYTE 0xED}{BYTE 0xEE}{BYTE 0xEF}{BYTE 0xF0}{BYTE 0xF1}{BYTE 0xF2}{BYTE 0xF3}{BYTE 0xF4}{BYTE 0xF5}{BYTE 0xF6}{BYTE 0xF7}{BYTE 0xF8}{BYTE 0xF9}{BYTE 0xFA}{BYTE 0xFB}{BYTE 0xFC}{BYTE 0xFD}{BYTE 0xFE}{BYTE 0xFF}",
+      "encoded": "ea2078000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff",
+      "unconsumedBytes": 257,
+      "statements": 1
+    }
+  ]
+}

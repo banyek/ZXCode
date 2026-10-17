@@ -35,7 +35,7 @@ const signatures = new Map(BUILTIN_SIGNATURES.map((item) => [item.token.spelling
 interface TypedBase { readonly range: SourceRange; readonly type: ExpressionType }
 export type TypedExpression = TypedBase & (
   | { readonly kind: "array-access" | "string-access"; readonly base: TypedExpression; readonly group: AccessGroup<TypedExpression> }
-  | { readonly kind: "string"; readonly value: string; readonly bytes: readonly number[] }
+  | { readonly kind: "string"; readonly value: string | undefined; readonly bytes: readonly number[] }
   | { readonly kind: "number"; readonly value: NumericLiteralValue }
   | { readonly kind: "binary-literal"; readonly digits: string; readonly value: NumericLiteralValue }
   | { readonly kind: "name"; readonly identity: VariableIdentity; readonly formalRange?: SourceRange; readonly definitionRange?: SourceRange }

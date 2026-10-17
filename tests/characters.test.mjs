@@ -70,14 +70,14 @@ test('strings and REM share exact Spectrum glyph emission without global tokeniz
     assert.equal(result.kind, 'success', entry.source);
     assert.equal(Buffer.from(result.encodedProgram.programBytes.slice(4)).toString('hex'), entry.bodyHex);
   }
-  const text = '10 PRINT "PRINT {INK 2} \\ £": REM PRINT {INK 2} \\ £';
+  const text = '10 PRINT "PRINT {{INK 2}} \\ £": REM PRINT {{INK 2}} \\ £';
   const input = parseBasic(new SourceDocument('raw', text));
   const result = analyzeBasic(input);
   assert.equal(result.kind, 'buildable');
   const [print, rem] = result.analysis.program.lines[0].statements;
   assert.equal(print.items[0].expression.bytes.at(-1), 96);
   assert.equal(rem.bytes.at(-1), 96);
-  assert.equal(rem.text, ' PRINT {INK 2} \\ £');
+  assert.equal(rem.text, ' PRINT {{INK 2}} \\ £');
   assert.ok(!print.items[0].expression.bytes.includes(0xf5));
   assert.equal(checkProgram(new SourceDocument('operator', '10 PRINT 2↑3')).kind, 'error');
 });

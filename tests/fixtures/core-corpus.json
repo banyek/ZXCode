@@ -54,7 +54,7 @@
     {
       "name": "rem-slices",
       "sourcePath": "examples/core/rem-slices.bas",
-      "source": "10 REM Raw: PRINT 1E999 \"unfinished {0xFF} \\\\n\n20 LET a$=\"a\"\"b:c\": LET a$(2 TO 3)=\"XY\": PRINT a$()(2 TO );(\"abc\"+a$)(TO 3)\n30 IF 1 THEN : PRINT \"tail\": REM : CLS \"unfinished\n40 : PRINT BIN :\n",
+      "source": "10 REM Raw: PRINT 1E999 \"unfinished {{0xFF}} \\\\n\n20 LET a$=\"a\"\"b:c\": LET a$(2 TO 3)=\"XY\": PRINT a$()(2 TO );(\"abc\"+a$)(TO 3)\n30 IF 1 THEN : PRINT \"tail\": REM : CLS \"unfinished\n40 : PRINT BIN :\n",
       "programHex": "000a2a00ea205261773a205052494e542031453939392022756e66696e6973686564207b307846467d205c5c6e0d00144c00f161243d22612222623a63223af1612428320e0000020000cc330e0000030000293d225859223af56124282928320e0000020000cc293b2822616263222b61242928cc330e0000030000290d001e2600fa310e0000010000cb3af5227461696c223aea203a20434c532022756e66696e69736865640d00280b003af5c40e00000000003a0d",
       "comparisonHex": "000a2800ea5261773a205052494e542031453939392022756e66696e6973686564207b307846467d205c6e0d00144c00f161243d22612222623a63223af1612428320e0000020000cc330e0000030000293d225859223af56124282928320e0000020000cc293b2822616263222b61242928cc330e0000030000290d001e2500fa310e0000010000cb3af5227461696c223aea3a20434c532022756e66696e69736865640d002805003af5c43a0d",
       "primaryReferenceCorrections": [
@@ -73,7 +73,8 @@
           "authority": "expression-rom.json: empty BIN is zero; numeric-rom.json: zero storage",
           "reason": "The ROM inserts hidden numeric storage for empty BIN; zmakebas omits it."
         }
-      ]
+      ],
+      "comparisonSource": "10 REM Raw: PRINT 1E999 \"unfinished {0xFF} \\\\n\n20 LET a$=\"a\"\"b:c\": LET a$(2 TO 3)=\"XY\": PRINT a$()(2 TO );(\"abc\"+a$)(TO 3)\n30 IF 1 THEN : PRINT \"tail\": REM : CLS \"unfinished\n40 : PRINT BIN :\n"
     }
   ]
 }

@@ -37,7 +37,7 @@ and returns `0 OK, 100:1`. M1's hello bytes and load/run acceptance remain intac
 Decimal conversion reproduces original-ROM storage and rounding; see the
 [numeric contract](docs/design/020-numeric-literals.md). M3 numeric lexical hardening now includes the ROM’s contextual fraction/exponent
 whitespace rules. The shared 256-byte Spectrum character map is implemented; controls, graphics/UDG
-notation now has a verified portable component; source escape activation remains M3. Control packets now have checked internal
+notation and named/raw text escapes are active in quoted strings and REM tails. Control packets now have checked internal
 encoding and lossless text-byte decoding, including truncated-packet diagnostics.
 Printable literals include Spectrum £, © and ↑ alongside the existing ASCII
 coverage (backtick is excluded); strings support doubled quotes and REM tails
@@ -48,6 +48,12 @@ CAT, FORMAT, MOVE and ERASE build with nonfatal runtime-capability warnings on t
 default 48K target. OPEN # and CLOSE # support base-ROM channels. Explicit core
 `targetProfile` options declare execution capabilities without changing grammar;
 see the [capability policy](docs/design/025-runtime-capability-policy.md).
+
+Text escapes use `{INK 2}`, `{AT 1,2}`, `{TAB 258}`, `{UDG A}`, `{BLOCK 15}` and
+`{BYTE 0xFF}`. Double literal braces as `{{` and `}}`; backslashes remain literal.
+Byte 13 is supported in REM; quoted strings use ordinary `CHR$ 13` expressions.
+See the [source escape contract](docs/design/028-text-source-escapes.md) and
+[working example](examples/escapes.bas).
 
 See [docs/design](docs/design/).
 

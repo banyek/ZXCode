@@ -175,3 +175,9 @@ invalid parameters, ownership and source diagnostic regressions.
 M3-04 freezes portable graphics/UDG forms and all 37 byte round-trip examples in
 [027-graphics-source-notation.md](027-graphics-source-notation.md). BASIC source
 activation and literal-brace rules remain M3-05.
+
+M3-05 activates the fixture-backed source transport in
+[028-text-source-escapes.md](028-text-source-escapes.md). ROM probes resolve the
+prior framing question: all literal quote bytes are doubled, including control
+parameters, while byte 13 cannot appear in a valid quoted literal. REM retains
+all byte values. Existing program-byte goldens remain unchanged.

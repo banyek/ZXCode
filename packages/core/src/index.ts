@@ -77,3 +77,7 @@ export type { DecodedSpectrumText } from "./decoding/spectrum-text.js";
 
 export { SPECTRUM_GRAPHIC_NOTATIONS, spectrumGraphicNotation, parseSpectrumGraphicNotation } from "./source/graphics-notation.js";
 export type { SpectrumGraphicIdentity, SpectrumGraphicNotation } from "./source/graphics-notation.js";
+
+export type { SourceTextContext, SourceTextPart } from "./source/spectrum-text.js";
+export { formatSpectrumTextContent } from "./encoding/source-text.js";
+export type { FormattedSpectrumText } from "./encoding/source-text.js";

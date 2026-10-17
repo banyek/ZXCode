@@ -1,3 +1,6 @@
+import { readTextEscape } from "./text-escapes.js";
+import { sourceTextValue } from "../source/spectrum-text.js";
+import type { SourceTextPart } from "../source/spectrum-text.js";
 import { romTokenBySpelling } from "../source/rom-tokens.js";
 import type { RomToken } from "../source/rom-tokens.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
@@ -9,14 +12,11 @@ interface TokenBase {
   readonly range: SourceRange;
 }
 
-export interface StringPart {
-  readonly value: string;
-  readonly range: SourceRange;
-}
+export type StringPart = SourceTextPart;
 export interface StringToken extends TokenBase {
   readonly kind: "string";
   readonly contentRange: SourceRange;
-  readonly value: string;
+  readonly value: string | undefined;
   readonly parts: readonly StringPart[];
   readonly closed: boolean;
 }
@@ -100,18 +100,20 @@ export function lexBody(source: SourceDocument, bodyRange: SourceRange): LexedBo
       while (cursor < text.length) {
         if (text[cursor] === '"') {
           if (text[cursor + 1] !== '"') break;
-          parts.push(Object.freeze({ value: '"', range: range(cursor, cursor + 2) }));
+          parts.push(Object.freeze({ kind: "text", value: '"', range: range(cursor, cursor + 2) }));
           cursor += 2;
         } else {
-          const partStart = cursor;
-          while (cursor < text.length && text[cursor] !== '"') cursor++;
-          parts.push(Object.freeze({ value: text.slice(partStart, cursor), range: range(partStart, cursor) }));
+          const escaped = readTextEscape(source, bodyRange.start + cursor, bodyRange.end, "string", diagnostics);
+          if (escaped !== undefined) { parts.push(escaped.part); cursor = escaped.next - bodyRange.start; continue; }
+          const partStart = cursor++;
+          while (cursor < text.length && text[cursor] !== '"' && text[cursor] !== "{" && text[cursor] !== "}") cursor++;
+          parts.push(Object.freeze({ kind: "text", value: text.slice(partStart, cursor), range: range(partStart, cursor) }));
         }
       }
       const contentEnd = cursor;
       const closed = cursor < text.length;
       if (closed) cursor++;
-      const token: StringToken = Object.freeze({ kind: "string", text: text.slice(start, cursor), range: range(start, cursor), contentRange: range(contentStart, contentEnd), closed, value: parts.map((part) => part.value).join(""), parts: Object.freeze(parts) });
+      const token: StringToken = Object.freeze({ kind: "string", text: text.slice(start, cursor), range: range(start, cursor), contentRange: range(contentStart, contentEnd), closed, value: sourceTextValue(parts), parts: Object.freeze(parts) });
       tokens.push(token);
       if (!closed) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unterminatedString, severity: "error", category: "syntax", message: "Expected a closing quote before the physical line ends.", range: token.range }));
     } else {
