@@ -41,3 +41,26 @@ query result, including signatures and edits. They reject raw source strings,
 editor-style position objects and unchecked protocol ranges. Node 24's full check
 passes all 209 runtime tests plus these compile-time contracts; the core compiles
 without host/editor ambient types. This ticket adds no runtime query placeholders.
+
+## M4-02 session implementation decision
+
+A factory returns a session with a private current-snapshot reference. Reading
+`current` returns the identical cached object; a validated update computes one
+fresh parse and semantic result before atomically publishing the replacement.
+Creation/update validate actual SourceDocument inputs and safe nonnegative version
+numbers. Updates reject changed document ids and nonincreasing versions without
+altering current state. Independent sessions may use the same id/version; source
+object identity still disambiguates them in query results.
+
+The target profile is copied and frozen once at session creation, including its
+capability array, and shared by that session's snapshots. Caller mutation cannot
+change earlier or later analysis. Unknown runtime capabilities are rejected at
+this host-independent boundary. Old snapshot syntax/semantic objects and source
+remain available after valid or invalid updates. No query, parser or encoder stub
+is introduced; the session invokes the existing recoverable parser and analyzer.
+
+`createDocumentSession` implements the session interface. Node 24 validation passes
+213 tests, including repeated cached access, incomplete/invalid analysis, retained
+old snapshots, strict versions/document ids, atomic rejection, independent session
+identities and capability ownership. Buildable snapshots retain the real semantic
+validation brand and encode identically to direct parser/analyzer use.
