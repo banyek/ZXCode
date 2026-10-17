@@ -38,3 +38,28 @@ bindings, dynamic versus literal line targets, incomplete-document retention,
 opaque text, checked offset lookup, immutable records and old snapshot caches.
 The index prefers `formalRange` for formal uses; their separate function-scope
 `definitionRange` is not the parameter's declaration location.
+
+## M4-05 hover and navigation policy
+
+Queries return checked ranges and structured plain-text documentation tagged with
+the queried snapshot identity. Formal and FN uses navigate to their analyzer-bound
+preferred declaration. A declaration navigates to itself; other symbols use explicit
+source declarations (line/DIM/DEF FN/formal), falling back to all source writes for
+variables without a declaration. Writes are assignment sites, not runtime-flow
+or allocation guarantees. Missing symbols return empty definitions, while known
+unresolved occurrences still support type hover and references.
+
+References use the canonical family/scope key. By default they exclude explicit
+definition-role occurrences; includeDeclaration adds those sites. Variable writes
+remain references because assignment does not introduce a declaration in Spectrum
+BASIC. Locations retain physical order and duplicate ranges are removed. Dynamic
+jump expressions have no static line occurrence, so navigation cannot invent one.
+Hover describes numeric/string variable, array, function/formal or line identity;
+token documentation/signatures remain the separately scoped M4-07 ticket.
+
+`documentHover`, `documentDefinitions` and `documentReferences` implement these
+queries and satisfy the public query interface headlessly. Node 24's full check
+passes 228 tests. Dedicated tests cover numeric/string variables, arrays, FN
+results/formals, duplicate binding rules, literal versus dynamic line targets,
+unresolved names, incomplete documents, opaque text, strict offsets and old
+snapshot identities. Query locations and structured documentation are frozen.

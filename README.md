@@ -29,7 +29,8 @@ DATA/READ/RESTORE, DEF FN/FN, REM, and listing/cassette forms. The CLI checks so
 and builds TAP files through that same model, retaining source maps and categorized
 diagnostics. The editor-independent language-service contract and versioned
 `createDocumentSession` analysis snapshots are implemented. `documentDiagnostics`
-returns cached, versioned shared diagnostics including encoder limits; navigation,
+returns cached, versioned shared diagnostics including encoder limits. Semantic
+symbol indexing, hover, definitions and references use the same canonical model;
 completion and IDE integration follow. See the [service contract](docs/design/032-language-service-contract.md).
 
 The [M2 acceptance corpus](docs/design/026-m2-core-acceptance.md) covers all commands
