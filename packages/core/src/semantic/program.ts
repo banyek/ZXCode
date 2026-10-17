@@ -1,3 +1,5 @@
+import { analyzeRemStatement } from "./rem.js";
+import type { BasicRemStatement } from "./rem.js";
 import { analyzeDefFnStatement, functionBinding } from "./functions.js";
 import type { BasicDefFnStatement } from "./functions.js";
 import type { FunctionBinding, FunctionContext } from "./function-context.js";
@@ -60,7 +62,7 @@ export interface BasicIfStatement {
   readonly condition: TypedExpression;
   readonly thenStatements: readonly BasicStatement[];
 }
-export type BasicStatement = BasicDefFnStatement | BasicDataStatement | BasicReadStatement | BasicDimStatement | BasicInputStatement | BasicForStatement | BasicNextStatement | BasicIfStatement | BasicJumpStatement
+export type BasicStatement = BasicRemStatement | BasicDefFnStatement | BasicDataStatement | BasicReadStatement | BasicDimStatement | BasicInputStatement | BasicForStatement | BasicNextStatement | BasicIfStatement | BasicJumpStatement
   | { readonly kind: "empty"; readonly range: SourceRange }
   | BasicLetStatement | SimpleCommandStatement<TypedExpression>
   | BasicPrintStatement
@@ -146,6 +148,7 @@ export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>): BasicA
       if (tail.length === 0) tail.push(Object.freeze({ kind: "empty", range: source.range(node.range.end) }));
       return valid ? Object.freeze({ kind: "if", range: node.range, headerRange: node.headerRange, condition, thenStatements: Object.freeze(tail) }) : undefined;
     }
+    if (node.kind === "rem") return analyzeRemStatement(source, node, diagnostics);
     if (node.kind === "def-fn") return analyzeDefFnStatement(source, node, diagnostics, context);
     if (node.kind === "data") return analyzeDataStatement(source, node, diagnostics, context);
     if (node.kind === "read") return analyzeReadStatement(source, node, diagnostics, context);

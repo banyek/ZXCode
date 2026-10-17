@@ -1,0 +1,68 @@
+{
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "cases": [
+    {
+      "source": "10 REM",
+      "encoded": "ea",
+      "statements": 1
+    },
+    {
+      "source": "10 REM ",
+      "encoded": "ea20",
+      "statements": 1
+    },
+    {
+      "source": "10 REM   ",
+      "encoded": "ea202020",
+      "statements": 1
+    },
+    {
+      "source": "10 REM PRINT: GO TO 20",
+      "encoded": "ea205052494e543a20474f20544f203230",
+      "unconsumedBytes": 15,
+      "statements": 1
+    },
+    {
+      "source": "10 REM \"unfinished",
+      "encoded": "ea2022756e66696e6973686564",
+      "unconsumedBytes": 11,
+      "statements": 1
+    },
+    {
+      "source": "10 REM \"a\"\"b\"",
+      "encoded": "ea20226122226222",
+      "unconsumedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 REM 1E999 BIN 102",
+      "encoded": "ea2031453939392042494e20313032",
+      "unconsumedBytes": 13,
+      "statements": 1
+    },
+    {
+      "source": "10 REM {0xFF} \\n",
+      "encoded": "ea207b307846467d205c6e",
+      "unconsumedBytes": 9,
+      "statements": 1
+    },
+    {
+      "source": "10 REM MiXeD  :  ",
+      "encoded": "ea204d6958654420203a2020",
+      "unconsumedBytes": 10,
+      "statements": 1
+    },
+    {
+      "source": "10 IF a THEN REM PRINT: \"unfinished",
+      "encoded": "fa61cbea205052494e543a2022756e66696e6973686564",
+      "unconsumedBytes": 18,
+      "statements": 2
+    },
+    {
+      "source": "10 PRINT: REM : CLS",
+      "encoded": "f53aea203a20434c53",
+      "unconsumedBytes": 5,
+      "statements": 2
+    }
+  ]
+}

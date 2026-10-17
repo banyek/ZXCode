@@ -62,6 +62,9 @@ export function encodeBasicProgram(program: BuildableProgram<BasicProgram>): Enc
             emitExpression(statement.limit, emit);
             if (statement.step !== undefined) { emit(romTokenBySpelling("STEP")!.byte); emitExpression(statement.step, emit); }
           }
+        } else if (statement.kind === "rem") {
+          emit(romTokenBySpelling("REM")!.byte);
+          for (const byte of statement.bytes) emit(byte);
         } else if (statement.kind === "def-fn") {
           emit(romTokenBySpelling("DEF FN")!.byte);
           for (const character of statement.identity.canonicalName) emit(character.charCodeAt(0));
