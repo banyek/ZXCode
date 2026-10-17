@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "skoolkit": "10.1",
+  "zmakebasCommit": "667090faf392e0083bbcf238084dcdd996957285",
+  "fixtures": [
+    {
+      "file": "numeric-surface-rom.json",
+      "sha256": "d241a881f36e2aec3a3075984037ab640ebfe03d4464ae4127cb8feba580e83c",
+      "family": "numeric",
+      "cases": 33,
+      "authority": "Original 48K DEC-TO-FP storage and independently framed PRINT images",
+      "reproduce": "PYTHONPATH=<skoolkit-10.1> python3 scripts/research/verify-numeric-rom.py tests/fixtures/numeric-surface-rom.json"
+    },
+    {
+      "file": "lexical-rom.json",
+      "sha256": "64659769defe2685a31a0183d076358baeb4f96e22e0b808a9af52bbd56719ee",
+      "family": "body",
+      "cases": 36,
+      "authority": "Original 48K STMT-L-1 with independently assembled token/text inputs",
+      "reproduce": "PYTHONPATH=<skoolkit-10.1> python3 scripts/research/verify-statements-rom.py --fixture tests/fixtures/lexical-rom.json"
+    },
+    {
+      "file": "escapes-rom.json",
+      "sha256": "41cfbc6f5eb4187a7a52628418f359eb730addf784977e4ed1342a1bba2861cb",
+      "family": "body",
+      "cases": 281,
+      "authority": "Original 48K STMT-L-1; manual byte identities and independently doubled quotes",
+      "reproduce": "PYTHONPATH=<skoolkit-10.1> python3 scripts/research/verify-statements-rom.py --fixture tests/fixtures/escapes-rom.json",
+      "unsupportedExportSources": [
+        "10 PRINT \"{BYTE 0x10}\"",
+        "10 PRINT \"{BYTE 0x11}\"",
+        "10 PRINT \"{BYTE 0x12}\"",
+        "10 PRINT \"{BYTE 0x13}\"",
+        "10 PRINT \"{BYTE 0x14}\"",
+        "10 PRINT \"{BYTE 0x15}\"",
+        "10 PRINT \"{BYTE 0x16}\"",
+        "10 PRINT \"{BYTE 0x17}\""
+      ]
+    },
+    {
+      "file": "rem-rom.json",
+      "sha256": "cee8e6a90a83ae279ab657c46250751599c624ab651932e856577cf4f23d756a",
+      "family": "body",
+      "cases": 11,
+      "authority": "Original 48K STMT-L-1 and exact ignored-tail boundaries",
+      "reproduce": "PYTHONPATH=<skoolkit-10.1> python3 scripts/research/verify-statements-rom.py --fixture tests/fixtures/rem-rom.json"
+    },
+    {
+      "file": "graphics-notation.json",
+      "sha256": "3f71b63ad36699a27e43c8019d3af9267f2ef21ffd1f56ea3f436a4ce7ddd42c",
+      "family": "graphics",
+      "cases": 37,
+      "authority": "Sinclair Appendix A; original 48K PO-GR-1 bitmap masks",
+      "reproduce": "PYTHONPATH=<skoolkit-10.1> python3 scripts/research/verify-characters-rom.py"
+    },
+    {
+      "file": "controls-rom.json",
+      "sha256": "3e77153a5514407b72f0f06b2325a4b44278f587a3e251cadb1e19ad256c6b97",
+      "family": "controls",
+      "cases": 21,
+      "authority": "Sinclair chapters 15/16 and original ROM control dispatch arities",
+      "reproduce": "PYTHONPATH=<skoolkit-10.1> python3 scripts/research/verify-controls-rom.py"
+    },
+    {
+      "file": "core-corpus.json",
+      "sha256": "5c953e4a00b0c2695fa4e582397cda88f084bff5066ce2ec5f61cbb4f05c3a28",
+      "family": "core",
+      "cases": 8,
+      "authority": "Pinned zmakebas comparison images; explicitly recorded original-ROM numeric/REM corrections",
+      "reproduce": "python3 scripts/research/verify-simple-commands.py --zmakebas <zmakebas-1.3.3> --fixture tests/fixtures/core-corpus.json"
+    },
+    {
+      "file": "tap-metadata.json",
+      "sha256": "f7205301e7d4901ded99c0d4546f9ebc6c86c727105481dff1388be370f6f3b3",
+      "family": "tap",
+      "cases": 11,
+      "authority": "Independent Python struct packing and flag-inclusive XOR; opaque payloads",
+      "reproduce": "python3 scripts/research/verify-tap-fixtures.py"
+    },
+    {
+      "file": "autostart-rom.json",
+      "sha256": "426f85af9c12b1b245e4ae7f8a694923971ed7bb77baa8d551bca13367d138c1",
+      "family": "autostart",
+      "cases": 10,
+      "authority": "Original 48K LOAD fragment at 089B with both high-bit boundaries",
+      "reproduce": "PYTHONPATH=<skoolkit-10.1> python3 scripts/research/verify-autostart-rom.py"
+    }
+  ]
+}
