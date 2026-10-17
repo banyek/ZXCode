@@ -22,33 +22,29 @@ The language itself is not modernized. IDE features live around Sinclair BASIC r
 
 ## Status
 
-M1 — Hello Spectrum is implemented and verified. Source/diagnostic and build-artifact contracts,
-recoverable parsing for the [M1 subset](docs/design/021-m1-supported-subset.md),
-semantic validation, BASIC image encoding with source maps, TAP container writing,
-and CLI check/build commands are available. The generated hello TAP loads/runs in
-reference 48K emulation and prints `HELLO WORLD`. Unfinished design notes remain
-proposals rather than implicit implementation contracts; general BASIC grammar
-and the editor experience remain later milestones.
+M1 and M2 are implemented and verified. The host-independent core parses,
+validates and encodes all fifty original 48K ROM command grammars, expressions,
+numeric/string variables and arrays, slicing, control flow, PRINT/INPUT,
+DATA/READ/RESTORE, DEF FN/FN, REM, and listing/cassette forms. The CLI checks source
+and builds TAP files through that same model, retaining source maps and categorized
+diagnostics. IDE integration and full M3 fidelity work follow.
 
-Decimal numeric token conversion reproduces the original 48K ROM's storage and
-rounding, with independent ROM observations as fixtures. See the
-[numeric contract](docs/design/020-numeric-literals.md) for evidence and the
-optional Python/SkoolKit verification procedure. The production core and normal
-CI do not require an emulator or ROM.
+The [M2 acceptance corpus](docs/design/026-m2-core-acceptance.md) covers all commands
+and built-in signatures with independent byte fixtures. A combined arrays, DATA,
+functions and channels program loads/runs in the original ROM, displays `CORE OK`,
+and returns `0 OK, 100:1`. M1's hello bytes and load/run acceptance remain intact.
 
-M2 implementation includes the shared 91-token ROM catalogue, authentic variable
-identities, and a recoverable [expression parser](docs/design/006-expression-grammar.md)
-with [semantic typing](docs/design/007-expression-semantics.md) and encoding.
-M2 now builds typed PRINT/LPRINT item streams (AT/TAB, colour, channels and
-separators), INPUT targets/prompts/display groups and LINE, scalar LET assignments,
-FOR/NEXT loops,
-GO TO/GO SUB/RETURN and IF/THEN sequences, plus simple numeric, colour, graphics
-and no-operand commands. Literal jumps retain line relations and nonfatal missing-
-line warnings. Strings support authentic doubled quotes with source ranges.
-Numeric/string arrays, DIM and open/repeated string slices build, including
-indexed LET/INPUT/READ targets, expression-valued DATA and RESTORE. DEF FN/FN with scoped formal bindings, and preserved REM tails. LIST/LLIST and native cassette SAVE/LOAD/VERIFY/MERGE forms are supported.
-The six commands awaiting capability policy are recognized but currently blocked
-from builds.
+Decimal conversion reproduces original-ROM storage and rounding; see the
+[numeric contract](docs/design/020-numeric-literals.md). Full numeric lexical edge
+cases, complete Spectrum characters/control codes and source escapes remain M3.
+Current literal coverage is ASCII 32..126 except backtick; strings support doubled
+quotes and REM tails retain literal source bytes. Production and normal CI require
+neither an emulator nor a ROM.
+
+CAT, FORMAT, MOVE and ERASE build with nonfatal runtime-capability warnings on the
+default 48K target. OPEN # and CLOSE # support base-ROM channels. Explicit core
+`targetProfile` options declare execution capabilities without changing grammar;
+see the [capability policy](docs/design/025-runtime-capability-policy.md).
 
 See [docs/design](docs/design/).
 
@@ -110,8 +106,8 @@ The repository uses two private npm workspaces with native ES modules:
 - `packages/cli`: host I/O and orchestration through core APIs.
 - `tests`: integration and core tests using Node's built-in test runner.
 
-The M1 subset runs through the complete shared pipeline; later milestones extend
-language coverage on the same model. Dependency direction is source → syntax →
+The BASIC core runs through one shared pipeline; later milestones extend fidelity
+and tooling on the same model. Dependency direction is source → syntax →
 semantic → encoding, where an arrow means the
 right-hand layer may consume the left-hand layer. TAP handles bytes independently
 of grammar. CLI depends on core; core never depends on CLI or VS Code. Core is
@@ -121,8 +117,3 @@ adapters sit outside the parser/encoder pipeline.
 
 TypeScript 6.0.3 is pinned within the supported range of TypeScript ESLint 8.71.2.
 The toolchain uses no runtime framework dependencies.
-
-CAT, FORMAT, MOVE and ERASE are authentic ROM commands and build with a runtime
-capability warning on the default 48K target. OPEN # and CLOSE # support base-ROM
-channels. Core callers may declare execution capabilities through `targetProfile`;
-this does not enable additional syntax. See [capability policy](docs/design/025-runtime-capability-policy.md).

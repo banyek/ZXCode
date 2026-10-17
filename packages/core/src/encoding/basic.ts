@@ -106,7 +106,10 @@ export function encodeBasicProgram(program: BuildableProgram<BasicProgram>): Enc
         } else if (statement.kind === "simple-command") emitSimpleCommand(statement, emit);
         else if (statement.kind === "input") emitInputStatement(statement, emit);
         else if (statement.kind === "print" || statement.kind === "lprint") emitPrintStatement(statement, emit);
-        else emit(romTokenBySpelling(statement.kind)!.byte);
+        else {
+          const simpleKind: "cls" | "stop" = statement.kind;
+          emit(romTokenBySpelling(simpleKind)!.byte);
+        }
         statements.push(Object.freeze({ sourceRange, encodedRange: Object.freeze({ offset: encodedOffset + 4 + start, length: body.length - start }) }));
         if (statement.kind === "if") sequence(statement.thenStatements);
       }
