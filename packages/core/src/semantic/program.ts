@@ -1,8 +1,9 @@
+import type { Expression } from "../syntax/expression.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument, SourceRange } from "../source/document.js";
 import type { ParsedDocument } from "../syntax/document.js";
-import type { BasicSyntaxProgram, LiteralExpression, Statement } from "../syntax/parser.js";
+import type { BasicSyntaxProgram, Statement } from "../syntax/parser.js";
 import { convertNumericLiteral } from "./numeric.js";
 import type { NumericLiteralValue } from "./numeric.js";
 
@@ -58,7 +59,7 @@ export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>): BasicA
     if (diagnostics.some((item) => item.severity === "error" && item.range.sourceId === range.sourceId && item.range.start >= range.start && item.range.end <= range.end)) return;
     diagnostics.push(createDiagnostic({ code, severity: "error", category, message, range }));
   };
-  const expression = (node: LiteralExpression): BasicExpression | undefined => {
+  const expression = (node: Expression): BasicExpression | undefined => {
     if (node.kind === "numeric-literal") {
       const result = convertNumericLiteral(node.lexeme);
       if (result.kind === "error") {
@@ -68,6 +69,10 @@ export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>): BasicA
         return undefined;
       }
       return Object.freeze({ kind: "number", range: node.range, value: result.value });
+    }
+    if (node.kind !== "string-literal") {
+      report(node.range, "This expression requires M2 semantic typing and encoding support before it can be built.", DiagnosticCodes.unsupportedSyntax, "compatibility");
+      return undefined;
     }
     if (!node.closed) {
       report(node.range, "String literal is incomplete.", DiagnosticCodes.unterminatedString, "syntax");

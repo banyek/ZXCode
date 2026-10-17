@@ -24,3 +24,5 @@ export { buildTap, checkProgram } from "./build.js";
 export type { BuiltTap, CheckedProgram, PipelineFailure, TapBuildOptions } from "./build.js";
 export { ROM_TOKENS, romTokenByByte, romTokenBySpelling } from "./source/rom-tokens.js";
 export type { RomToken, RomTokenCategory } from "./source/rom-tokens.js";
+export { parseExpression } from "./syntax/expression.js";
+export type { Expression } from "./syntax/expression.js";

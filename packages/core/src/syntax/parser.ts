@@ -7,12 +7,12 @@ import { scanPhysicalLines } from "./physical-lines.js";
 import type { BlankPhysicalLine, InvalidPhysicalLine, NumberedPhysicalLine } from "./physical-lines.js";
 import type { ParsedDocument } from "./document.js";
 
-export type LiteralExpression =
-  | { readonly kind: "string-literal"; readonly range: SourceRange; readonly contentRange: SourceRange; readonly value: string; readonly closed: boolean }
-  | { readonly kind: "numeric-literal"; readonly range: SourceRange; readonly lexeme: string };
+import { readExpression } from "./expression.js";
+import type { Expression } from "./expression.js";
+export type { LiteralExpression } from "./expression.js";
 
 export type PrintItem =
-  | { readonly kind: "print-expression"; readonly range: SourceRange; readonly expression: LiteralExpression }
+  | { readonly kind: "print-expression"; readonly range: SourceRange; readonly expression: Expression }
   | { readonly kind: "print-separator"; readonly range: SourceRange; readonly separator: ";" | "," };
 
 export type Statement =
@@ -47,19 +47,14 @@ function parseStatement(source: SourceDocument, tokens: readonly BodyToken[], ra
   const items: PrintItem[] = [];
   let cursor = 1;
   while (cursor < tokens.length) {
-    const token = tokens[cursor]!;
-    let expression: LiteralExpression;
-    if (token.kind === "string") {
-      expression = Object.freeze({ kind: "string-literal", range: token.range, contentRange: token.contentRange, value: source.textInRange(token.contentRange), closed: token.closed });
-    } else if (token.kind === "number") {
-      expression = Object.freeze({ kind: "numeric-literal", range: token.range, lexeme: token.text });
-    } else return fail("This PRINT item/expression is outside the M1 literal subset.");
+    const parsed = readExpression(source, tokens, cursor, range.end, diagnostics);
+    const expression = parsed.expression;
     items.push(Object.freeze({ kind: "print-expression", range: expression.range, expression }));
-    cursor++;
+    cursor = parsed.next;
     if (cursor < tokens.length) {
       const separator = tokens[cursor]!;
       if (separator.kind !== "punctuation" || (separator.text !== ";" && separator.text !== ",")) {
-        return fail("Expected a PRINT separator; this expression form is not supported by M1.");
+        return fail("Expected a PRINT separator after expression.");
       }
       items.push(Object.freeze({ kind: "print-separator", range: separator.range, separator: separator.text }));
       cursor++;

@@ -35,7 +35,7 @@ export function lexBody(source: SourceDocument, bodyRange: SourceRange): LexedBo
   const range = (start: number, end: number): SourceRange => source.range(bodyRange.start + start, bodyRange.start + end);
   const plain = (kind: PlainToken["kind"], start: number, end: number): void => {
     const spelling = text.slice(start, end);
-    const romToken = kind === "word" ? romTokenBySpelling(spelling) : undefined;
+    const romToken = kind === "word" || kind === "punctuation" ? romTokenBySpelling(spelling) : undefined;
     tokens.push(Object.freeze({ kind, text: spelling, range: range(start, end), ...(romToken === undefined ? {} : { romToken }) }));
   };
   let cursor = 0;
@@ -77,7 +77,10 @@ export function lexBody(source: SourceDocument, bodyRange: SourceRange): LexedBo
         cursor += number[0].length;
         plain("number", start, cursor);
         if (/[Ee][+-]?$/.test(number[0])) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.invalidNumericLiteral, severity: "error", category: "syntax", message: "Expected decimal exponent digits.", range: range(start, cursor) }));
-      } else plain("punctuation", cursor, ++cursor);
+      } else {
+        cursor += /^(?:<=|>=|<>)/.test(text.slice(cursor)) ? 2 : 1;
+        plain("punctuation", start, cursor);
+      }
     }
     statementStart = false;
   }
