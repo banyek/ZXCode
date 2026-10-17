@@ -52,3 +52,15 @@ jobs:
           pattern: m4-language-service-*
           path: artifacts/m4-platforms
       - run: node scripts/compatibility/compare-service-reports.mjs artifacts/m4-platforms
+
+  extension-smoke:
+    name: VS Code development-host smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: xvfb-run -a npm run test:extension

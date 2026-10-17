@@ -1,0 +1,32 @@
+{
+  "name": "zxcode-vscode",
+  "displayName": "ZXCode",
+  "description": "Authentic ZX Spectrum 48K BASIC with modern language tooling.",
+  "version": "0.0.0",
+  "publisher": "banyek",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/banyek/ZXCode.git"
+  },
+  "engines": {
+    "vscode": "^1.140.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "extensionKind": [
+    "workspace"
+  ],
+  "activationEvents": [
+    "onLanguage:zx-spectrum-basic"
+  ],
+  "main": "./dist/extension.cjs",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "dependencies": {
+    "@zxcode/core": "0.0.0"
+  }
+}

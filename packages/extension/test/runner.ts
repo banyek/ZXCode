@@ -1,0 +1,44 @@
+import assert from "node:assert/strict";
+import * as vscode from "vscode";
+import type { ZXCodeExtensionApi } from "../src/extension.js";
+/** Invoked by the real Extension Development Host; rejection fails the smoke run. */
+export async function run(): Promise<void> {
+  const extension = vscode.extensions.getExtension<ZXCodeExtensionApi>("banyek.zxcode-vscode");
+  assert.ok(extension, "Development extension is installed in the isolated host");
+  const api = await extension.activate();
+  assert.ok(extension.isActive);
+  const document = await vscode.workspace.openTextDocument({ language: "plaintext", content: '10 REM £©↑\r\n20 GO TO 100\r\n100 PRINT "hello"\r\n' });
+  const snapshot = api.documents.snapshot(document);
+  assert.strictEqual(api.documents.snapshot(document), snapshot);
+  assert.equal(api.queries.diagnostics(snapshot).value.length, 0);
+  const offset = document.getText().indexOf("100");
+  const definitions = api.queries.definitions(snapshot, offset).value;
+  assert.equal(definitions.length, 1);
+  const editorRange = api.toEditorRange(document, snapshot, definitions[0]!);
+  assert.equal(document.getText(editorRange), "100");
+  assert.equal(editorRange.start.line, 2);
+  assert.equal(editorRange.start.character, 0);
+  const glyph = snapshot.source.text.indexOf("£");
+  assert.equal(document.getText(api.toEditorRange(document, snapshot, snapshot.source.range(glyph, glyph + 3))), "£©↑");
+  assert.ok(document.getText().includes("\r\n"));
+  const unicodeEdit = new vscode.WorkspaceEdit();
+  unicodeEdit.insert(document.uri, document.positionAt(glyph + 3), "😀");
+  assert.equal(await vscode.workspace.applyEdit(unicodeEdit), true);
+  const unicodeSnapshot = api.documents.snapshot(document);
+  const unsupported = api.queries.diagnostics(unicodeSnapshot).value.find((diagnostic) => diagnostic.code === "ZX2001");
+  assert.ok(unsupported);
+  assert.equal(unsupported.range.end - unsupported.range.start, 2);
+  assert.equal(document.getText(api.toEditorRange(document, unicodeSnapshot, unsupported.range)), "😀");
+  const edit = new vscode.WorkspaceEdit();
+  edit.replace(document.uri, new vscode.Range(document.positionAt(0), document.positionAt(document.getText().length)), "10 PRINT AT 10,");
+  assert.equal(await vscode.workspace.applyEdit(edit), true);
+  const next = api.documents.snapshot(document);
+  assert.notStrictEqual(next.identity, snapshot.identity);
+  assert.ok(next.identity.version > snapshot.identity.version);
+  assert.ok(api.queries.diagnostics(next).value.some((diagnostic) => diagnostic.code === "ZX1101"));
+  assert.throws(() => api.toEditorRange(document, snapshot, definitions[0]!), /stale/);
+  assert.equal(api.queries.diagnostics(snapshot).value.length, 0);
+  api.documents.close(document);
+  assert.notStrictEqual(api.documents.snapshot(document).identity, next.identity);
+  console.log("ZXCode real-host smoke passed: activation, sessions, diagnostics, navigation, UTF-16/CRLF ranges and stale-result rejection");
+}
