@@ -98,3 +98,7 @@ export { documentSymbolIndex } from "./service/symbol-index.js";
 export type { SymbolOccurrence, IndexedSymbol, SemanticSymbolIndex } from "./service/symbol-index.js";
 export { documentDefinitions, documentReferences, documentHover } from "./service/navigation.js";
 export { documentCompletions } from "./service/completion.js";
+
+export { LANGUAGE_HELP, languageHelp } from "./source/language-help.js";
+export type { LanguageHelpEntry, HelpParameter } from "./source/language-help.js";
+export { documentSignatureHelp } from "./service/signatures.js";

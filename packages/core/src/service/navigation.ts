@@ -1,3 +1,4 @@
+import { tokenHelpAt, helpDocumentation } from "./help.js";
 import type { SourceRange } from "../source/document.js";
 import type { DocumentAnalysisSnapshot, LanguageHover, LanguageQueryResult, LanguageReferenceOptions } from "./contract.js";
 import { documentSymbolIndex } from "./symbol-index.js";
@@ -39,7 +40,10 @@ export function documentReferences(snapshot: DocumentAnalysisSnapshot, offset: n
 }
 export function documentHover(snapshot: DocumentAnalysisSnapshot, offset: number): LanguageQueryResult<LanguageHover | undefined> {
   const found = locate(snapshot, offset);
-  if (found === undefined) return Object.freeze({ snapshot: snapshot.identity, value: undefined });
+  if (found === undefined) {
+    const help = tokenHelpAt(snapshot, offset);
+    return Object.freeze({ snapshot: snapshot.identity, value: help === undefined ? undefined : Object.freeze({ range: help.range, documentation: helpDocumentation(help.entry) }) });
+  }
   const { symbol, occurrence } = found;
   const defined = symbol.occurrences.some((item) => item.role === "definition");
   let summary: string;
