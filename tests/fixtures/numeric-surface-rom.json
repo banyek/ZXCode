@@ -1,0 +1,201 @@
+{
+  "provenance": "Original 48K DEC-TO-FP observations; canonical PRINT images assembled independently from ROM storage and documented framing",
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "cases": [
+    {
+      "literal": "0",
+      "canonical": "0",
+      "storage": "0000000000",
+      "programHex": "000a0900f5300e00000000000d"
+    },
+    {
+      "literal": "000",
+      "canonical": "000",
+      "storage": "0000000000",
+      "programHex": "000a0b00f53030300e00000000000d"
+    },
+    {
+      "literal": "0001",
+      "canonical": "0001",
+      "storage": "0000010000",
+      "programHex": "000a0c00f5303030310e00000100000d"
+    },
+    {
+      "literal": "65535",
+      "canonical": "65535",
+      "storage": "0000ffff00",
+      "programHex": "000a0d00f536353533350e0000ffff000d"
+    },
+    {
+      "literal": "65536",
+      "canonical": "65536",
+      "storage": "9100000000",
+      "programHex": "000a0d00f536353533360e91000000000d"
+    },
+    {
+      "literal": "4294967295",
+      "canonical": "4294967295",
+      "storage": "a07fffffff",
+      "programHex": "000a1200f5343239343936373239350ea07fffffff0d"
+    },
+    {
+      "literal": "1.",
+      "canonical": "1.",
+      "storage": "0000010000",
+      "programHex": "000a0a00f5312e0e00000100000d"
+    },
+    {
+      "literal": ".0",
+      "canonical": ".0",
+      "storage": "0000000000",
+      "programHex": "000a0a00f52e300e00000000000d"
+    },
+    {
+      "literal": ".5",
+      "canonical": ".5",
+      "storage": "7f7fffffff",
+      "programHex": "000a0a00f52e350e7f7fffffff0d"
+    },
+    {
+      "literal": "1.E2",
+      "canonical": "1.E2",
+      "storage": "0000640000",
+      "programHex": "000a0c00f5312e45320e00006400000d"
+    },
+    {
+      "literal": "0.1",
+      "canonical": "0.1",
+      "storage": "7d4ccccccc",
+      "programHex": "000a0b00f5302e310e7d4ccccccc0d"
+    },
+    {
+      "literal": ".0000001",
+      "canonical": ".0000001",
+      "storage": "6956bf94d4",
+      "programHex": "000a1000f52e303030303030310e6956bf94d40d"
+    },
+    {
+      "literal": "1e+0",
+      "canonical": "1e+0",
+      "storage": "0000010000",
+      "programHex": "000a0c00f531652b300e00000100000d"
+    },
+    {
+      "literal": "1E-0",
+      "canonical": "1E-0",
+      "storage": "0000010000",
+      "programHex": "000a0c00f531452d300e00000100000d"
+    },
+    {
+      "literal": "1e-38",
+      "canonical": "1e-38",
+      "storage": "0259c7dcec",
+      "programHex": "000a0d00f531652d33380e0259c7dcec0d"
+    },
+    {
+      "literal": "1e38",
+      "canonical": "1e38",
+      "storage": "ff16769951",
+      "programHex": "000a0c00f5316533380eff167699510d"
+    },
+    {
+      "literal": "9.99999999E37",
+      "canonical": "9.99999999E37",
+      "storage": "ff1676994d",
+      "programHex": "000a1500f5392e39393939393939394533370eff1676994d0d"
+    },
+    {
+      "literal": "0E127",
+      "canonical": "0E127",
+      "romError": 5
+    },
+    {
+      "literal": "0E128",
+      "canonical": "0E128",
+      "romError": 5
+    },
+    {
+      "literal": "1E-128",
+      "canonical": "1E-128",
+      "romError": 5
+    },
+    {
+      "literal": "1E00000000000000000002",
+      "canonical": "1E00000000000000000002",
+      "storage": "0000640000",
+      "programHex": "000a1e00f5314530303030303030303030303030303030303030320e00006400000d"
+    },
+    {
+      "literal": "1.2345678901234567890123456789",
+      "canonical": "1.2345678901234567890123456789",
+      "storage": "811e065214",
+      "programHex": "000a2600f5312e323334353637383930313233343536373839303132333435363738390e811e0652140d"
+    },
+    {
+      "literal": ". 5",
+      "canonical": ".5",
+      "storage": "7f7fffffff",
+      "programHex": "000a0a00f52e350e7f7fffffff0d"
+    },
+    {
+      "literal": "1. 2",
+      "canonical": "1.2",
+      "storage": "811999999a",
+      "programHex": "000a0b00f5312e320e811999999a0d"
+    },
+    {
+      "literal": "1.2 3",
+      "canonical": "1.23",
+      "storage": "811d70a3d7",
+      "programHex": "000a0c00f5312e32330e811d70a3d70d"
+    },
+    {
+      "literal": "1.2 E 2",
+      "canonical": "1.2E2",
+      "storage": "8770000001",
+      "programHex": "000a0d00f5312e3245320e87700000010d"
+    },
+    {
+      "literal": "1.E 2",
+      "canonical": "1.E2",
+      "storage": "0000640000",
+      "programHex": "000a0c00f5312e45320e00006400000d"
+    },
+    {
+      "literal": "1E + 2",
+      "canonical": "1E+2",
+      "storage": "0000640000",
+      "programHex": "000a0c00f531452b320e00006400000d"
+    },
+    {
+      "literal": "1E- 2",
+      "canonical": "1E-2",
+      "storage": "7a23d70a3d",
+      "programHex": "000a0c00f531452d320e7a23d70a3d0d"
+    },
+    {
+      "literal": "1E\t+\t2",
+      "canonical": "1E+2",
+      "storage": "0000640000",
+      "programHex": "000a0c00f531452b320e00006400000d"
+    },
+    {
+      "literal": ".\t5",
+      "canonical": ".5",
+      "storage": "7f7fffffff",
+      "programHex": "000a0a00f52e350e7f7fffffff0d"
+    },
+    {
+      "literal": "1.\t2\t3",
+      "canonical": "1.23",
+      "storage": "811d70a3d7",
+      "programHex": "000a0c00f5312e32330e811d70a3d70d"
+    },
+    {
+      "literal": "000. 0 e - 0",
+      "canonical": "000.0e-0",
+      "storage": "0000000000",
+      "programHex": "000a1000f53030302e30652d300e00000000000d"
+    }
+  ]
+}

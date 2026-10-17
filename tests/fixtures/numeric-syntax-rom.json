@@ -1,0 +1,183 @@
+{
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "cases": [
+    {
+      "source": "10 PRINT 1 2",
+      "encoded": "f5312032",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT 1 .2",
+      "encoded": "f531202e32",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT 1 E2",
+      "encoded": "f531204532",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT 1E2 3",
+      "encoded": "f53145322033",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT 1\t2",
+      "encoded": "f5310932",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT 1e2.3",
+      "encoded": "f53165322e33",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT 1e2e3",
+      "encoded": "f53165326533",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT 1 E + + 2",
+      "encoded": "f5312045202b202b2032",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT 1E",
+      "encoded": "f53145",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT 1E+",
+      "encoded": "f531452b",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT 1E -",
+      "encoded": "f53145202d",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT 1E + +2",
+      "encoded": "f53145202b202b32",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT .",
+      "encoded": "f52e",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT 1_000",
+      "encoded": "f5315f303030",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT 1,2",
+      "encoded": "f5312c32",
+      "insertedBytes": 12,
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT . 5",
+      "encoded": "f52e2035",
+      "insertedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT 1. 2",
+      "encoded": "f5312e2032",
+      "insertedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT 1.2 3",
+      "encoded": "f5312e322033",
+      "insertedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT 1.2 E 2",
+      "encoded": "f5312e3220452032",
+      "insertedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT 1.E 2",
+      "encoded": "f5312e452032",
+      "insertedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT 1E + 2",
+      "encoded": "f53145202b2032",
+      "insertedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT -1",
+      "encoded": "f52d31",
+      "insertedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT +1",
+      "encoded": "f52b31",
+      "insertedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT --1",
+      "encoded": "f52d2d31",
+      "insertedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT -+1",
+      "encoded": "f52d2b31",
+      "insertedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT + - . 5",
+      "encoded": "f52b202d202e2035",
+      "insertedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT -(1)",
+      "encoded": "f52d283129",
+      "insertedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT -1E-2",
+      "encoded": "f52d31452d32",
+      "insertedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT +1. E + 2",
+      "encoded": "f52b312e2045202b2032",
+      "insertedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a 1E + 2. 3",
+      "encoded": "f561203145202b20322e2033",
+      "insertedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a 1E + 2E + 3",
+      "encoded": "f561203145202b203245202b2033",
+      "insertedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 LET a 1E=2",
+      "encoded": "f1612031453d32",
+      "insertedBytes": 6,
+      "statements": 1
+    }
+  ]
+}
