@@ -1,8 +1,9 @@
-import { createHash } from "node:crypto";
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { isAbsolute, join } from "node:path";
 import { checkProgram, writeBasicTap } from "@zxcode/core";
+import { createRunBuildMetadata } from "./identity.js";
+import type { RunBuildMetadata } from "./identity.js";
 import type { Diagnostic, SourceDocument } from "@zxcode/core";
 import type { EmulatorArtifact, EmulatorBackend, EmulatorFailure, EmulatorLaunchOptions, EmulatorSession } from "./index.js";
 export interface RunSource {readonly source: SourceDocument; readonly version: number;readonly backend?: EmulatorBackend}
@@ -12,9 +13,11 @@ export interface ManagedRun {
   readonly version: number;
   readonly buildId: string;
   readonly diagnostics: readonly Diagnostic[];
+  readonly metadata: RunBuildMetadata;
+  readonly metadataPath: string;
 }
 export type BuildRunResult = {readonly kind:"success"; readonly run:ManagedRun} | {readonly kind:"build-error";readonly diagnostics:readonly Diagnostic[]} | {readonly kind:"error";readonly failure:EmulatorFailure;readonly diagnostics:readonly Diagnostic[]};
-interface PreparedRun {readonly sourceId:string;readonly version:number;readonly buildId:string;readonly tap:Uint8Array;readonly diagnostics:readonly Diagnostic[];readonly backend:EmulatorBackend}
+interface PreparedRun {readonly sourceId:string;readonly version:number;readonly buildId:string;readonly tap:Uint8Array;readonly diagnostics:readonly Diagnostic[];readonly backend:EmulatorBackend;readonly metadata:RunBuildMetadata;readonly sourceRevision:number}
 const error = (code: EmulatorFailure["code"], message: string, diagnostics: readonly Diagnostic[] = []): BuildRunResult => ({kind:"error",failure:{kind:"error",code,message},diagnostics});
 /** Serial owner of build/run replacement and private TAP lifetime, without editor APIs. */
 export class RunCoordinator {
@@ -23,11 +26,33 @@ export class RunCoordinator {
   #queue: Promise<void> = Promise.resolve();
   #sequence = 0;
   #disposed = false;
+  #revision = 0;
+  readonly #sources = new Map<string,{readonly revision:number;readonly version:number;readonly text:string}>();
+  readonly #runRevisions = new WeakMap<ManagedRun,number>();
   constructor(readonly backend: EmulatorBackend, readonly temporaryRoot = tmpdir()) {}
   get active(): ManagedRun | undefined {return this.#active;}
+  get currentBuild(): RunBuildMetadata | undefined {
+    const active = this.#active;
+    if (this.#disposed || active === undefined || active.session.state !== "running") return undefined;
+    const source = this.#sources.get(active.sourceId);
+    if (source === undefined || source.revision !== this.#runRevisions.get(active)) return undefined;
+    return active.metadata;
+  }
+  buildForSession(sessionId:string): RunBuildMetadata | undefined {return this.#active?.session.id === sessionId ? this.currentBuild : undefined;}
+  #observe(input: RunSource): number {
+    if (!Number.isSafeInteger(input.version) || input.version < 0) throw new RangeError("Observed source version must be a nonnegative safe integer.");
+    const previous = this.#sources.get(input.source.id);
+    if (previous !== undefined && previous.version === input.version && previous.text === input.source.text) return previous.revision;
+    const revision = ++this.#revision;
+    this.#sources.set(input.source.id,{revision,version:input.version,text:input.source.text});
+    return revision;
+  }
+  observeSource(input: RunSource): void {if (!this.#disposed) this.#observe(input);}
+  invalidateSource(sourceId:string): void {this.#sources.delete(sourceId);}
   run(input: RunSource, options: EmulatorLaunchOptions = {}): Promise<BuildRunResult> {
     if (this.#disposed) return Promise.resolve(error("cancelled","Run coordinator is disposed."));
     if (!Number.isSafeInteger(input.version) || input.version < 0 || !isAbsolute(this.temporaryRoot)) return Promise.resolve(error("invalid-request","Run requires a nonnegative source version and absolute temporary root."));
+    const sourceRevision = this.#observe(input);
     const checked = checkProgram(input.source);
     if (checked.kind === "error") return Promise.resolve({kind:"build-error",diagnostics:checked.diagnostics});
     const first = checked.encodedProgram.lines[0];
@@ -36,8 +61,8 @@ export class RunCoordinator {
     if (!backend.capabilities.features.includes("stop")) return Promise.resolve(error("unsupported-operation","Managed runs require a backend that supports Stop.",checked.diagnostics));
     const program = checked.encodedProgram.programBytes;
     const tap = writeBasicTap(program,{filenameBytes:Uint8Array.from([90,88,67,79,68,69,32,32,32,32]),autostart:first.basicLineNumber,variablesOffset:program.length}).tapBytes;
-    const buildId = createHash("sha256").update(JSON.stringify({sourceId:input.source.id,text:input.source.text,version:input.version,target:"spectrum-48k",autostart:first.basicLineNumber})).update(tap).digest("hex");
-    const prepared: PreparedRun = {sourceId:input.source.id,version:input.version,buildId,tap,diagnostics:checked.diagnostics,backend};
+    const metadata = createRunBuildMetadata(input.source,input.version,checked.encodedProgram,first.basicLineNumber,tap);
+    const prepared: PreparedRun = {sourceId:input.source.id,version:input.version,buildId:metadata.buildId,tap,diagnostics:checked.diagnostics,backend,metadata,sourceRevision};
     const sequence = ++this.#sequence;
     this.#starting?.abort();
     const result = this.#queue.then(() => this.#launch(prepared,sequence,options));
@@ -66,6 +91,8 @@ export class RunCoordinator {
       directory = await mkdtemp(join(this.temporaryRoot,"zxcode-run-"));
       const path = join(directory,"program.tap");
       await writeFile(path,prepared.tap);
+      const metadataPath = join(directory,"build.json");
+      await writeFile(metadataPath,JSON.stringify(prepared.metadata,null,2) + "\n");
       if (obsolete()) return cancelled();
       const stopped = await this.#stopActive();
       if (stopped.kind === "error") return {kind:"error",failure:stopped,diagnostics:prepared.diagnostics};
@@ -92,7 +119,8 @@ export class RunCoordinator {
           return exit;
         }),stop:() => original.stop()
       });
-      const managed: ManagedRun = Object.freeze({session,sourceId:prepared.sourceId,version:prepared.version,buildId:prepared.buildId,diagnostics:prepared.diagnostics});
+      const managed: ManagedRun = Object.freeze({session,sourceId:prepared.sourceId,version:prepared.version,buildId:prepared.buildId,diagnostics:prepared.diagnostics,metadata:prepared.metadata,metadataPath});
+      this.#runRevisions.set(managed,prepared.sourceRevision);
       this.#active = managed;
       if (obsolete()) {
         const stopped = await this.#stopActive();
@@ -109,5 +137,5 @@ export class RunCoordinator {
     this.#queue = result.then(() => undefined,() => undefined);
     return result;
   }
-  dispose(): Promise<{readonly kind:"success"} | EmulatorFailure> {this.#disposed = true;return this.stop();}
+  dispose(): Promise<{readonly kind:"success"} | EmulatorFailure> {this.#disposed = true;this.#sources.clear();return this.stop();}
 }

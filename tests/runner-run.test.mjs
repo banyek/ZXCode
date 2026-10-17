@@ -1,25 +1,11 @@
 import assert from 'node:assert/strict';
-import {access,mkdtemp,readFile,readdir,rm} from 'node:fs/promises';
+import {access,mkdtemp,readdir,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {dirname,join} from 'node:path';
 import test from 'node:test';
+import {backend} from './fixtures/runner/backend.mjs';
 import {buildTap,readBasicTap,SourceDocument} from '../packages/core/dist/index.js';
 import {RunCoordinator} from '../packages/runner/dist/index.js';
-function backend() {
-  const launches=[];const events=[];
-  return {id:'fixture',capabilities:{transport:'external-process',formats:['tap'],targets:['spectrum-48k'],features:['stop']},launches,events,
-    async launch(request) {
-      const bytes=await readFile(request.artifact.path);
-      let state='running';let finish;
-      const finished=new Promise(resolve=>{finish=resolve;});
-      const index=launches.length;
-      const close=()=>{state='exited';finish({state:'exited',code:0,signal:null});};
-      const session={id:`session-${index}`,backendId:'fixture',artifact:request.artifact,get state(){return state;},finished,
-        async stop(){events.push(`stop-${index}`);state='stopped';finish({state:'stopped',code:0,signal:null});return {kind:'success'};}};
-      launches.push({request,bytes,session,close});events.push(`launch-${index}`);
-      return {kind:'success',session};
-    }};
-}
 const source=(text='100 STOP\n20 PRINT "first"',version=1)=>({source:new SourceDocument('file:///sample.zxbas',text),version});
 test('run uses shared program bytes with explicit lowest-line autostart and owns temporary artifact until exit',async()=>{
   const fake=backend();const coordinator=new RunCoordinator(fake);

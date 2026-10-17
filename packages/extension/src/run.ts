@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { createFuseBackend, RunCoordinator } from "@zxcode/runner";
-import type { EmulatorFailure, ManagedRun } from "@zxcode/runner";
+import type { EmulatorFailure, ManagedRun, RunBuildMetadata } from "@zxcode/runner";
 import { EditorDocuments } from "./documents.js";
 import { EditorDiagnostics } from "./diagnostics.js";
 import { LANGUAGE_ID } from "./language.js";
@@ -15,17 +15,38 @@ export interface EditorRunResult {
 export class EditorRunner implements vscode.Disposable {
   readonly #coordinator = new RunCoordinator(createFuseBackend());
   readonly #registrations: vscode.Disposable;
+  readonly #observed = new Map<string,vscode.TextDocument>();
   #pending = 0;
   #disposed = false;
   #shutdown: Promise<{readonly kind:"success"} | EmulatorFailure> | undefined;
   constructor(readonly documents: EditorDocuments, readonly diagnostics: EditorDiagnostics, readonly output: vscode.OutputChannel) {
     this.#registrations = vscode.Disposable.from(
       vscode.commands.registerCommand("zxcode.run",(source?:vscode.Uri) => this.run(source)),
-      vscode.commands.registerCommand("zxcode.stop",() => this.stop())
+      vscode.commands.registerCommand("zxcode.stop",() => this.stop()),
+      vscode.workspace.onDidChangeTextDocument(({document}) => this.#observeDocument(document)),
+      vscode.workspace.onDidCloseTextDocument((document) => {
+        const id = document.uri.toString();
+        if (this.#observed.get(id) === document) {this.#observed.delete(id);this.#coordinator.invalidateSource(id);}
+      }),
+      vscode.workspace.onDidOpenTextDocument((document) => {
+        const id = document.uri.toString();
+        if (this.#observed.has(id) && this.#observed.get(id) !== document) {
+          this.#coordinator.invalidateSource(id);this.#observed.set(id,document);this.#observeDocument(document);
+        }
+      })
     );
     this.#updateContext();
   }
   get active(): ManagedRun | undefined {return this.#coordinator.active;}
+  get currentBuild(): RunBuildMetadata | undefined {return this.#coordinator.currentBuild;}
+  buildForSession(sessionId:string): RunBuildMetadata | undefined {return this.#coordinator.buildForSession(sessionId);}
+  #observeDocument(document:vscode.TextDocument): void {
+    const id = document.uri.toString();
+    if (this.#disposed || this.#observed.get(id) !== document) return;
+    if (document.isClosed || document.languageId !== LANGUAGE_ID) {this.#observed.delete(id);this.#coordinator.invalidateSource(id);return;}
+    const snapshot = this.documents.snapshot(document);
+    this.#coordinator.observeSource({source:snapshot.source,version:snapshot.identity.version});
+  }
   #updateContext(): void {
     for (const [key,value] of [["zxcode.running",this.active !== undefined],["zxcode.starting",this.#pending > 0]] as const) void vscode.commands.executeCommand("setContext",key,value).then(() => undefined,() => undefined);
   }
@@ -37,6 +58,9 @@ export class EditorRunner implements vscode.Disposable {
       const document = source === undefined ? vscode.window.activeTextEditor?.document : await vscode.workspace.openTextDocument(source);
       if (document === undefined || document.isClosed || document.languageId !== LANGUAGE_ID) throw new Error("Select a ZX Spectrum BASIC document to run.");
       const snapshot = this.documents.snapshot(document);
+      const owner = this.#observed.get(document.uri.toString());
+      if (owner !== undefined && owner !== document) this.#coordinator.invalidateSource(document.uri.toString());
+      this.#observed.set(document.uri.toString(),document);
       const backend = createFuseBackend(emulatorConfiguration(document.uri));
       this.diagnostics.refresh(document);
       this.output.appendLine(`Run: ${document.uri.toString()} (version ${snapshot.identity.version})`);
@@ -84,6 +108,7 @@ export class EditorRunner implements vscode.Disposable {
     return result.kind === "success" ? {kind:"success",message} : {kind:"error",message,code:result.code};
   }
   shutdown(): Promise<{readonly kind:"success"} | EmulatorFailure> {
+    this.#observed.clear();
     this.#shutdown ??= this.#coordinator.dispose().then((result) => {
       if (result.kind === "error" && !this.#disposed) this.output.appendLine(result.message);
       this.#updateContext();return result;
