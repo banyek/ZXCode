@@ -179,3 +179,29 @@ CST; the expression cursor may split a provisional token for grammar purposes.
 
 Arrays, slices, assignment targets and FN calls remain the dedicated later issues.
 No declaration-before-use warning or new compile-time storage allocation is added.
+
+## M2-06 scalar assignment contract
+
+Original Sinclair [Appendix C, LET](https://worldofspectrum.org/ZXBasicManual/zxmanappc.html)
+requires explicit LET and assigns an expression value to a variable. M2-06 adds
+numeric/string scalar targets only, reusing the frozen M2-03 naming identity and
+M2-04 expression type rules. The right-hand result must match the target's type.
+No declaration, implicit LET, expression-as-target or synthetic conversion exists.
+
+Assignment targets have their own recoverable union, separate from expressions.
+A shared scalar-target node retains checked identity and source range; error
+nodes retain offending tokens. Array/slice targets can extend this union in
+M2-11 and will also serve INPUT/READ rather than forcing a separate target grammar
+in each statement. Authentic array/slice-shaped targets currently receive an
+explicit coverage diagnostic; arithmetic/function/group expressions on the left
+receive syntax diagnostics.
+
+LET's top-level equals sign separates target and value. Equals signs inside a
+parenthesized future target do not become assignment delimiters. The right-hand
+side uses the same expression parser, so `LET a=b=1` assigns a numeric comparison.
+In target position the name's raw letters are unambiguous before `=`; keyword-
+looking names are checked as names, never globally tokenized. Spelling/case/spaces
+remain in source, while emitted scalar names use their canonical ASCII identity.
+Missing equals signs, incomplete values and trailing tokens remain unbuildable
+even with parser diagnostics removed. The encoder emits LET + checked target +
+`=` + validated expression; independent reference images cover both scalar types.

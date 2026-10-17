@@ -1,0 +1,73 @@
+{
+  "reference": "zmakebas 1.3.3, commit 667090faf392e0083bbcf238084dcdd996957285",
+  "cases": [
+    {
+      "source": "10 LET a=1\n",
+      "programHex": "000a0b00f1613d310e00000100000d"
+    },
+    {
+      "source": "10 LET a=-1\n",
+      "programHex": "000a0c00f1613d2d310e00000100000d"
+    },
+    {
+      "source": "10 LET a=1+2*3\n",
+      "programHex": "000a1b00f1613d310e00000100002b320e00000200002a330e00000300000d"
+    },
+    {
+      "source": "10 LET a=2^3^2\n",
+      "programHex": "000a1b00f1613d320e00000200005e330e00000300005e320e00000200000d"
+    },
+    {
+      "source": "10 LET a=BIN 0010\n",
+      "programHex": "000a0f00f1613dc4303031300e00000200000d"
+    },
+    {
+      "source": "10 LET a=RND\n",
+      "programHex": "000a0500f1613da50d"
+    },
+    {
+      "source": "10 LET a=USR \"a\"\n",
+      "programHex": "000a0800f1613dc02261220d"
+    },
+    {
+      "source": "10 LET a=CODE \"X\"\n",
+      "programHex": "000a0800f1613daf2258220d"
+    },
+    {
+      "source": "10 LET a$=\"HELLO\"\n",
+      "programHex": "000a0c00f161243d2248454c4c4f220d"
+    },
+    {
+      "source": "10 LET a$=\"A\"+\"B\"\n",
+      "programHex": "000a0c00f161243d2241222b2242220d"
+    },
+    {
+      "source": "10 LET a$=STR$ 42\n",
+      "programHex": "000a0e00f161243dc134320e00002a00000d"
+    },
+    {
+      "source": "10 LET a$=CHR$ 65\n",
+      "programHex": "000a0e00f161243dc236350e00004100000d"
+    },
+    {
+      "source": "10 LET a$=\"OK\" AND 1\n",
+      "programHex": "000a1100f161243d224f4b22c6310e00000100000d"
+    },
+    {
+      "source": "10 LET a=b=1\n",
+      "programHex": "000a0d00f1613d623d310e00000100000d"
+    },
+    {
+      "source": "10 LET a$=SCREEN$(1,2)\n",
+      "programHex": "000a1700f161243daa28310e00000100002c320e0000020000290d"
+    },
+    {
+      "source": "10 LET nowwearesix=6\n",
+      "programHex": "000a1500f16e6f7777656172657369783d360e00000600000d"
+    },
+    {
+      "source": "10 LET a=1: PRINT a\n",
+      "programHex": "000a0e00f1613d310e00000100003af5610d"
+    }
+  ]
+}

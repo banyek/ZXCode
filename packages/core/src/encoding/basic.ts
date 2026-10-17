@@ -39,7 +39,12 @@ export function encodeBasicProgram(program: BuildableProgram<BasicProgram>): Enc
       if (index !== 0) emit(0x3a);
       const statement = line.statements[index]!;
       const start = body.length;
-      if (statement.kind === "simple-command") emitSimpleCommand(statement, emit);
+      if (statement.kind === "let") {
+        emit(romTokenBySpelling("LET")!.byte);
+        for (const character of statement.target.identity.canonicalName) emit(character.charCodeAt(0));
+        emit(0x3d);
+        emitExpression(statement.expression, emit);
+      } else if (statement.kind === "simple-command") emitSimpleCommand(statement, emit);
       else if (statement.kind !== "print") emit(romTokenBySpelling(statement.kind)!.byte);
       else {
         emit(romTokenBySpelling("PRINT")!.byte);
