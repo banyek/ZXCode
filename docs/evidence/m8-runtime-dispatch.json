@@ -1,0 +1,509 @@
+{
+  "schemaVersion": 1,
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "emulator": "SkoolKit 10.1",
+  "sourceSha256": "11ee5118e6a47328186b5f7e6acfd8a5dfa9f460298558916c39a5475951e397",
+  "tapSha256": "beb54af1d99393b21966917d310af19c581703853298d0c6aa4f317e090753f2",
+  "dispatchPc": "0x1b3d",
+  "repeatedRuns": 2,
+  "trace": {
+    "dispatch": [
+      {
+        "line": 10,
+        "statement": 1,
+        "flags": 141,
+        "programBase": 23755,
+        "characterAddress": 23759,
+        "nextLineAddress": 23793,
+        "pendingLine": 0,
+        "pendingStatement": 255,
+        "commandByte": 241,
+        "programOffset": 4
+      },
+      {
+        "line": 10,
+        "statement": 2,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23774,
+        "nextLineAddress": 23793,
+        "pendingLine": 0,
+        "pendingStatement": 255,
+        "commandByte": 235,
+        "programOffset": 19
+      },
+      {
+        "line": 20,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23797,
+        "nextLineAddress": 23841,
+        "pendingLine": 0,
+        "pendingStatement": 255,
+        "commandByte": 250,
+        "programOffset": 42
+      },
+      {
+        "line": 20,
+        "statement": 2,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23808,
+        "nextLineAddress": 23841,
+        "pendingLine": 0,
+        "pendingStatement": 255,
+        "commandByte": 237,
+        "programOffset": 53
+      },
+      {
+        "line": 100,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23905,
+        "nextLineAddress": 23928,
+        "pendingLine": 100,
+        "pendingStatement": 255,
+        "commandByte": 241,
+        "programOffset": 150
+      },
+      {
+        "line": 100,
+        "statement": 2,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23926,
+        "nextLineAddress": 23928,
+        "pendingLine": 100,
+        "pendingStatement": 255,
+        "commandByte": 254,
+        "programOffset": 171
+      },
+      {
+        "line": 20,
+        "statement": 3,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23819,
+        "nextLineAddress": 23841,
+        "pendingLine": 20,
+        "pendingStatement": 255,
+        "commandByte": 241,
+        "programOffset": 64
+      },
+      {
+        "line": 30,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23845,
+        "nextLineAddress": 23879,
+        "pendingLine": 20,
+        "pendingStatement": 255,
+        "commandByte": 250,
+        "programOffset": 90
+      },
+      {
+        "line": 40,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23883,
+        "nextLineAddress": 23886,
+        "pendingLine": 20,
+        "pendingStatement": 255,
+        "commandByte": 243,
+        "programOffset": 128
+      },
+      {
+        "line": 20,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23797,
+        "nextLineAddress": 23841,
+        "pendingLine": 10,
+        "pendingStatement": 255,
+        "commandByte": 250,
+        "programOffset": 42
+      },
+      {
+        "line": 30,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23845,
+        "nextLineAddress": 23879,
+        "pendingLine": 10,
+        "pendingStatement": 255,
+        "commandByte": 250,
+        "programOffset": 90
+      },
+      {
+        "line": 30,
+        "statement": 2,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23856,
+        "nextLineAddress": 23879,
+        "pendingLine": 10,
+        "pendingStatement": 255,
+        "commandByte": 241,
+        "programOffset": 101
+      },
+      {
+        "line": 40,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23883,
+        "nextLineAddress": 23886,
+        "pendingLine": 10,
+        "pendingStatement": 255,
+        "commandByte": 243,
+        "programOffset": 128
+      },
+      {
+        "line": 50,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23890,
+        "nextLineAddress": 23901,
+        "pendingLine": 10,
+        "pendingStatement": 255,
+        "commandByte": 236,
+        "programOffset": 135
+      },
+      {
+        "line": 200,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23932,
+        "nextLineAddress": 23951,
+        "pendingLine": 200,
+        "pendingStatement": 255,
+        "commandByte": 250,
+        "programOffset": 177
+      },
+      {
+        "line": 210,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23955,
+        "nextLineAddress": 23969,
+        "pendingLine": 200,
+        "pendingStatement": 255,
+        "commandByte": 245,
+        "programOffset": 200
+      },
+      {
+        "line": 210,
+        "statement": 2,
+        "flags": 140,
+        "programBase": 23755,
+        "characterAddress": 23967,
+        "nextLineAddress": 23969,
+        "pendingLine": 200,
+        "pendingStatement": 255,
+        "commandByte": 226,
+        "programOffset": 212
+      }
+    ],
+    "beforeIncrement": [
+      {
+        "line": 10,
+        "statement": 0,
+        "flags": 141,
+        "programBase": 23755,
+        "characterAddress": 23759,
+        "nextLineAddress": 23793,
+        "pendingLine": 0,
+        "pendingStatement": 255
+      },
+      {
+        "line": 10,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23774,
+        "nextLineAddress": 23793,
+        "pendingLine": 0,
+        "pendingStatement": 255
+      },
+      {
+        "line": 20,
+        "statement": 0,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23797,
+        "nextLineAddress": 23841,
+        "pendingLine": 0,
+        "pendingStatement": 255
+      },
+      {
+        "line": 20,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23808,
+        "nextLineAddress": 23841,
+        "pendingLine": 0,
+        "pendingStatement": 255
+      },
+      {
+        "line": 100,
+        "statement": 0,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23905,
+        "nextLineAddress": 23928,
+        "pendingLine": 100,
+        "pendingStatement": 255
+      },
+      {
+        "line": 100,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23926,
+        "nextLineAddress": 23928,
+        "pendingLine": 100,
+        "pendingStatement": 255
+      },
+      {
+        "line": 20,
+        "statement": 2,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23819,
+        "nextLineAddress": 23841,
+        "pendingLine": 20,
+        "pendingStatement": 255
+      },
+      {
+        "line": 30,
+        "statement": 0,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23845,
+        "nextLineAddress": 23879,
+        "pendingLine": 20,
+        "pendingStatement": 255
+      },
+      {
+        "line": 40,
+        "statement": 0,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23883,
+        "nextLineAddress": 23886,
+        "pendingLine": 20,
+        "pendingStatement": 255
+      },
+      {
+        "line": 20,
+        "statement": 0,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23797,
+        "nextLineAddress": 23841,
+        "pendingLine": 10,
+        "pendingStatement": 255
+      },
+      {
+        "line": 30,
+        "statement": 0,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23845,
+        "nextLineAddress": 23879,
+        "pendingLine": 10,
+        "pendingStatement": 255
+      },
+      {
+        "line": 30,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23856,
+        "nextLineAddress": 23879,
+        "pendingLine": 10,
+        "pendingStatement": 255
+      },
+      {
+        "line": 40,
+        "statement": 0,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23883,
+        "nextLineAddress": 23886,
+        "pendingLine": 10,
+        "pendingStatement": 255
+      },
+      {
+        "line": 50,
+        "statement": 0,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23890,
+        "nextLineAddress": 23901,
+        "pendingLine": 10,
+        "pendingStatement": 255
+      },
+      {
+        "line": 200,
+        "statement": 0,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23932,
+        "nextLineAddress": 23951,
+        "pendingLine": 200,
+        "pendingStatement": 255
+      },
+      {
+        "line": 210,
+        "statement": 0,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23955,
+        "nextLineAddress": 23969,
+        "pendingLine": 200,
+        "pendingStatement": 255
+      },
+      {
+        "line": 210,
+        "statement": 1,
+        "flags": 140,
+        "programBase": 23755,
+        "characterAddress": 23967,
+        "nextLineAddress": 23969,
+        "pendingLine": 200,
+        "pendingStatement": 255
+      }
+    ],
+    "statementReturns": [
+      {
+        "line": 10,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23773,
+        "nextLineAddress": 23793,
+        "pendingLine": 0,
+        "pendingStatement": 255
+      },
+      {
+        "line": 10,
+        "statement": 2,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23792,
+        "nextLineAddress": 23793,
+        "pendingLine": 0,
+        "pendingStatement": 255
+      },
+      {
+        "line": 20,
+        "statement": 2,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23818,
+        "nextLineAddress": 23841,
+        "pendingLine": 100,
+        "pendingStatement": 0
+      },
+      {
+        "line": 100,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23925,
+        "nextLineAddress": 23928,
+        "pendingLine": 100,
+        "pendingStatement": 255
+      },
+      {
+        "line": 100,
+        "statement": 2,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23927,
+        "nextLineAddress": 23928,
+        "pendingLine": 20,
+        "pendingStatement": 3
+      },
+      {
+        "line": 20,
+        "statement": 3,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23840,
+        "nextLineAddress": 23841,
+        "pendingLine": 20,
+        "pendingStatement": 255
+      },
+      {
+        "line": 40,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23885,
+        "nextLineAddress": 23886,
+        "pendingLine": 10,
+        "pendingStatement": 3
+      },
+      {
+        "line": 30,
+        "statement": 2,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23878,
+        "nextLineAddress": 23879,
+        "pendingLine": 10,
+        "pendingStatement": 255
+      },
+      {
+        "line": 40,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23885,
+        "nextLineAddress": 23886,
+        "pendingLine": 10,
+        "pendingStatement": 255
+      },
+      {
+        "line": 50,
+        "statement": 1,
+        "flags": 205,
+        "programBase": 23755,
+        "characterAddress": 23900,
+        "nextLineAddress": 23901,
+        "pendingLine": 200,
+        "pendingStatement": 0
+      },
+      {
+        "line": 210,
+        "statement": 1,
+        "flags": 140,
+        "programBase": 23755,
+        "characterAddress": 23966,
+        "nextLineAddress": 23969,
+        "pendingLine": 200,
+        "pendingStatement": 255
+      }
+    ],
+    "executedInstructions": 41404,
+    "completion": {
+      "report": "9 STOP statement",
+      "line": 210,
+      "stoppedStatement": 2,
+      "continuationStatement": 3
+    }
+  },
+  "scope": "interpreter-state research; no source-breakpoint or external-backend guarantee"
+}
