@@ -62,7 +62,7 @@ Semantic analysis must validate assignability and variable/array shape.
 
 ## DATA
 
-DATA contains expression-like constant data items but should have a dedicated grammar and preservation strategy. Its behaviour must be tested against ROM fixtures rather than assumed to be ordinary expression-list parsing.
+DATA contains numeric or string expressions, evaluated when READ consumes them, and has a dedicated grammar and preservation strategy. Its behaviour must be tested against ROM fixtures rather than assumed to be ordinary expression-list parsing.
 
 The parser should retain enough source information for exact encoding and future round-trip work.
 
@@ -280,3 +280,31 @@ trailing forms. Bare INPUT with no item/separator is invalid, while an empty
 parenthesized display group is authentic. Adjacent items still require separators.
 Display typing/encoding reuses the low-level PRINT item helpers; INPUT retains its
 own target and group structure. All original M1/PRINT fixtures stay fixed.
+
+## M2-12 DATA/READ/RESTORE research contract
+
+The original Sinclair [chapter 6](https://worldofspectrum.org/ZXBasicManual/zxmanchap6.html)
+defines DATA as comma-separated numeric or string expressions. Variables and dynamic
+functions remain expressions; evaluation happens during READ, not compilation or
+ordinary execution of DATA. Unquoted names are variables, never implicit strings.
+The original ROM statement syntax checker (STMT-L-1 at 0x1B29, pinned 48K ROM
+SHA-256 d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42)
+independently accepts expression lists and rejects empty DATA and leading/trailing
+commas. Dedicated nodes retain expressions, comma ranges and completeness, using
+the shared expression model and literal storage without compile-time evaluation.
+
+READ requires a nonempty comma-separated list of assignable targets. The same ROM
+checker accepts array and string-slice targets and rejects an empty list, trailing
+comma and arithmetic target. READ therefore shares LET/INPUT target parsing,
+identities, numeric index checks and emission. Presentation items, LINE and
+semicolon separators are not READ syntax. Recovery remains within each statement.
+
+RESTORE retains the existing optional numeric expression command. Omission resets
+the data pointer to the beginning; an operand selects the first DATA at or after
+that line number. No exact-line warning is appropriate. String operands are type
+errors. Data availability, pointer movement, declaration/dimension availability
+and correspondence between READ target types and DATA values depend on runtime
+control flow; no speculative static errors are introduced for those conditions.
+Quoted commas, colons and doubled quotes remain literal contents through the
+shared string model, while ordinary colons separate statements. Neither DATA nor
+READ introduces a raw-tail lexer mode or a foreign BASIC dialect's data syntax.
