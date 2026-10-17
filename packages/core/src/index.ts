@@ -90,3 +90,5 @@ export { decodeBasicProgram } from "./decoding/basic.js";
 export type { BasicDecodeIssue, DecodedBasicSegment, DecodedBasicLine, DecodedBasicProgram } from "./decoding/basic.js";
 export { exportBasicSource, inspectBasicTap } from "./import.js";
 export type { BasicSourceExport, BasicTapImport } from "./import.js";
+
+export type { LanguageDocumentInput, DocumentSnapshotIdentity, DocumentAnalysisSnapshot, DocumentSessionOptions, DocumentAnalysisSession, LanguageQueryResult, DocumentationLink, LanguageDocumentation, LanguageTextEdit, CompletionContext, LanguageCompletionItem, LanguageCompletionList, LanguageHover, LanguageSymbolKind, LanguageSymbol, LanguageSignatureParameter, LanguageSignature, LanguageSignatureHelp, LanguageReferenceOptions, LanguageServiceQueries } from "./service/contract.js";
