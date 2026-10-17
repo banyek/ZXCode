@@ -37,6 +37,20 @@ export async function run(): Promise<void> {
     assert.equal((await vscode.commands.executeCommand<EditorCommandResult>("zxcode.build", sampleDocument.uri, sampleTap))?.kind, "success");
     assert.equal(inspectBasicTap(await vscode.workspace.fs.readFile(sampleTap)).kind, "decoded");
   }
+  const renumberDocument = await vscode.workspace.openTextDocument({language:"zx-spectrum-basic",content:'10 GO TO 20\n20 PRINT 10\n'});
+  await vscode.window.showTextDocument(renumberDocument);
+  const renumberPreview = await vscode.commands.executeCommand<{value:{kind:string;resultText:string}}>("zxcode.previewRenumber",{start:100,step:10});
+  assert.equal(renumberPreview?.value.kind,"preview");
+  assert.equal(renumberDocument.getText(),'10 GO TO 20\n20 PRINT 10\n',"Preview never changes source");
+  assert.equal(await vscode.commands.executeCommand("zxcode.applyRenumber"),true);
+  assert.equal(renumberDocument.getText(),'100 GO TO 110\n110 PRINT 10\n');
+  await vscode.window.showTextDocument(renumberDocument);
+  await vscode.commands.executeCommand("zxcode.previewRenumber",{start:200,step:10});
+  const renumberEditor = await vscode.window.showTextDocument(renumberDocument);
+  await renumberEditor.edit(builder=>builder.insert(new vscode.Position(1,12)," "));
+  const editedRenumberText = renumberDocument.getText();
+  assert.equal(await vscode.commands.executeCommand("zxcode.applyRenumber"),false,"Source edits invalidate a preview");
+  assert.equal(renumberDocument.getText(),editedRenumberText);
   const genericUri = vscode.Uri.file(join(testFiles, "generic.bas"));
   await vscode.workspace.fs.writeFile(genericUri, Buffer.from("10 STOP\n"));
   const generic = await vscode.workspace.openTextDocument(genericUri);

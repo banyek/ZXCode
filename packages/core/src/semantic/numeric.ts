@@ -133,3 +133,11 @@ export function checkedNumericStorage(value: NumericLiteralValue): readonly numb
   if (!convertedLiterals.has(value)) throw new TypeError("Expected a converted numeric literal.");
   return value.storage;
 }
+
+/** Exact host projection of the already rounded five-byte Spectrum value. */
+export function numericLiteralNumber(literal: NumericLiteralValue): number {
+  const storage = checkedNumericStorage(literal);
+  const exponent = storage[0]!, a = storage[1]!, b = storage[2]!, c = storage[3]!, d = storage[4]!;
+  return exponent === 0 ? b + c * 256 - (a === 255 ? 65536 : 0)
+    : (a & 128 ? -1 : 1) * (1 + ((a & 127) * 2 ** 24 + b * 65536 + c * 256 + d) / 2 ** 31) * 2 ** (exponent - 129);
+}
