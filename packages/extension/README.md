@@ -30,3 +30,10 @@ sibling `.tap` for saved sources, or asks for an output location for untitled
 source. ZXCode Output reports diagnostics and the full generated TAP URI; Problems
 continues to show shared diagnostics. The initial TAP header name is ZXCODE and
 autostart is disabled. Failed builds preserve existing output.
+
+Native resource settings: `zxcode.build.outputDirectory` defaults to `""` (beside
+source), or a relative subdirectory such as `artifacts/tapes`. Absolute paths and
+dot segments are rejected; an explicit command destination overrides it.
+`zxcode.target.profile` defaults to the sole supported `spectrum-48k` profile.
+No project DSL or alternate BASIC syntax is introduced. Emulator launching follows
+in M6; use the reported TAP URI as the current handoff artifact.

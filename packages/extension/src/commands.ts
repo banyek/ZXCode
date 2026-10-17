@@ -3,6 +3,7 @@ import * as vscode from "vscode";
 import { buildTap, checkProgram } from "@zxcode/core";
 import { EditorDocuments } from "./documents.js";
 import { EditorDiagnostics } from "./diagnostics.js";
+import { buildOutputDirectory } from "./settings.js";
 import { LANGUAGE_ID } from "./language.js";
 export interface EditorCommandResult { readonly kind: "success" | "error"; readonly output?: vscode.Uri; readonly message: string }
 async function protectSource(source: vscode.Uri, output: vscode.Uri): Promise<void> {
@@ -24,10 +25,15 @@ export function registerCommands(documents: EditorDocuments, diagnostics: Editor
       const snapshot = documents.snapshot(document);
       diagnostics.refresh(document);
       output.appendLine(`${build ? "Build" : "Check"}: ${document.uri.toString()} (version ${document.version})`);
+      const directory = buildOutputDirectory(document.uri);
       let destination = outputUri;
       if (build && destination === undefined) {
         if (document.isUntitled) destination = await vscode.window.showSaveDialog({filters:{"Spectrum TAP":["tap"]},title:"Save ZXCode TAP"});
-        else destination = document.uri.with({path:document.uri.path.replace(/\.[^/.]+$/, "") + ".tap",query:"",fragment:""});
+        else {
+          const parent = vscode.Uri.joinPath(document.uri, "..");
+          const filename = document.uri.path.slice(document.uri.path.lastIndexOf("/") + 1).replace(/\.[^.]+$/, "") + ".tap";
+          destination = vscode.Uri.joinPath(parent, directory, filename);
+        }
         if (destination === undefined) return {kind:"error",message:"Build cancelled: no TAP destination selected."};
       }
       const built = build ? buildTap(snapshot.source, {filenameBytes:Uint8Array.from([90,88,67,79,68,69,32,32,32,32]),autostart:0x8000}) : undefined;
@@ -40,6 +46,7 @@ export function registerCommands(documents: EditorDocuments, diagnostics: Editor
       if (built?.kind === "success" && destination !== undefined) {
         await protectSource(document.uri, destination);
         if (document.isClosed || document.version !== snapshot.identity.version || document.getText() !== snapshot.source.text) throw new Error("Source changed during build; run Build again.");
+        await vscode.workspace.fs.createDirectory(vscode.Uri.joinPath(destination, ".."));
         await vscode.workspace.fs.writeFile(destination, built.tap.tapBytes);
         const message = `Wrote ${destination.toString()}`;
         output.appendLine(message);

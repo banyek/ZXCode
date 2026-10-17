@@ -206,5 +206,26 @@ export async function run(): Promise<void> {
   assert.equal((await vscode.commands.executeCommand<EditorCommandResult>("zxcode.build", navigationUri, dirtyOutput))?.kind, "success");
   assert.notDeepEqual(await vscode.workspace.fs.readFile(dirtyOutput), originalTap, "Build uses unsaved text");
   assert.equal((await vscode.commands.executeCommand<EditorCommandResult>("zxcode.check", document.uri))?.kind, "error", "Plaintext is rejected");
-  console.log("ZXCode real-host smoke passed: language registration/activation, sessions, completion acceptance, live Problems, diagnostics, native navigation/references/hover/outline, build/check commands, UTF-16/CRLF ranges and stale-result rejection");
+  const configuration = vscode.workspace.getConfiguration("zxcode", navigationUri);
+  try {
+    await configuration.update("build.outputDirectory", "artifacts/tapes", vscode.ConfigurationTarget.Workspace);
+    const configuredBuild = await vscode.commands.executeCommand<EditorCommandResult>("zxcode.build", navigationUri);
+    assert.equal(configuredBuild?.kind, "success");
+    assert.ok(configuredBuild?.output);
+    assert.ok(configuredBuild.output.path.endsWith("/artifacts/tapes/navigation.tap"));
+    assert.equal(readBasicTap(await vscode.workspace.fs.readFile(configuredBuild.output)).kind, "success");
+    await configuration.update("build.outputDirectory", "../outside", vscode.ConfigurationTarget.Workspace);
+    const invalidDirectory = await vscode.commands.executeCommand<EditorCommandResult>("zxcode.build", navigationUri);
+    assert.equal(invalidDirectory?.kind, "error");
+    assert.ok(invalidDirectory.message.includes("relative subdirectory"));
+    await configuration.update("build.outputDirectory", "", vscode.ConfigurationTarget.Workspace);
+    await configuration.update("target.profile", "unsupported", vscode.ConfigurationTarget.Workspace);
+    const invalidProfile = await vscode.commands.executeCommand<EditorCommandResult>("zxcode.check", navigationUri);
+    assert.equal(invalidProfile?.kind, "error");
+    assert.ok(invalidProfile.message.includes("spectrum-48k"));
+  } finally {
+    await configuration.update("build.outputDirectory", undefined, vscode.ConfigurationTarget.Workspace);
+    await configuration.update("target.profile", undefined, vscode.ConfigurationTarget.Workspace);
+  }
+  console.log("ZXCode real-host smoke passed: language registration/activation, sessions, completion acceptance, live Problems, diagnostics, native navigation/references/hover/outline, build/check commands, settings, UTF-16/CRLF ranges and stale-result rejection");
 }
