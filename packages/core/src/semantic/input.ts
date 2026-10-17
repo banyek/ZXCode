@@ -1,15 +1,15 @@
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument, SourceRange } from "../source/document.js";
-import { identifyVariable } from "../source/variable-identity.js";
-import type { ScalarAssignmentTarget } from "../source/assignment-target.js";
+import { analyzeAssignableTarget } from "./targets.js";
+import type { BasicAssignableTarget } from "./targets.js";
 import type { InputItem as SourceInputItem, InputStatement as SourceInputStatement } from "../source/input-items.js";
 import type { InputStatement } from "../syntax/input.js";
 import type { TypedExpression } from "./expression.js";
 import { analyzePrintStatement } from "./print.js";
 
-export type BasicInputItem = SourceInputItem<TypedExpression, ScalarAssignmentTarget>;
-export type BasicInputStatement = SourceInputStatement<TypedExpression, ScalarAssignmentTarget>;
+export type BasicInputItem = SourceInputItem<TypedExpression, BasicAssignableTarget>;
+export type BasicInputStatement = SourceInputStatement<TypedExpression, BasicAssignableTarget>;
 export function analyzeInputStatement(source: SourceDocument, node: InputStatement, diagnostics: Diagnostic[]): BasicInputStatement | undefined {
   let valid = node.complete;
   const items: BasicInputItem[] = [];
@@ -23,15 +23,9 @@ export function analyzeInputStatement(source: SourceDocument, node: InputStateme
       if (item.kind === "input-separator" && ![";", ",", "'"].includes(item.separator)) report(item.range, "Invalid INPUT separator.");
       items.push(item);
     } else if (item.kind === "input-target") {
-      if (item.target.kind === "error-target") {
-        report(item.target.range, "Invalid or unsupported INPUT target.", item.target.unsupported ? DiagnosticCodes.unsupportedSyntax : DiagnosticCodes.invalidAssignmentTarget, item.target.unsupported ? "compatibility" : "syntax");
-        continue;
-      }
-      const name = item.target.identity.sourceName;
-      const identified = identifyVariable(name, name.endsWith("$") ? "string-scalar" : "numeric-scalar");
-      if (identified.kind === "error") { report(item.target.range, "Invalid INPUT scalar target.", DiagnosticCodes.invalidAssignmentTarget); continue; }
-      if (item.lineMode && identified.identity.valueType !== "string") { report(item.target.range, "INPUT LINE requires a string variable.", DiagnosticCodes.typeMismatch, "semantic"); continue; }
-      const target: ScalarAssignmentTarget = Object.freeze({ kind: "scalar-target", range: item.target.range, identity: identified.identity });
+      const target = analyzeAssignableTarget(source, item.target, diagnostics);
+      if (target === undefined) { valid = false; continue; }
+      if (item.lineMode && target.identity.valueType !== "string") { report(target.range, "INPUT LINE requires a string variable.", DiagnosticCodes.typeMismatch, "semantic"); continue; }
       items.push(Object.freeze({ ...item, target }));
     } else if (item.kind === "input-display") {
       const printed = analyzePrintStatement(source, { kind: "print", range: item.range, items: [item.item], complete: true }, diagnostics);

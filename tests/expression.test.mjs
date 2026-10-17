@@ -99,7 +99,7 @@ test("primaries retain original spelling, quoted values and exact UTF-16 ranges"
 });
 
 test("incomplete expressions retain useful error nodes and item/statement recovery", () => {
-  for (const text of ["", "1+", "NOT", "SIN", "(", "(1+2", "POINT(1,)", "ATTR(1 2)", "SCREEN$(,2)", "BIN 102", "1< =2", "FN f(1)", "a$(1)", "2↑3"]) {
+  for (const text of ["", "1+", "NOT", "SIN", "(", "(1+2", "POINT(1,)", "ATTR(1 2)", "SCREEN$(,2)", "BIN 102", "1< =2", "FN f(1)", "2↑3"]) {
     const parsed = parse(text);
     assert.ok(parsed.diagnostics.length > 0, text);
     for (const diagnostic of parsed.diagnostics) {

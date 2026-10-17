@@ -1,3 +1,5 @@
+import { validateAccess } from "./access.js";
+import type { AccessGroup } from "../source/access.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument, SourceRange } from "../source/document.js";
@@ -30,6 +32,7 @@ export const BUILTIN_SIGNATURES: readonly BuiltinSignature[] = Object.freeze([
 const signatures = new Map(BUILTIN_SIGNATURES.map((item) => [item.token.spelling, item]));
 interface TypedBase { readonly range: SourceRange; readonly type: ExpressionType }
 export type TypedExpression = TypedBase & (
+  | { readonly kind: "array-access" | "string-access"; readonly base: TypedExpression; readonly group: AccessGroup<TypedExpression> }
   | { readonly kind: "string"; readonly value: string; readonly bytes: readonly number[] }
   | { readonly kind: "number"; readonly value: NumericLiteralValue }
   | { readonly kind: "binary-literal"; readonly digits: string; readonly value: NumericLiteralValue }
@@ -58,7 +61,9 @@ export function requireExpressionType(expression: TypedExpression, expected: Exp
 export function analyzeExpressionNode(source: SourceDocument, root: Expression, diagnostics: Diagnostic[]): TypedExpression {
   const results = new Map<Expression, TypedExpression>();
   const work: { node: Expression; visited: boolean }[] = [{ node: root, visited: false }];
-  const childrenOf = (node: Expression): readonly Expression[] => node.kind === "binary-expression" ? [node.left, node.right]
+  const childrenOf = (node: Expression): readonly Expression[] => node.kind === "access-expression"
+    ? [node.base, ...node.group.selectors.flatMap((selector) => selector.kind === "index" ? [selector.expression] : [...(selector.from === undefined ? [] : [selector.from]), ...(selector.to === undefined ? [] : [selector.to])])]
+    : node.kind === "binary-expression" ? [node.left, node.right]
     : node.kind === "unary-expression" ? [node.operand] : node.kind === "parenthesized-expression" ? [node.expression]
       : node.kind === "builtin-call" ? node.arguments : [];
   const report = (node: Expression, message: string, code: string, category: Diagnostic["category"]): void => {
@@ -75,7 +80,13 @@ export function analyzeExpressionNode(source: SourceDocument, root: Expression, 
     const args = children.map((child) => results.get(child)!);
     const fail = (): TypedExpression => Object.freeze({ kind: "error", type: "error", range: node.range, children: Object.freeze(args) });
     let result: TypedExpression;
-    if (node.kind === "error-expression") {
+    if (node.kind === "access-expression") {
+      const selectors = node.group.selectors.map((selector) => selector.kind === "index"
+        ? Object.freeze({ ...selector, expression: results.get(selector.expression)! })
+        : Object.freeze({ kind: "slice" as const, range: selector.range, hasTo: selector.hasTo, ...(selector.from === undefined ? {} : { from: results.get(selector.from)! }), ...(selector.to === undefined ? {} : { to: results.get(selector.to)! }) }));
+      const group: AccessGroup<TypedExpression> = Object.freeze({ ...node.group, selectors: Object.freeze(selectors) });
+      result = validateAccess(args[0]!, group, node.range, diagnostics, (expression) => requireExpressionType(expression, "numeric", diagnostics)) ?? fail();
+    } else if (node.kind === "error-expression") {
       report(node, "Malformed expression cannot be built.", DiagnosticCodes.unexpectedToken, "syntax");
       result = fail();
     } else if (node.kind === "numeric-literal" || node.kind === "binary-literal") {

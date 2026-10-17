@@ -1,3 +1,4 @@
+import { emitAssignableTarget } from "./targets.js";
 import { emitInputStatement } from "./input.js";
 import { emitPrintStatement } from "./print.js";
 import { emitSimpleCommand } from "./simple-commands.js";
@@ -61,9 +62,18 @@ export function encodeBasicProgram(program: BuildableProgram<BasicProgram>): Enc
             emitExpression(statement.limit, emit);
             if (statement.step !== undefined) { emit(romTokenBySpelling("STEP")!.byte); emitExpression(statement.step, emit); }
           }
+        } else if (statement.kind === "dim") {
+          emit(romTokenBySpelling("DIM")!.byte);
+          for (const character of statement.identity.canonicalName) emit(character.charCodeAt(0));
+          emit(0x28);
+          for (let dimension = 0; dimension < statement.dimensions.length; dimension++) {
+            if (dimension !== 0) emit(0x2c);
+            emitExpression(statement.dimensions[dimension]!, emit);
+          }
+          emit(0x29);
         } else if (statement.kind === "let") {
           emit(romTokenBySpelling("LET")!.byte);
-          for (const character of statement.target.identity.canonicalName) emit(character.charCodeAt(0));
+          emitAssignableTarget(statement.target, emit);
           emit(0x3d);
           emitExpression(statement.expression, emit);
         } else if (statement.kind === "simple-command") emitSimpleCommand(statement, emit);

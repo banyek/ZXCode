@@ -1,3 +1,4 @@
+import type { AccessGroup, AccessSelector } from "../source/access.js";
 import { identifyVariable } from "../source/variable-identity.js";
 import type { VariableIdentity } from "../source/variable-identity.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
@@ -13,6 +14,7 @@ export type LiteralExpression =
   | { readonly kind: "numeric-literal"; readonly range: SourceRange; readonly lexeme: string };
 
 export type Expression = LiteralExpression
+  | { readonly kind: "access-expression"; readonly range: SourceRange; readonly base: Expression; readonly group: AccessGroup<Expression> }
   | { readonly kind: "binary-literal"; readonly range: SourceRange; readonly digitsRange: SourceRange; readonly lexeme: string }
   | { readonly kind: "name-expression"; readonly range: SourceRange; readonly spelling: string; readonly identity: VariableIdentity }
   | { readonly kind: "builtin-value"; readonly range: SourceRange; readonly token: RomToken }
@@ -29,8 +31,8 @@ const priorities: ReadonlyMap<string, number> = new Map([
 const boundaries = new Set([",", ";", ")", ":", "THEN", "TO", "STEP"]);
 
 /** Consume one expression, leaving the caller's item/statement delimiter untouched. */
-export function readExpression(source: SourceDocument, inputTokens: readonly BodyToken[], start: number, end: number, diagnostics: Diagnostic[]): { readonly expression: Expression; readonly next: number; readonly tokens: readonly BodyToken[] } {
-  const tokens = [...inputTokens];
+export function readExpression(source: SourceDocument, inputTokens: readonly BodyToken[], start: number, end: number, diagnostics: Diagnostic[], initialDepth = 0): { readonly expression: Expression; readonly next: number; readonly tokens: readonly BodyToken[] } {
+  let tokens = [...inputTokens];
   let cursor = start;
   const peek = (): BodyToken | undefined => tokens[cursor];
   const spelling = (): string => peek()?.text.toUpperCase() ?? "";
@@ -52,28 +54,37 @@ export function readExpression(source: SourceDocument, inputTokens: readonly Bod
     report(message, range, tooling);
     return Object.freeze({ kind: "error-expression", range, tokens: Object.freeze(retained) });
   };
+  const postfix = (base: Expression, depth: number): Expression => {
+    while (tokens[cursor]?.text === "(") {
+      const parsed = readAccessGroup(source, tokens, cursor, end, diagnostics, depth + 1);
+      if (parsed.tokens !== tokens) tokens = [...parsed.tokens];
+      cursor = parsed.next;
+      base = Object.freeze({ kind: "access-expression", range: source.range(base.range.start, parsed.group.range.end), base, group: parsed.group });
+    }
+    return base;
+  };
   const prefix = (depth: number): Expression => {
     const token = peek();
     const text = spelling();
     if (token === undefined || boundaries.has(text)) return error("Expected an expression.", false);
     if (depth >= 256) return error("Expression exceeds the supported 256-level nesting budget.", true, true);
     cursor++;
-    if (token.kind === "string") return Object.freeze({ kind: "string-literal", range: token.range, contentRange: token.contentRange, value: token.value, parts: token.parts, closed: token.closed });
+    if (token.kind === "string") return postfix(Object.freeze({ kind: "string-literal", range: token.range, contentRange: token.contentRange, value: token.value, parts: token.parts, closed: token.closed }), depth);
     if (token.kind === "number") {
       if (/[Ee][+-]?$/.test(token.text)) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.invalidNumericLiteral, severity: "error", category: "syntax", message: "Expected decimal exponent digits.", range: token.range }));
-      return Object.freeze({ kind: "numeric-literal", range: token.range, lexeme: token.text });
+      return postfix(Object.freeze({ kind: "numeric-literal", range: token.range, lexeme: token.text }), depth);
     }
     if (text === "(") {
       const expression = binary(0, depth + 1);
       const closed = expect(")");
-      return Object.freeze({ kind: "parenthesized-expression", range: span(token.range.start, closed ? expression.range.end : position()), expression, closed });
+      return postfix(Object.freeze({ kind: "parenthesized-expression", range: span(token.range.start, closed ? expression.range.end : position()), expression, closed }), depth);
     }
     if (text === "+" || text === "-" || text === "NOT") {
       const operand = text === "+" ? prefix(depth + 1) : binary(text === "-" ? 9 : 4, depth + 1);
       return Object.freeze({ kind: "unary-expression", range: source.range(token.range.start, operand.range.end), operatorRange: token.range, operator: text, operand });
     }
     const romToken = token.kind === "word" ? token.romToken : undefined;
-    if (romToken?.category === "value") return Object.freeze({ kind: "builtin-value", range: token.range, token: romToken });
+    if (romToken?.category === "value") return postfix(Object.freeze({ kind: "builtin-value", range: token.range, token: romToken }), depth);
     if (text === "BIN") {
       const digitsStart = position();
       let lexeme = "";
@@ -82,7 +93,7 @@ export function readExpression(source: SourceDocument, inputTokens: readonly Bod
         lexeme += peek()!.text;
         digitsEnd = tokens[cursor++]!.range.end;
       }
-      return Object.freeze({ kind: "binary-literal", range: span(token.range.start), digitsRange: source.range(digitsStart, digitsEnd), lexeme });
+      return postfix(Object.freeze({ kind: "binary-literal", range: span(token.range.start), digitsRange: source.range(digitsStart, digitsEnd), lexeme }), depth);
     }
     if (romToken?.category === "function" && text !== "FN") {
       const args: Expression[] = [];
@@ -94,7 +105,8 @@ export function readExpression(source: SourceDocument, inputTokens: readonly Bod
         args.push(binary(0, depth + 1));
         closed = expect(")") && opened && separated;
       } else args.push(binary(16, depth + 1));
-      return Object.freeze({ kind: "builtin-call", range: span(token.range.start, Math.max(...args.map((arg) => arg.range.end), closed ? token.range.end : position())), token: romToken, arguments: Object.freeze(args), closed });
+      const call: Expression = Object.freeze({ kind: "builtin-call", range: span(token.range.start, Math.max(...args.map((arg) => arg.range.end), closed ? token.range.end : position())), token: romToken, arguments: Object.freeze(args), closed });
+      return text === "POINT" || text === "ATTR" || text === "SCREEN$" ? postfix(call, depth) : call;
     }
     if (token.kind === "word" && romToken?.category !== "print-control" && text !== "FN" && text !== "AND" && text !== "OR") {
       let offset = token.range.start;
@@ -125,7 +137,7 @@ export function readExpression(source: SourceDocument, inputTokens: readonly Bod
         diagnostics.push(createDiagnostic({ code: DiagnosticCodes.invalidVariableName, severity: "error", category: "syntax", message: "String variable names must be one letter followed by '$'.", range }));
         return Object.freeze({ kind: "error-expression", range, tokens: Object.freeze(inputTokens.filter((item) => item.range.start >= range.start && item.range.end <= range.end)) });
       }
-      return Object.freeze({ kind: "name-expression", range, spelling: name, identity: result.identity });
+      return postfix(Object.freeze({ kind: "name-expression", range, spelling: name, identity: result.identity }), depth);
     }
     cursor--; // Keep the unexpected token in an error node.
     return error("Expected a supported expression primary or prefix.", true);
@@ -141,7 +153,7 @@ export function readExpression(source: SourceDocument, inputTokens: readonly Bod
       left = Object.freeze({ kind: "binary-expression", range: source.range(left.range.start, right.range.end), operatorRange, operator, left, right });
     }
   };
-  const expression = binary(0, 0);
+  const expression = binary(0, initialDepth);
   return Object.freeze({ expression, next: cursor, tokens: Object.freeze(tokens) });
 }
 
@@ -153,4 +165,53 @@ export function parseExpression(source: SourceDocument, range: SourceRange): Par
   const parsed = readExpression(source, tokens, 0, range.end, diagnostics);
   if (parsed.next < parsed.tokens.length) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unexpectedToken, severity: "error", category: "syntax", message: "Unexpected token after expression.", range: parsed.tokens[parsed.next]!.range }));
   return Object.freeze({ source, syntax: parsed.expression, diagnostics: Object.freeze(diagnostics) });
+}
+
+
+/** Contextual selector grammar shared by expressions, DIM and assignable targets. */
+export function readAccessGroup(source: SourceDocument, input: readonly BodyToken[], start: number, end: number, diagnostics: Diagnostic[], depth = 0): { readonly group: AccessGroup<Expression>; readonly tokens: readonly BodyToken[]; readonly next: number } {
+  let tokens = input;
+  let cursor = start + 1;
+  let complete = true;
+  let closed = false;
+  const selectors: AccessSelector<Expression>[] = [];
+  const position = (): number => tokens[cursor]?.range.start ?? end;
+  const report = (message: string): void => {
+    complete = false;
+    diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unexpectedToken, severity: "error", category: "syntax", message, range: source.range(position()) }));
+  };
+  const expression = (): Expression => {
+    const parsed = readExpression(source, tokens, cursor, end, diagnostics, depth);
+    tokens = parsed.tokens;
+    cursor = parsed.next;
+    return parsed.expression;
+  };
+  while (true) {
+    const selectorStart = position();
+    let from: Expression | undefined;
+    let to: Expression | undefined;
+    let hasTo = tokens[cursor]?.text.toUpperCase() === "TO";
+    if (!hasTo && tokens[cursor] !== undefined && tokens[cursor]!.text !== ")" && tokens[cursor]!.text !== ",") from = expression();
+    const toToken = tokens[cursor];
+    if (toToken?.text.toUpperCase() === "TO") {
+      hasTo = true;
+      cursor++;
+      if (tokens[cursor] !== undefined && tokens[cursor]!.text !== ")" && tokens[cursor]!.text !== ",") to = expression();
+    }
+    const selector: AccessSelector<Expression> = from !== undefined && !hasTo
+      ? Object.freeze({ kind: "index", range: from.range, expression: from })
+      : Object.freeze({ kind: "slice", range: source.range(selectorStart, to?.range.end ?? (hasTo ? toToken!.range.end : selectorStart)), hasTo, ...(from === undefined ? {} : { from }), ...(to === undefined ? {} : { to }) });
+    selectors.push(selector);
+    if (tokens[cursor]?.text === ")") { cursor++; closed = true; break; }
+    if (tokens[cursor]?.text === ",") {
+      if (selector.kind === "slice") report("A slice must be the final selector in its group.");
+      cursor++;
+      continue;
+    }
+    report("Expected ',' or ')' after subscript/slice.");
+    break;
+  }
+  const finish = closed ? tokens[cursor - 1]!.range.end : position();
+  const group: AccessGroup<Expression> = Object.freeze({ range: source.range(tokens[start]!.range.start, finish), selectors: Object.freeze(selectors), closed, complete: complete && closed });
+  return Object.freeze({ group, tokens, next: cursor });
 }

@@ -1,0 +1,285 @@
+{
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "cases": [
+    {
+      "source": "10 PRINT a(b)",
+      "encoded": "f561286229",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a(b,c)",
+      "encoded": "f56128622c6329",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a()",
+      "encoded": "f5612829",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT ab(c)",
+      "encoded": "f56162286329",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT a(b TO c)",
+      "encoded": "f5612862cc6329",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT a(b)(c)",
+      "encoded": "f561286229286329",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT a$(b)",
+      "encoded": "f56124286229",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a$()",
+      "encoded": "f561242829",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a$( TO )",
+      "encoded": "f5612428cc29",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a$( TO b)",
+      "encoded": "f5612428cc6229",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a$(b TO )",
+      "encoded": "f561242862cc29",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a$(b TO c)",
+      "encoded": "f561242862cc6329",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a$(b,c)",
+      "encoded": "f5612428622c6329",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a$(b, TO c)",
+      "encoded": "f5612428622ccc6329",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a$(b,c TO d)",
+      "encoded": "f5612428622c63cc6429",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a$(b,)",
+      "encoded": "f5612428622c29",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a$(,b)",
+      "encoded": "f56124282c6229",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT a$(,)",
+      "encoded": "f56124282c29",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT a$(b,,)",
+      "encoded": "f5612428622c2c29",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT a$( TO b,c)",
+      "encoded": "f5612428cc622c6329",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT a$(b)(c TO d)",
+      "encoded": "f561242862292863cc6429",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a$()(b)",
+      "encoded": "f561242829286229",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a$(b)(c,d)",
+      "encoded": "f5612428622928632c6429",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT \"abc\"(b)",
+      "encoded": "f52261626322286229",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"abc\"( TO )",
+      "encoded": "f5226162632228cc29",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"abc\"(b,c)",
+      "encoded": "f5226162632228622c6329",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT (a$+b$)(c TO d)",
+      "encoded": "f52861242b6224292863cc6429",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT (a+b)(c)",
+      "encoded": "f528612b6229286329",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT a$(b$ TO c)",
+      "encoded": "f56124286224cc6329",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT a(b$)",
+      "encoded": "f56128622429",
+      "romError": 11
+    },
+    {
+      "source": "10 LET a(b)=c",
+      "encoded": "f1612862293d63",
+      "statements": 1
+    },
+    {
+      "source": "10 LET a$(b TO c)=d$",
+      "encoded": "f161242862cc63293d6424",
+      "statements": 1
+    },
+    {
+      "source": "10 LET a$(b,c TO d)=e$",
+      "encoded": "f1612428622c63cc64293d6524",
+      "statements": 1
+    },
+    {
+      "source": "10 LET a$(b,)=c$",
+      "encoded": "f1612428622c293d6324",
+      "statements": 1
+    },
+    {
+      "source": "10 LET a$(b)(c TO d)=e$",
+      "encoded": "f161242862292863cc64293d6524",
+      "statements": 1
+    },
+    {
+      "source": "10 LET a$()(b)=c$",
+      "encoded": "f1612428292862293d6324",
+      "statements": 1
+    },
+    {
+      "source": "10 LET \"ab\"(b)=c$",
+      "encoded": "f1226162222862293d6324",
+      "romError": 11
+    },
+    {
+      "source": "10 LET (a$)(b)=c$",
+      "encoded": "f1286124292862293d6324",
+      "romError": 11
+    },
+    {
+      "source": "10 LET a(b)(c)=d",
+      "encoded": "f1612862292863293d64",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT SCREEN$(a,b)(c)",
+      "encoded": "f5aa28612c6229286329",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT STR$ PI(a)",
+      "encoded": "f5c1a7286129",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT (STR$ PI)(a)",
+      "encoded": "f528c1a729286129",
+      "statements": 1
+    },
+    {
+      "source": "10 DIM a(b)",
+      "encoded": "e961286229",
+      "statements": 1
+    },
+    {
+      "source": "10 DIM a(b,c)",
+      "encoded": "e96128622c6329",
+      "statements": 1
+    },
+    {
+      "source": "10 DIM a$(b)",
+      "encoded": "e96124286229",
+      "statements": 1
+    },
+    {
+      "source": "10 DIM a$(b,c)",
+      "encoded": "e9612428622c6329",
+      "statements": 1
+    },
+    {
+      "source": "10 DIM a()",
+      "encoded": "e9612829",
+      "romError": 11
+    },
+    {
+      "source": "10 DIM a$()",
+      "encoded": "e961242829",
+      "romError": 11
+    },
+    {
+      "source": "10 DIM ab(c)",
+      "encoded": "e96162286329",
+      "romError": 11
+    },
+    {
+      "source": "10 DIM a(b)(c)",
+      "encoded": "e961286229286329",
+      "romError": 11
+    },
+    {
+      "source": "10 DIM a$(b)(c)",
+      "encoded": "e96124286229286329",
+      "romError": 11
+    },
+    {
+      "source": "10 DIM a$(b TO c)",
+      "encoded": "e961242862cc6329",
+      "romError": 11
+    },
+    {
+      "source": "10 DIM a(b),c(d)",
+      "encoded": "e9612862292c63286429",
+      "romError": 11
+    },
+    {
+      "source": "10 INPUT a(b)",
+      "encoded": "ee61286229",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT a$(b TO c)",
+      "encoded": "ee61242862cc6329",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT LINE a$(b TO c)",
+      "encoded": "eeca61242862cc6329",
+      "statements": 1
+    }
+  ]
+}

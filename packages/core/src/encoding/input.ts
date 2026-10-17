@@ -1,3 +1,4 @@
+import { emitAssignableTarget } from "./targets.js";
 import { romTokenBySpelling } from "../source/rom-tokens.js";
 import type { BasicInputStatement } from "../semantic/input.js";
 import { emitPrintItem } from "./print.js";
@@ -10,7 +11,7 @@ export function emitInputStatement(node: BasicInputStatement, emit: (byte: numbe
       case "input-separator": emit(item.separator.charCodeAt(0)); break;
       case "input-target":
         if (item.lineMode) emit(romTokenBySpelling("LINE")!.byte);
-        for (const character of item.target.identity.canonicalName) emit(character.charCodeAt(0));
+        emitAssignableTarget(item.target, emit);
         break;
       case "input-display": emitPrintItem(item.item, emit); break;
       case "input-group":
