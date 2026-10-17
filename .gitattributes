@@ -1,0 +1,6 @@
+# Fixture identities and source listings are identical on every checkout platform.
+tests/fixtures/*.json text eol=lf
+tests/fixtures/*.hex text eol=lf
+tests/fixtures/*.bas text eol=lf
+examples/*.bas text eol=lf
+examples/**/*.bas text eol=lf

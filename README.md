@@ -22,12 +22,12 @@ The language itself is not modernized. IDE features live around Sinclair BASIC r
 
 ## Status
 
-M1 and M2 are implemented and verified. The host-independent core parses,
+M1, M2 and M3 are implemented with independent compatibility checks. The host-independent core parses,
 validates and encodes all fifty original 48K ROM command grammars, expressions,
 numeric/string variables and arrays, slicing, control flow, PRINT/INPUT,
 DATA/READ/RESTORE, DEF FN/FN, REM, and listing/cassette forms. The CLI checks source
 and builds TAP files through that same model, retaining source maps and categorized
-diagnostics. IDE integration and full M3 fidelity work follow.
+diagnostics. Editor-independent language services and IDE integration follow.
 
 The [M2 acceptance corpus](docs/design/026-m2-core-acceptance.md) covers all commands
 and built-in signatures with independent byte fixtures. A combined arrays, DATA,
@@ -113,10 +113,13 @@ npm run zxcode -- --help
 | `npm run lint` | Run ESLint with zero warnings allowed |
 | `npm test` | Build and run Node's test runner |
 | `npm run check` | Run type checking, lint, build, and tests |
+| `npm run test:compatibility` | Check the pinned independent M3 corpus |
 | `npm run clean` | Remove TypeScript build outputs |
 | `npm run zxcode -- --help` | Run the compiled CLI (build first) |
 
-CI uses the same install/check commands on Node.js 24. Dependency versions are
+CI uses the same install/check commands on Node.js 24 on Linux, macOS and Windows,
+then compares and retains the deterministic M3 compatibility report. See the
+[M3 acceptance gate](docs/design/031-m3-fidelity-acceptance.md). Dependency versions are
 locked in `package-lock.json`; generated output is ignored by Git.
 
 ## Implementation layout

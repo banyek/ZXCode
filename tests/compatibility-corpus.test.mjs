@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { runCompatibilityCorpus } from '../scripts/compatibility/run-corpus.mjs';
+import { verifyCompatibilityAcceptance } from '../scripts/compatibility/acceptance.mjs';
 test('pinned independent M3 corpus compares exact bytes and reports deterministic export limits', () => {
-  const report = runCompatibilityCorpus();
-  assert.deepEqual(report, runCompatibilityCorpus());
+  const report = verifyCompatibilityAcceptance();
+  assert.deepEqual(report, verifyCompatibilityAcceptance());
   assert.equal(report.fixtures.length, 9);
   const total = key => report.fixtures.reduce((sum, entry) => sum + entry[key], 0);
   assert.equal(total('cases'), 448);
