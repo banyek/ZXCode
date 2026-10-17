@@ -1,6 +1,6 @@
 # ZX Spectrum 48K Expression Semantics v0.2
 
-Status: parser-facing research notes.
+Status: M2-04 expression typing contract below; arrays, slices and FN binding remain later issues.
 
 ## Runtime expression result types
 
@@ -55,7 +55,7 @@ Working signatures for the ROM vocabulary:
 | ABS | numeric | Numeric |
 | PEEK | numeric | Numeric |
 | IN | numeric | Numeric |
-| USR | numeric or string form; exact semantics to document | Numeric |
+| USR | numeric or string UDG-selection form | Numeric |
 | STR$ | numeric | String |
 | CHR$ | numeric | String |
 | NOT | numeric | Numeric |
@@ -122,3 +122,56 @@ Completion should remain tolerant of incomplete syntax.
 - exact array/subscript and string-slice grammar;
 - user-defined function argument/name rules;
 - domain/range warnings for built-ins.
+
+## M2-04 verified typing contract
+
+Sources: original Sinclair manual [chapter 9](https://worldofspectrum.org/ZXBasicManual/zxmanchap9.html)
+(function signatures and string concatenation), [chapter 13](https://worldofspectrum.org/ZXBasicManual/zxmanchap13.html)
+(comparisons and conditional expressions), [chapter 14](https://worldofspectrum.org/ZXBasicManual/zxmanchap14.html)
+(USR string form), and the [ROM scanner](https://skoolkit.ca/disassemblies/rom/hex/asm/26C9.html)
+at 0x273D..0x278E (type selection/checking).
+
+- The analysis domain is numeric, string, unknown, error. There is no Boolean
+  source type. Error/unknown operands suppress secondary type mismatches.
+- `+` accepts two numbers or two strings and returns that type. Other arithmetic
+  operators require numbers. Every comparison requires operands of the same type
+  (two numbers or two strings) and returns numeric.
+- AND requires a numeric right operand; its left operand may be numeric or string,
+  and determines the result type. OR requires two numbers and returns numeric.
+  NOT and unary minus require numeric operands. Unary plus is the ROM's no-op
+  prefix and preserves either numeric or string type, rather than inventing a
+  numeric-only check absent from S-U-PLUS.
+- The function signature table above is authoritative for the supported parser
+  forms: USR has one numeric-or-string argument and numeric result. Its string
+  runtime form selects a UDG by one character (A..U/a..u or the UDG character).
+  Runtime argument values/domain failures are not new static syntax restrictions.
+- Name references get their value type from M2-03 identity; an undeclared numeric
+  name still has numeric type. No declaration-before-use check is introduced.
+- BIN's checked integer accumulator must not exceed 65535; empty digits mean zero
+  and leading zeroes are unrestricted. Converted hidden storage is owned by the
+  semantic node, just as decimal literal storage is.
+
+### Shared typed model and build boundary
+
+Standalone expression analysis and program analysis use the same semantic visitor
+and signature table. Typed nodes retain ranges and validated literals/identities.
+Malformed nodes and missing delimiters remain errors even if caller-supplied
+parser diagnostics have been removed. Expected argument/result contexts report
+semantic type errors, distinct from syntax or compatibility diagnostics.
+
+To make accepted expression types buildable through the existing shared pipeline,
+the expression encoder is extended alongside typing: it emits semantic nodes,
+never reparses source or evaluates expressions. Operators use ROM tokens where
+applicable and ASCII elsewhere. Parentheses and unary plus remain explicit.
+Names emit canonical ASCII spelling; no lexer keyword annotations are consulted
+inside names. BIN emits its token, normalized digit spelling and checked numeric
+marker/storage. The independent expression-ROM input bytes provide byte fixtures
+for every already researched operator/priority case; M1 golden images stay fixed.
+Traversal uses explicit work stacks so long operator chains cannot exhaust the
+host call stack. This does not add array/slice/FN or PRINT-control grammar.
+
+The fixed `expression-types-rom.json` corpus records 114 syntax-mode observations
+from the original scanner. Its standalone verifier runs without ZXCode code,
+using numeric/string variable operands to avoid inserting decimal constants in
+syntax mode. It covers each supported built-in signature and every operator's
+numeric/string combinations, including unary plus on strings and string AND.

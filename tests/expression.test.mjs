@@ -118,8 +118,8 @@ test("incomplete expressions retain useful error nodes and item/statement recove
   assert.equal(parsed.syntax.lines[2].statements[0].kind, "cls");
 });
 
-test("parser structure cannot bypass pending semantic validation, even without parser diagnostics", () => {
-  for (const text of ["1+2", "-1", "SIN 1", "POINT(1,2)", "(1)", "BIN 1", "a", "RND", "1+", "(1"]) {
+test("malformed expression structure cannot bypass semantic validation, even without parser diagnostics", () => {
+  for (const text of ["1+", "(1", "SIN", "POINT(1,)", "POINT 1,2)", "POINT(1 2)"]) {
     const source = new SourceDocument("pending", `10 PRINT ${text}`);
     const parsed = parseBasic(source);
     assert.equal(analyzeBasic({ ...parsed, diagnostics: [] }).kind, "invalid", text);

@@ -4,7 +4,7 @@ import type { BasicProgram, BuildableProgram } from "../semantic/program.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceRange } from "../source/document.js";
-import { encodeNumericLiteral } from "./numeric.js";
+import { emitExpression } from "./expression.js";
 import type { EncodedLineMapping, EncodedProgram, EncodedStatementMapping } from "./program.js";
 
 export const M1_BASIC_BYTE_LIMIT = 32768;
@@ -43,14 +43,7 @@ export function encodeBasicProgram(program: BuildableProgram<BasicProgram>): Enc
         emit(romTokenBySpelling("PRINT")!.byte);
         for (const item of statement.items) {
           if (item.kind === "print-separator") emit(item.separator.charCodeAt(0));
-          else if (item.expression.kind === "string") {
-            emit(0x22);
-            for (const byte of item.expression.bytes) emit(byte);
-            emit(0x22);
-          } else {
-            for (const character of item.expression.value.lexeme) emit(character.charCodeAt(0));
-            for (const byte of encodeNumericLiteral(item.expression.value)) emit(byte);
-          }
+          else emitExpression(item.expression, emit);
         }
       }
       statements.push(Object.freeze({ sourceRange: statement.range, encodedRange: Object.freeze({ offset: encodedOffset + 4 + start, length: body.length - start }) }));
