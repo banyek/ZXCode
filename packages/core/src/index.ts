@@ -104,3 +104,4 @@ export type { LanguageHelpEntry, HelpParameter } from "./source/language-help.js
 export { documentSignatureHelp } from "./service/signatures.js";
 export { documentSymbols } from "./service/document-symbols.js";
 export { languageService } from "./service/service.js";
+export type { RenumberOptions, RenumberCommand, RenumberLineChange, RenumberReference, RenumberIssueCode, RenumberIssue, RenumberBlocked, RenumberPreview, RenumberResult, RenumberApplyResult } from "./transform/renumber-contract.js";
