@@ -1,4 +1,7 @@
-# ZXCode extension development
+# ZXCode: original Spectrum BASIC in VS Code
+
+Start with the repository [getting-started guide](../../docs/guides/getting-started.md)
+and `examples/getting-started.zxbas` for completion, navigation and your first TAP.
 
 This workspace adapts VS Code documents to the shared ZX Spectrum BASIC core.
 The registered **ZX Spectrum BASIC** language selects `.zxbas` files automatically.
