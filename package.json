@@ -21,14 +21,18 @@
     "zxcode": "node packages/cli/bin/zxcode.mjs",
     "test:compatibility": "npm run build && node scripts/compatibility/run-corpus.mjs",
     "test:service": "npm run build && node scripts/compatibility/run-service.mjs",
-    "test:extension": "npm run build && node scripts/test-extension.mjs"
+    "test:extension": "npm run build && node scripts/test-extension.mjs",
+    "package:extension": "npm run build && node scripts/package-extension.mjs",
+    "test:vsix": "npm run package:extension && node scripts/verify-extension-package.mjs && node scripts/test-extension.mjs --installed"
   },
   "devDependencies": {
     "@types/node": "24.19.2",
     "@types/vscode": "1.140.0",
     "@vscode/test-electron": "3.1.0",
+    "@vscode/vsce": "4.0.0",
     "esbuild": "0.28.2",
     "eslint": "10.12.0",
+    "fflate": "0.8.2",
     "typescript": "6.0.3",
     "typescript-eslint": "8.71.2",
     "vscode-oniguruma": "2.0.1",

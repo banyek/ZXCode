@@ -23,6 +23,13 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
+      - run: npm run package:extension
+      - run: node scripts/verify-extension-package.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zxcode-vsix-${{ matrix.os }}
+          path: artifacts/*.vsix*
+          if-no-files-found: error
       - run: npm run zxcode -- --help
       - run: npm exec -- zxcode --help
       - run: node scripts/compatibility/acceptance.mjs --report artifacts/m3-compatibility.json
@@ -64,3 +71,19 @@ jobs:
           cache: npm
       - run: npm ci
       - run: xvfb-run -a npm run test:extension
+      - run: xvfb-run -a npm run test:vsix
+
+  package-parity:
+    name: M5 VSIX platform parity
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: zxcode-vsix-*
+          path: artifacts/vsix-platforms
+      - run: node scripts/compare-package-reports.mjs artifacts/vsix-platforms

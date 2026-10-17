@@ -21,7 +21,7 @@ function coreBoundary(files, forbiddenLayers = []) {
 }
 
 export default [
-  { ignores: ["**/dist/**", "**/node_modules/**", "coverage/**"] },
+  { ignores: ["**/dist/**", "**/node_modules/**", "coverage/**", ".vscode-test/**", "artifacts/**"] },
   ...tseslint.configs.recommended,
   coreBoundary(["packages/core/src/**/*.ts"]),
   coreBoundary(["packages/core/src/source/**/*.ts"], ["syntax", "semantic", "encoding", "decoding", "tap"]),

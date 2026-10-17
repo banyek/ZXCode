@@ -1,7 +1,15 @@
 # ZXCode: original Spectrum BASIC in VS Code
 
-Start with the repository [getting-started guide](../../docs/guides/getting-started.md)
-and `examples/getting-started.zxbas` for completion, navigation and your first TAP.
+Install the generated `.vsix` with **Extensions: Install from VSIX**. Open a
+`.zxbas` file, or choose **ZX Spectrum BASIC** as the language mode. Use Ctrl+Space
+and normal Tab acceptance for suggestions, hover for Sinclair help, Cmd/Ctrl-click
+for definitions and **ZXCode: Check BASIC** / **ZXCode: Build TAP** from the palette.
+
+Follow the [getting-started guide](https://github.com/banyek/ZXCode/blob/main/docs/guides/getting-started.md)
+and [sample](https://github.com/banyek/ZXCode/blob/main/examples/getting-started.zxbas).
+The package also includes `getting-started.md` and `examples/getting-started.zxbas`.
+For an installed VSIX, save a copy of the sample in your workspace and begin at
+step 3 of the guide; its first two steps describe source development.
 
 This workspace adapts VS Code documents to the shared ZX Spectrum BASIC core.
 The registered **ZX Spectrum BASIC** language selects `.zxbas` files automatically.
@@ -40,3 +48,8 @@ dot segments are rejected; an explicit command destination overrides it.
 `zxcode.target.profile` defaults to the sole supported `spectrum-48k` profile.
 No project DSL or alternate BASIC syntax is introduced. Emulator launching follows
 in M6; use the reported TAP URI as the current handoff artifact.
+
+From source, `npm run package:extension` creates the installable VSIX and payload
+hash manifest under `artifacts/`. `npm run test:vsix` checks reproducible bytes and
+installs it in a temporary profile to verify the full editor workflow. This does
+not publish the extension to Marketplace.
