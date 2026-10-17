@@ -1,4 +1,4 @@
-import { SourceDocument, parseBasic, analyzeBasic, SPECTRUM_48K_TARGET, documentDiagnostics, documentDefinitions, documentReferences, documentHover, documentCompletions, documentSignatureHelp, documentSymbols } from "../packages/core/src/index.js";
+import { SourceDocument, parseBasic, analyzeBasic, SPECTRUM_48K_TARGET, documentDiagnostics, documentDefinitions, documentReferences, documentHover, documentCompletions, documentSignatureHelp, documentSymbols, languageService } from "../packages/core/src/index.js";
 import type { DocumentAnalysisSnapshot, DocumentAnalysisSession, LanguageServiceQueries, LanguageQueryResult, Diagnostic, LanguageTextEdit } from "../packages/core/src/index.js";
 
 const source = new SourceDocument("incomplete.bas", "10 PRINT AT 10,\n20 GO TO\n30 FOR i=1 TO\n");
@@ -45,3 +45,6 @@ void signatureQuery;
 
 const symbolQuery: LanguageServiceQueries["symbols"] = documentSymbols;
 void symbolQuery;
+
+const completeQueries: LanguageServiceQueries = languageService;
+void completeQueries;

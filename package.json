@@ -13,7 +13,8 @@
     "test": "npm run build && node --test tests/*.test.mjs",
     "check": "npm run typecheck && npm run lint && npm test",
     "zxcode": "node packages/cli/bin/zxcode.mjs",
-    "test:compatibility": "npm run build && node scripts/compatibility/run-corpus.mjs"
+    "test:compatibility": "npm run build && node scripts/compatibility/run-corpus.mjs",
+    "test:service": "npm run build && node scripts/compatibility/run-service.mjs"
   },
   "devDependencies": {
     "@types/node": "24.19.2",

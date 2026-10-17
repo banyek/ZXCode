@@ -22,7 +22,7 @@ The language itself is not modernized. IDE features live around Sinclair BASIC r
 
 ## Status
 
-M1, M2 and M3 are implemented with independent compatibility checks. The host-independent core parses,
+M1–M4 are implemented with independent compatibility and headless service checks. The host-independent core parses,
 validates and encodes all fifty original 48K ROM command grammars, expressions,
 numeric/string variables and arrays, slicing, control flow, PRINT/INPUT,
 DATA/READ/RESTORE, DEF FN/FN, REM, and listing/cassette forms. The CLI checks source
@@ -35,7 +35,8 @@ parser-context completion uses checked text edits and typed candidates. IDE
 integration follows. Shared original-manual help covers every ROM token, and
 `documentSignatureHelp` supplies typed built-in/FN argument information, and
 `documentSymbols` exposes an immutable outline in physical source order.
-See the [service contract](docs/design/032-language-service-contract.md).
+See the [service contract](docs/design/032-language-service-contract.md) and
+[M4 headless acceptance gate](docs/design/037-m4-headless-acceptance.md).
 
 The [M2 acceptance corpus](docs/design/026-m2-core-acceptance.md) covers all commands
 and built-in signatures with independent byte fixtures. A combined arrays, DATA,
@@ -122,6 +123,7 @@ npm run zxcode -- --help
 | `npm test` | Build and run Node's test runner |
 | `npm run check` | Run type checking, lint, build, and tests |
 | `npm run test:compatibility` | Check the pinned independent M3 corpus |
+| `npm run test:service` | Sweep all headless query positions and report behavior |
 | `npm run clean` | Remove TypeScript build outputs |
 | `npm run zxcode -- --help` | Run the compiled CLI (build first) |
 

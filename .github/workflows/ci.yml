@@ -31,3 +31,24 @@ jobs:
           name: m3-compatibility-${{ matrix.os }}
           path: artifacts/m3-compatibility.json
           if-no-files-found: error
+      - run: node scripts/compatibility/run-service.mjs --report artifacts/m4-language-service.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m4-language-service-${{ matrix.os }}
+          path: artifacts/m4-language-service.json
+          if-no-files-found: error
+
+  service-parity:
+    name: M4 service platform parity
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: m4-language-service-*
+          path: artifacts/m4-platforms
+      - run: node scripts/compatibility/compare-service-reports.mjs artifacts/m4-platforms
