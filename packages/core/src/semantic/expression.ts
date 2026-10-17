@@ -1,3 +1,4 @@
+import { spectrumLiteralByte } from "../source/characters.js";
 import type { FunctionContext } from "./function-context.js";
 import { validateAccess } from "./access.js";
 import type { AccessGroup } from "../source/access.js";
@@ -118,9 +119,9 @@ export function analyzeExpressionNode(source: SourceDocument, root: Expression, 
       for (const part of node.parts) {
         let offset = part.range.start;
         for (const character of part.value) {
-          const byte = character.codePointAt(0)!;
-          if (byte < 32 || byte > 126 || byte === 96) {
-            diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unsupportedCharacter, severity: "error", category: "compatibility", message: "Character is outside the directly representable Spectrum string subset.", range: source.range(offset, offset + character.length) }));
+          const byte = spectrumLiteralByte(character);
+          if (byte === undefined) {
+            diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unsupportedCharacter, severity: "error", category: "compatibility", message: "Character has no direct Spectrum literal mapping.", range: source.range(offset, offset + character.length) }));
             valid = false;
           } else bytes.push(byte);
           offset += character.length;
