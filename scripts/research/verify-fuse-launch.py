@@ -13,6 +13,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--fuse", required=True)
 parser.add_argument("--tap", required=True)
 parser.add_argument("--output", required=True)
+parser.add_argument("--rom", help="Original 48K ROM reference used to verify the loaded ROM checksum")
 parser.add_argument("--capture", action="store_true", help="Requires --with-null-ui --enable-automation build")
 args = parser.parse_args()
 tape = Path(args.tap).resolve()
@@ -28,6 +29,11 @@ with tempfile.TemporaryDirectory(prefix="zxcode-fuse-config-") as configuration:
     version = subprocess.run([args.fuse, "--version"], env=environment, capture_output=True, text=True, check=True)
     assert "version 1.10.0" in version.stdout
     command = [args.fuse, "--machine", "48", "--auto-load", "--no-autosave-settings", "--no-confirm-actions", "--no-sound", "--tape", str(tape)]
+    rom = Path(args.rom).resolve() if args.rom else None
+    if rom:
+        assert hashlib.sha256(rom.read_bytes()).hexdigest() == "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42"
+        # Fuse disables auto-load for an explicit/custom ROM filename. Verify
+        # the active ROM below while retaining its normal default selection.
     if args.capture:
         command += ["--automation-output", str(output), "--automation-frames", "500", "--automation-capture-screen"]
         completed = subprocess.run(command, env=environment, capture_output=True, text=True, timeout=30, check=True)
@@ -37,6 +43,8 @@ with tempfile.TemporaryDirectory(prefix="zxcode-fuse-config-") as configuration:
         assert result["execution"]["termination"]["type"] == "frames"
         assert result["identity"]["tape"]["crc32"] == "%08x" % zlib.crc32(original)
         assert result["settings"]["autoload"] is True
+        if rom:
+            assert any(item["page"] == 0 and item["size"] == 16384 and item["crc32"] == "%08x" % zlib.crc32(rom.read_bytes()) for item in result["identity"]["active_roms"])
         assert result["artifacts"]["screen"]["status"] == "ok"
     else:
         with (output / "emulator.log").open("w") as log:
