@@ -1,0 +1,575 @@
+{
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "cases": [
+    {
+      "source": "RND",
+      "encoded": "a5",
+      "type": "numeric"
+    },
+    {
+      "source": "INKEY$",
+      "encoded": "a6",
+      "type": "string"
+    },
+    {
+      "source": "PI",
+      "encoded": "a7",
+      "type": "numeric"
+    },
+    {
+      "source": "VAL$ a",
+      "encoded": "ae61",
+      "romError": 11
+    },
+    {
+      "source": "VAL$ b$",
+      "encoded": "ae6224",
+      "type": "string"
+    },
+    {
+      "source": "CODE a",
+      "encoded": "af61",
+      "romError": 11
+    },
+    {
+      "source": "CODE b$",
+      "encoded": "af6224",
+      "type": "numeric"
+    },
+    {
+      "source": "VAL a",
+      "encoded": "b061",
+      "romError": 11
+    },
+    {
+      "source": "VAL b$",
+      "encoded": "b06224",
+      "type": "numeric"
+    },
+    {
+      "source": "LEN a",
+      "encoded": "b161",
+      "romError": 11
+    },
+    {
+      "source": "LEN b$",
+      "encoded": "b16224",
+      "type": "numeric"
+    },
+    {
+      "source": "SIN a",
+      "encoded": "b261",
+      "type": "numeric"
+    },
+    {
+      "source": "SIN b$",
+      "encoded": "b26224",
+      "romError": 11
+    },
+    {
+      "source": "COS a",
+      "encoded": "b361",
+      "type": "numeric"
+    },
+    {
+      "source": "COS b$",
+      "encoded": "b36224",
+      "romError": 11
+    },
+    {
+      "source": "TAN a",
+      "encoded": "b461",
+      "type": "numeric"
+    },
+    {
+      "source": "TAN b$",
+      "encoded": "b46224",
+      "romError": 11
+    },
+    {
+      "source": "ASN a",
+      "encoded": "b561",
+      "type": "numeric"
+    },
+    {
+      "source": "ASN b$",
+      "encoded": "b56224",
+      "romError": 11
+    },
+    {
+      "source": "ACS a",
+      "encoded": "b661",
+      "type": "numeric"
+    },
+    {
+      "source": "ACS b$",
+      "encoded": "b66224",
+      "romError": 11
+    },
+    {
+      "source": "ATN a",
+      "encoded": "b761",
+      "type": "numeric"
+    },
+    {
+      "source": "ATN b$",
+      "encoded": "b76224",
+      "romError": 11
+    },
+    {
+      "source": "LN a",
+      "encoded": "b861",
+      "type": "numeric"
+    },
+    {
+      "source": "LN b$",
+      "encoded": "b86224",
+      "romError": 11
+    },
+    {
+      "source": "EXP a",
+      "encoded": "b961",
+      "type": "numeric"
+    },
+    {
+      "source": "EXP b$",
+      "encoded": "b96224",
+      "romError": 11
+    },
+    {
+      "source": "INT a",
+      "encoded": "ba61",
+      "type": "numeric"
+    },
+    {
+      "source": "INT b$",
+      "encoded": "ba6224",
+      "romError": 11
+    },
+    {
+      "source": "SQR a",
+      "encoded": "bb61",
+      "type": "numeric"
+    },
+    {
+      "source": "SQR b$",
+      "encoded": "bb6224",
+      "romError": 11
+    },
+    {
+      "source": "SGN a",
+      "encoded": "bc61",
+      "type": "numeric"
+    },
+    {
+      "source": "SGN b$",
+      "encoded": "bc6224",
+      "romError": 11
+    },
+    {
+      "source": "ABS a",
+      "encoded": "bd61",
+      "type": "numeric"
+    },
+    {
+      "source": "ABS b$",
+      "encoded": "bd6224",
+      "romError": 11
+    },
+    {
+      "source": "PEEK a",
+      "encoded": "be61",
+      "type": "numeric"
+    },
+    {
+      "source": "PEEK b$",
+      "encoded": "be6224",
+      "romError": 11
+    },
+    {
+      "source": "IN a",
+      "encoded": "bf61",
+      "type": "numeric"
+    },
+    {
+      "source": "IN b$",
+      "encoded": "bf6224",
+      "romError": 11
+    },
+    {
+      "source": "USR a",
+      "encoded": "c061",
+      "type": "numeric"
+    },
+    {
+      "source": "USR b$",
+      "encoded": "c06224",
+      "type": "numeric"
+    },
+    {
+      "source": "STR$ a",
+      "encoded": "c161",
+      "type": "string"
+    },
+    {
+      "source": "STR$ b$",
+      "encoded": "c16224",
+      "romError": 11
+    },
+    {
+      "source": "CHR$ a",
+      "encoded": "c261",
+      "type": "string"
+    },
+    {
+      "source": "CHR$ b$",
+      "encoded": "c26224",
+      "romError": 11
+    },
+    {
+      "source": "POINT(a,a)",
+      "encoded": "a928612c6129",
+      "type": "numeric"
+    },
+    {
+      "source": "POINT(b$,a)",
+      "encoded": "a92862242c6129",
+      "romError": 11
+    },
+    {
+      "source": "POINT(a,b$)",
+      "encoded": "a928612c622429",
+      "romError": 11
+    },
+    {
+      "source": "SCREEN$(a,a)",
+      "encoded": "aa28612c6129",
+      "type": "string"
+    },
+    {
+      "source": "SCREEN$(b$,a)",
+      "encoded": "aa2862242c6129",
+      "romError": 11
+    },
+    {
+      "source": "SCREEN$(a,b$)",
+      "encoded": "aa28612c622429",
+      "romError": 11
+    },
+    {
+      "source": "ATTR(a,a)",
+      "encoded": "ab28612c6129",
+      "type": "numeric"
+    },
+    {
+      "source": "ATTR(b$,a)",
+      "encoded": "ab2862242c6129",
+      "romError": 11
+    },
+    {
+      "source": "ATTR(a,b$)",
+      "encoded": "ab28612c622429",
+      "romError": 11
+    },
+    {
+      "source": "a + a",
+      "encoded": "612b61",
+      "type": "numeric"
+    },
+    {
+      "source": "a + b$",
+      "encoded": "612b6224",
+      "romError": 11
+    },
+    {
+      "source": "b$ + a",
+      "encoded": "62242b61",
+      "romError": 11
+    },
+    {
+      "source": "b$ + b$",
+      "encoded": "62242b6224",
+      "type": "string"
+    },
+    {
+      "source": "a - a",
+      "encoded": "612d61",
+      "type": "numeric"
+    },
+    {
+      "source": "a - b$",
+      "encoded": "612d6224",
+      "romError": 11
+    },
+    {
+      "source": "b$ - a",
+      "encoded": "62242d61",
+      "romError": 11
+    },
+    {
+      "source": "b$ - b$",
+      "encoded": "62242d6224",
+      "romError": 11
+    },
+    {
+      "source": "a * a",
+      "encoded": "612a61",
+      "type": "numeric"
+    },
+    {
+      "source": "a * b$",
+      "encoded": "612a6224",
+      "romError": 11
+    },
+    {
+      "source": "b$ * a",
+      "encoded": "62242a61",
+      "romError": 11
+    },
+    {
+      "source": "b$ * b$",
+      "encoded": "62242a6224",
+      "romError": 11
+    },
+    {
+      "source": "a / a",
+      "encoded": "612f61",
+      "type": "numeric"
+    },
+    {
+      "source": "a / b$",
+      "encoded": "612f6224",
+      "romError": 11
+    },
+    {
+      "source": "b$ / a",
+      "encoded": "62242f61",
+      "romError": 11
+    },
+    {
+      "source": "b$ / b$",
+      "encoded": "62242f6224",
+      "romError": 11
+    },
+    {
+      "source": "a ^ a",
+      "encoded": "615e61",
+      "type": "numeric"
+    },
+    {
+      "source": "a ^ b$",
+      "encoded": "615e6224",
+      "romError": 11
+    },
+    {
+      "source": "b$ ^ a",
+      "encoded": "62245e61",
+      "romError": 11
+    },
+    {
+      "source": "b$ ^ b$",
+      "encoded": "62245e6224",
+      "romError": 11
+    },
+    {
+      "source": "a = a",
+      "encoded": "613d61",
+      "type": "numeric"
+    },
+    {
+      "source": "a = b$",
+      "encoded": "613d6224",
+      "romError": 11
+    },
+    {
+      "source": "b$ = a",
+      "encoded": "62243d61",
+      "romError": 11
+    },
+    {
+      "source": "b$ = b$",
+      "encoded": "62243d6224",
+      "type": "numeric"
+    },
+    {
+      "source": "a < a",
+      "encoded": "613c61",
+      "type": "numeric"
+    },
+    {
+      "source": "a < b$",
+      "encoded": "613c6224",
+      "romError": 11
+    },
+    {
+      "source": "b$ < a",
+      "encoded": "62243c61",
+      "romError": 11
+    },
+    {
+      "source": "b$ < b$",
+      "encoded": "62243c6224",
+      "type": "numeric"
+    },
+    {
+      "source": "a > a",
+      "encoded": "613e61",
+      "type": "numeric"
+    },
+    {
+      "source": "a > b$",
+      "encoded": "613e6224",
+      "romError": 11
+    },
+    {
+      "source": "b$ > a",
+      "encoded": "62243e61",
+      "romError": 11
+    },
+    {
+      "source": "b$ > b$",
+      "encoded": "62243e6224",
+      "type": "numeric"
+    },
+    {
+      "source": "a <= a",
+      "encoded": "61c761",
+      "type": "numeric"
+    },
+    {
+      "source": "a <= b$",
+      "encoded": "61c76224",
+      "romError": 11
+    },
+    {
+      "source": "b$ <= a",
+      "encoded": "6224c761",
+      "romError": 11
+    },
+    {
+      "source": "b$ <= b$",
+      "encoded": "6224c76224",
+      "type": "numeric"
+    },
+    {
+      "source": "a >= a",
+      "encoded": "61c861",
+      "type": "numeric"
+    },
+    {
+      "source": "a >= b$",
+      "encoded": "61c86224",
+      "romError": 11
+    },
+    {
+      "source": "b$ >= a",
+      "encoded": "6224c861",
+      "romError": 11
+    },
+    {
+      "source": "b$ >= b$",
+      "encoded": "6224c86224",
+      "type": "numeric"
+    },
+    {
+      "source": "a <> a",
+      "encoded": "61c961",
+      "type": "numeric"
+    },
+    {
+      "source": "a <> b$",
+      "encoded": "61c96224",
+      "romError": 11
+    },
+    {
+      "source": "b$ <> a",
+      "encoded": "6224c961",
+      "romError": 11
+    },
+    {
+      "source": "b$ <> b$",
+      "encoded": "6224c96224",
+      "type": "numeric"
+    },
+    {
+      "source": "a OR a",
+      "encoded": "61c561",
+      "type": "numeric"
+    },
+    {
+      "source": "a OR b$",
+      "encoded": "61c56224",
+      "romError": 11
+    },
+    {
+      "source": "b$ OR a",
+      "encoded": "6224c561",
+      "romError": 11
+    },
+    {
+      "source": "b$ OR b$",
+      "encoded": "6224c56224",
+      "romError": 11
+    },
+    {
+      "source": "a AND a",
+      "encoded": "61c661",
+      "type": "numeric"
+    },
+    {
+      "source": "a AND b$",
+      "encoded": "61c66224",
+      "romError": 11
+    },
+    {
+      "source": "b$ AND a",
+      "encoded": "6224c661",
+      "type": "string"
+    },
+    {
+      "source": "b$ AND b$",
+      "encoded": "6224c66224",
+      "romError": 11
+    },
+    {
+      "source": "+ a",
+      "encoded": "2b61",
+      "type": "numeric"
+    },
+    {
+      "source": "+ b$",
+      "encoded": "2b6224",
+      "type": "string"
+    },
+    {
+      "source": "- a",
+      "encoded": "2d61",
+      "type": "numeric"
+    },
+    {
+      "source": "- b$",
+      "encoded": "2d6224",
+      "romError": 11
+    },
+    {
+      "source": "NOT a",
+      "encoded": "c361",
+      "type": "numeric"
+    },
+    {
+      "source": "NOT b$",
+      "encoded": "c36224",
+      "romError": 11
+    },
+    {
+      "source": "(a)",
+      "encoded": "286129",
+      "type": "numeric"
+    },
+    {
+      "source": "(b$)",
+      "encoded": "28622429",
+      "type": "string"
+    }
+  ]
+}

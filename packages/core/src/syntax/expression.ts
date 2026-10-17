@@ -88,11 +88,11 @@ export function readExpression(source: SourceDocument, inputTokens: readonly Bod
       const args: Expression[] = [];
       let closed = true;
       if (text === "POINT" || text === "ATTR" || text === "SCREEN$") {
-        expect("(");
+        const opened = expect("(");
         args.push(binary(0, depth + 1));
-        expect(",");
+        const separated = expect(",");
         args.push(binary(0, depth + 1));
-        closed = expect(")");
+        closed = expect(")") && opened && separated;
       } else args.push(binary(16, depth + 1));
       return Object.freeze({ kind: "builtin-call", range: span(token.range.start, Math.max(...args.map((arg) => arg.range.end), closed ? token.range.end : position())), token: romToken, arguments: Object.freeze(args), closed });
     }

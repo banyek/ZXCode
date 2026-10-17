@@ -131,9 +131,9 @@ M2 issues; they are not guessed here. Variable identity is likewise deferred to
 M2-03. Comparisons `<=`, `>=`, `<>` are contiguous punctuation tokens outside
 strings/REM; they are never synthesized across whitespace.
 
-PRINT uses this same parser for its expression slots. Until expression typing
-(M2-04) and complete encoding land, nonliteral expression nodes produce explicit
-compatibility diagnostics during analysis and cannot acquire BuildableProgram.
+PRINT uses this same parser for its expression slots. M2-02 initially guarded
+nonliteral nodes with compatibility diagnostics; M2-04 replaces that temporary
+guard with shared semantic typing and expression encoding.
 Parser success alone is not semantic acceptance. Existing literal builds retain
 their exact byte output. Error expressions and missing delimiters retain ranges
 and stop at item, statement and physical-line boundaries. A nesting budget of

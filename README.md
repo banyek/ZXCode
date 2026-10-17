@@ -36,10 +36,11 @@ rounding, with independent ROM observations as fixtures. See the
 optional Python/SkoolKit verification procedure. The production core and normal
 CI do not require an emulator or ROM.
 
-M2 implementation has begun: a shared 91-token ROM catalogue and a recoverable
-[expression parser](docs/design/006-expression-grammar.md) are available. General
-expressions produce explicit compatibility diagnostics until semantic typing and
-encoding support land; CLI builds still support the M1 subset.
+M2 implementation includes the shared 91-token ROM catalogue, authentic variable
+identities, and a recoverable [expression parser](docs/design/006-expression-grammar.md)
+with [semantic typing](docs/design/007-expression-semantics.md) and encoding.
+PRINT can now build arithmetic, string, comparison, logical and built-in function
+expressions. Further statement, array/slice and FN grammars remain in progress.
 
 See [docs/design](docs/design/).
 

@@ -1,11 +1,10 @@
-import type { Expression } from "../syntax/expression.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument, SourceRange } from "../source/document.js";
 import type { ParsedDocument } from "../syntax/document.js";
 import type { BasicSyntaxProgram, Statement } from "../syntax/parser.js";
-import { convertNumericLiteral } from "./numeric.js";
-import type { NumericLiteralValue } from "./numeric.js";
+import { analyzeExpressionNode } from "./expression.js";
+import type { TypedExpression } from "./expression.js";
 
 export interface AnalyzedProgram<TProgram> {
   readonly source: SourceDocument;
@@ -21,9 +20,7 @@ export interface BuildableProgram<TProgram> extends AnalyzedProgram<TProgram> {
   readonly [buildableProgram]: true;
 }
 
-export type BasicExpression =
-  | { readonly kind: "string"; readonly range: SourceRange; readonly value: string; readonly bytes: readonly number[] }
-  | { readonly kind: "number"; readonly range: SourceRange; readonly value: NumericLiteralValue };
+export type BasicExpression = TypedExpression;
 
 export type BasicPrintItem =
   | { readonly kind: "print-expression"; readonly range: SourceRange; readonly expression: BasicExpression }
@@ -59,38 +56,6 @@ export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>): BasicA
     if (diagnostics.some((item) => item.severity === "error" && item.range.sourceId === range.sourceId && item.range.start >= range.start && item.range.end <= range.end)) return;
     diagnostics.push(createDiagnostic({ code, severity: "error", category, message, range }));
   };
-  const expression = (node: Expression): BasicExpression | undefined => {
-    if (node.kind === "numeric-literal") {
-      const result = convertNumericLiteral(node.lexeme);
-      if (result.kind === "error") {
-        report(node.range, result.reason === "overflow" ? "Numeric literal overflows the original 48K ROM representation." : "Invalid decimal numeric literal.",
-          result.reason === "overflow" ? DiagnosticCodes.numericOverflow : DiagnosticCodes.invalidNumericLiteral,
-          result.reason === "overflow" ? "compatibility" : "syntax");
-        return undefined;
-      }
-      return Object.freeze({ kind: "number", range: node.range, value: result.value });
-    }
-    if (node.kind !== "string-literal") {
-      report(node.range, "This expression requires M2 semantic typing and encoding support before it can be built.", DiagnosticCodes.unsupportedSyntax, "compatibility");
-      return undefined;
-    }
-    if (!node.closed) {
-      report(node.range, "String literal is incomplete.", DiagnosticCodes.unterminatedString, "syntax");
-      return undefined;
-    }
-    const bytes: number[] = [];
-    let offset = node.contentRange.start;
-    let valid = true;
-    for (const character of node.value) {
-      const code = character.codePointAt(0)!;
-      if (code < 32 || code > 126 || code === 96) {
-        report(source.range(offset, offset + character.length), "Character is outside M1's directly representable Spectrum string subset.", DiagnosticCodes.unsupportedCharacter, "compatibility");
-        valid = false;
-      } else bytes.push(code);
-      offset += character.length;
-    }
-    return valid ? Object.freeze({ kind: "string", range: node.range, value: node.value, bytes: Object.freeze(bytes) }) : undefined;
-  };
   const statement = (node: Statement): BasicStatement | undefined => {
     if (node.kind === "error-statement") {
       report(node.range, "Malformed/unsupported statements cannot be built.", DiagnosticCodes.unsupportedSyntax, "compatibility");
@@ -102,8 +67,11 @@ export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>): BasicA
     for (const item of node.items) {
       if (item.kind === "print-separator") items.push(item);
       else {
-        const value = expression(item.expression);
-        if (value === undefined) valid = false;
+        const value = analyzeExpressionNode(source, item.expression, diagnostics);
+        if (value.type === "error" || value.type === "unknown") {
+          valid = false;
+          report(value.range, "Expression is incomplete or invalid.", DiagnosticCodes.unexpectedToken, "syntax");
+        }
         else items.push(Object.freeze({ kind: "print-expression", range: item.range, expression: value }));
       }
     }
