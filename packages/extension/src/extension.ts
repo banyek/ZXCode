@@ -1,3 +1,4 @@
+import { SpectrumScreen } from "./screen.js";
 import { EditorDebugger } from "./debug.js";
 import { registerWorkspaceNavigation } from "./workspace.js";
 import { registerCodeActions } from "./code-actions.js";
@@ -28,7 +29,7 @@ export function activate(context: vscode.ExtensionContext): ZXCodeExtensionApi {
   const runner = new EditorRunner(documents,diagnostics,output);
   runnerForShutdown = runner;
   const debuggerAdapter = new EditorDebugger(documents);debuggerForShutdown=debuggerAdapter;
-  context.subscriptions.push(debuggerAdapter, registerWorkspaceNavigation(documents), registerCodeActions(documents), registerFormatting(documents), registerRenumber(documents), registerCommands(documents, diagnostics, output), runner, registerCompletion(documents), registerNavigation(documents), diagnostics, documents, output);
+  context.subscriptions.push(new SpectrumScreen(), debuggerAdapter, registerWorkspaceNavigation(documents), registerCodeActions(documents), registerFormatting(documents), registerRenumber(documents), registerCommands(documents, diagnostics, output), runner, registerCompletion(documents), registerNavigation(documents), diagnostics, documents, output);
   return Object.freeze({ documents, queries: languageService, toEditorRange, runner });
 }
 
