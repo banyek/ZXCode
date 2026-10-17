@@ -7,7 +7,7 @@ import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument, SourceRange } from "../source/document.js";
 import type { ParsedDocument } from "../syntax/document.js";
 import type { BasicSyntaxProgram, Statement } from "../syntax/parser.js";
-import { analyzeExpressionNode } from "./expression.js";
+import { analyzeExpressionNode, requireExpressionType } from "./expression.js";
 import type { TypedExpression } from "./expression.js";
 
 export interface AnalyzedProgram<TProgram> {
@@ -30,7 +30,27 @@ export type BasicPrintItem =
   | { readonly kind: "print-expression"; readonly range: SourceRange; readonly expression: BasicExpression }
   | { readonly kind: "print-separator"; readonly range: SourceRange; readonly separator: ";" | "," };
 
-export type BasicStatement = BasicLetStatement | SimpleCommandStatement<TypedExpression>
+export interface StaticLineReference {
+  readonly lineNumber: number;
+  readonly range: SourceRange;
+  readonly definitionRange?: SourceRange;
+}
+export interface BasicJumpStatement {
+  readonly kind: "goto" | "gosub";
+  readonly range: SourceRange;
+  readonly target: TypedExpression;
+  readonly lineReference?: StaticLineReference;
+}
+export interface BasicIfStatement {
+  readonly kind: "if";
+  readonly range: SourceRange;
+  readonly headerRange: SourceRange;
+  readonly condition: TypedExpression;
+  readonly thenStatements: readonly BasicStatement[];
+}
+export type BasicStatement = BasicIfStatement | BasicJumpStatement
+  | { readonly kind: "empty"; readonly range: SourceRange }
+  | BasicLetStatement | SimpleCommandStatement<TypedExpression>
   | { readonly kind: "print"; readonly range: SourceRange; readonly items: readonly BasicPrintItem[] }
   | { readonly kind: "cls" | "stop"; readonly range: SourceRange };
 
@@ -56,6 +76,19 @@ export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>): BasicA
   const diagnostics = [...parsed.diagnostics];
   const lines: BasicLine[] = [];
   const firstNumbers = new Map<number, SourceRange>();
+  const definitions = new Map<number, SourceRange>();
+  for (const line of parsed.syntax.lines) if (line.kind === "numbered" && !definitions.has(line.lineNumber)) definitions.set(line.lineNumber, line.numberRange);
+  const lineReference = (target: TypedExpression): StaticLineReference | undefined => {
+    if (target.kind !== "number" && target.kind !== "binary-literal") return undefined;
+    const storage = target.value.storage;
+    const exponent = storage[0]!, a = storage[1]!, b = storage[2]!, c = storage[3]!, d = storage[4]!;
+    const value = exponent === 0 ? b + c * 256 - (a === 255 ? 65536 : 0)
+      : (a & 128 ? -1 : 1) * (1 + ((a & 127) * 2 ** 24 + b * 65536 + c * 256 + d) / 2 ** 31) * 2 ** (exponent - 129);
+    if (!Number.isInteger(value) || value < 1 || value > 9999) return undefined;
+    const definitionRange = definitions.get(value);
+    if (definitionRange === undefined) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.missingLineTarget, severity: "warning", category: "semantic", message: `No stored BASIC line numbered ${value}.`, range: target.range }));
+    return Object.freeze({ lineNumber: value, range: target.range, ...(definitionRange === undefined ? {} : { definitionRange }) });
+  };
   const report = (range: SourceRange, message: string, code: string, category: Diagnostic["category"]): void => {
     if (diagnostics.some((item) => item.severity === "error" && item.range.sourceId === range.sourceId && item.range.start >= range.start && item.range.end <= range.end)) return;
     diagnostics.push(createDiagnostic({ code, severity: "error", category, message, range }));
@@ -64,6 +97,28 @@ export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>): BasicA
     if (node.kind === "error-statement") {
       report(node.range, "Malformed/unsupported statements cannot be built.", DiagnosticCodes.unsupportedSyntax, "compatibility");
       return undefined;
+    }
+    if (node.kind === "empty") return node;
+    if (node.kind === "goto" || node.kind === "gosub") {
+      const target = analyzeExpressionNode(source, node.target, diagnostics);
+      const valid = requireExpressionType(target, "numeric", diagnostics);
+      if (!node.complete) report(node.range, "Jump target expression is malformed.", DiagnosticCodes.unexpectedToken, "syntax");
+      if (!valid || !node.complete) return undefined;
+      const reference = lineReference(target);
+      return Object.freeze({ kind: node.kind, range: node.range, target, ...(reference === undefined ? {} : { lineReference: reference }) });
+    }
+    if (node.kind === "if") {
+      const condition = analyzeExpressionNode(source, node.condition, diagnostics);
+      let valid = requireExpressionType(condition, "numeric", diagnostics);
+      if (!node.complete) { report(node.range, "IF requires THEN and a recoverable statement tail.", DiagnosticCodes.unexpectedToken, "syntax"); valid = false; }
+      const tail: BasicStatement[] = [];
+      for (const child of node.thenStatements) {
+        const converted = statement(child);
+        if (converted === undefined) valid = false;
+        else tail.push(converted);
+      }
+      if (tail.length === 0) tail.push(Object.freeze({ kind: "empty", range: source.range(node.range.end) }));
+      return valid ? Object.freeze({ kind: "if", range: node.range, headerRange: node.headerRange, condition, thenStatements: Object.freeze(tail) }) : undefined;
     }
     if (node.kind === "let") return analyzeLetStatement(source, node, diagnostics);
     if (node.kind === "simple-command") return analyzeSimpleCommand(source, node, diagnostics);
@@ -96,6 +151,14 @@ export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>): BasicA
     if (first !== undefined) report(line.numberRange, "Duplicate BASIC line number.", DiagnosticCodes.duplicateLineNumber, "syntax");
     else firstNumbers.set(line.lineNumber, line.numberRange);
     if (line.statements.length === 0) report(line.bodyRange, "Expected a BASIC statement.", DiagnosticCodes.missingStatement, "syntax");
+    const countWork = [...line.statements];
+    let statementCount = 0;
+    while (countWork.length !== 0) {
+      const counted = countWork.pop()!;
+      statementCount++;
+      if (counted.kind === "if") for (const child of counted.thenStatements) countWork.push(child);
+    }
+    if (statementCount > 127) report(line.bodyRange, "The 48K ROM supports at most 127 statements in one BASIC line.", DiagnosticCodes.tooManyStatements, "compatibility");
     const statements: BasicStatement[] = [];
     for (const node of line.statements) {
       const value = statement(node);

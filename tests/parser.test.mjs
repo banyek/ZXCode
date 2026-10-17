@@ -54,7 +54,7 @@ test("malformed statements recover at colons and physical boundaries", () => {
 });
 
 test("incomplete/unsupported source retains nodes and insertion positions rather than throwing", () => {
-  for (const text of ["10", "10 PRINT 1e+", '10 PRINT "', "10 :", "10 PRINT: ", "10 PRINT (", "10 WHILE 1", "PRINT 1\n20 STOP", '10 PRINT "a""b"']) {
+  for (const text of ["10", "10 PRINT 1e+", '10 PRINT "', "10 PRINT (", "10 WHILE 1", "PRINT 1\n20 STOP", '10 PRINT "a""b"']) {
     const parsed = parse(text);
     assert.ok(parsed.diagnostics.length > 0, text);
     assert.ok(parsed.syntax.lines.length > 0);

@@ -40,6 +40,7 @@ export function lexBody(source: SourceDocument, bodyRange: SourceRange): LexedBo
   };
   let cursor = 0;
   let statementStart = true;
+  let ifCondition = false;
   while (cursor < text.length) {
     const start = cursor;
     const char = text[cursor]!;
@@ -51,6 +52,7 @@ export function lexBody(source: SourceDocument, bodyRange: SourceRange): LexedBo
     if (char === ":") {
       plain("colon", cursor, ++cursor);
       statementStart = true;
+      ifCondition = false;
       continue;
     }
     if (char === '"') {
@@ -69,6 +71,13 @@ export function lexBody(source: SourceDocument, bodyRange: SourceRange): LexedBo
       if (word !== null) {
         cursor += word[0].length;
         plain("word", start, cursor);
+        const keyword = word[0].toUpperCase();
+        if (statementStart && keyword === "IF") ifCondition = true;
+        if (ifCondition && keyword === "THEN") {
+          statementStart = true;
+          ifCondition = false;
+          continue;
+        }
         if (statementStart && word[0].toUpperCase() === "REM") {
           if (cursor < text.length) plain("raw-tail", cursor, text.length);
           cursor = text.length;

@@ -41,7 +41,8 @@ identities, and a recoverable [expression parser](docs/design/006-expression-gra
 with [semantic typing](docs/design/007-expression-semantics.md) and encoding.
 PRINT can now build arithmetic, string, comparison, logical and built-in function
 expressions. Simple numeric, colour, graphics and no-operand commands also build. Scalar LET assignments build with matching target/result types. Array/slice,
-control-flow and FN grammars remain in progress. The six commands
+FN and array/slice grammars remain in progress. GO TO/GO SUB/RETURN and IF/THEN
+sequences build, with literal line relations and nonfatal missing-line warnings. The six commands
 awaiting capability policy are recognized but currently blocked from builds.
 
 See [docs/design](docs/design/).

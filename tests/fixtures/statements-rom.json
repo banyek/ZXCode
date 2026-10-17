@@ -1,0 +1,110 @@
+{
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "cases": [
+    {
+      "source": "10 :",
+      "encoded": "3a",
+      "statements": 2
+    },
+    {
+      "source": "10 ::",
+      "encoded": "3a3a",
+      "statements": 3
+    },
+    {
+      "source": "10 CLS:",
+      "encoded": "fb3a",
+      "statements": 2
+    },
+    {
+      "source": "10 IF a THEN",
+      "encoded": "fa61cb",
+      "statements": 2
+    },
+    {
+      "source": "10 IF a THEN : STOP",
+      "encoded": "fa61cb3ae2",
+      "statements": 3
+    },
+    {
+      "source": "10 IF a THEN STOP: CLS",
+      "encoded": "fa61cbe23afb",
+      "statements": 3
+    },
+    {
+      "source": "10 IF a THEN IF b THEN STOP: CLS",
+      "encoded": "fa61cbfa62cbe23afb",
+      "statements": 4
+    },
+    {
+      "source": "10 PRINT a: IF b THEN CLS: STOP",
+      "encoded": "f5613afa62cbfb3ae2",
+      "statements": 4
+    },
+    {
+      "source": "10 GO TO a",
+      "encoded": "ec61",
+      "statements": 1
+    },
+    {
+      "source": "10 GO SUB a",
+      "encoded": "ed61",
+      "statements": 1
+    },
+    {
+      "source": "10 RETURN",
+      "encoded": "fe",
+      "statements": 1
+    },
+    {
+      "source": "10 IF b$ THEN STOP",
+      "encoded": "fa6224cbe2",
+      "romError": 11
+    },
+    {
+      "source": "10 GO TO b$",
+      "encoded": "ec6224",
+      "romError": 11
+    },
+    {
+      "source": "10 IF a THEN a",
+      "encoded": "fa61cb61",
+      "romError": 11
+    },
+    {
+      "source": "10 CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS",
+      "encoded": "fb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb",
+      "statements": 126
+    },
+    {
+      "source": "10 CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS",
+      "encoded": "fb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb",
+      "statements": 127
+    },
+    {
+      "source": "10 CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS",
+      "encoded": "fb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb",
+      "romError": 11
+    },
+    {
+      "source": "10 CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:",
+      "encoded": "fb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3a",
+      "statements": 127
+    },
+    {
+      "source": "10 CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:CLS:",
+      "encoded": "fb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3afb3a",
+      "romError": 11
+    },
+    {
+      "source": "10 IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN ",
+      "encoded": "fa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cb",
+      "statements": 127
+    },
+    {
+      "source": "10 IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN IF a THEN ",
+      "encoded": "fa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cbfa61cb",
+      "romError": 11
+    }
+  ]
+}

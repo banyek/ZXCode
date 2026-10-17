@@ -1,0 +1,57 @@
+{
+  "reference": "zmakebas 1.3.3, commit 667090faf392e0083bbcf238084dcdd996957285",
+  "cases": [
+    {
+      "source": "10 GO TO 20\n",
+      "programHex": "000a0a00ec32300e00001400000d"
+    },
+    {
+      "source": "10 GO SUB 20\n",
+      "programHex": "000a0a00ed32300e00001400000d"
+    },
+    {
+      "source": "10 RETURN\n",
+      "programHex": "000a0200fe0d"
+    },
+    {
+      "source": "10 GO TO a+10\n",
+      "programHex": "000a0c00ec612b31300e00000a00000d"
+    },
+    {
+      "source": "10 GO SUB 10*2\n",
+      "programHex": "000a1200ed31300e00000a00002a320e00000200000d"
+    },
+    {
+      "source": "10 IF 1 THEN STOP: CLS\n",
+      "programHex": "000a0d00fa310e0000010000cbe23afb0d"
+    },
+    {
+      "source": "10 PRINT 0: IF 1 THEN PRINT 1: STOP\n",
+      "programHex": "000a1d00f5300e00000000003afa310e0000010000cbf5310e00000100003ae20d"
+    },
+    {
+      "source": "10 IF a THEN IF b THEN PRINT 1: CLS\n",
+      "programHex": "000a1100fa61cbfa62cbf5310e00000100003afb0d"
+    },
+    {
+      "source": "10 IF 1 THEN\n",
+      "programHex": "000a0a00fa310e0000010000cb0d"
+    },
+    {
+      "source": "10 IF 1 THEN : STOP\n",
+      "programHex": "000a0c00fa310e0000010000cb3ae20d"
+    },
+    {
+      "source": "10 :\n",
+      "programHex": "000a02003a0d"
+    },
+    {
+      "source": "10 ::\n",
+      "programHex": "000a03003a3a0d"
+    },
+    {
+      "source": "10 CLS:\n",
+      "programHex": "000a0300fb3a0d"
+    }
+  ]
+}

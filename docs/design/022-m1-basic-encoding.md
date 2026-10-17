@@ -51,3 +51,11 @@ was obtained before implementing ZXCode's encoder. Numeric expectations continue
 to come from the original ROM fixtures, since independent tokenizers may use
 different decimal rounding. A binary mismatch is an investigation, not permission
 to regenerate these expectations from ZXCode.
+
+## M2-07 statement map refinement
+
+Conditional AST ownership does not collapse ROM statement maps. IF headers map
+through THEN; each tail statement maps separately in ROM execution order. Empty
+statement slots have zero-length encoded ranges at their insertion point. The
+line map remains flat and the syntax/semantic tree retains nested ownership; M1
+maps and golden bytes are unchanged.

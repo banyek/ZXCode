@@ -1,7 +1,7 @@
 import { emitSimpleCommand } from "./simple-commands.js";
 import { romTokenBySpelling } from "../source/rom-tokens.js";
 import { assertBuildableProgram } from "../semantic/program.js";
-import type { BasicProgram, BuildableProgram } from "../semantic/program.js";
+import type { BasicProgram, BasicStatement, BuildableProgram } from "../semantic/program.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceRange } from "../source/document.js";
@@ -35,26 +35,39 @@ export function encodeBasicProgram(program: BuildableProgram<BasicProgram>): Enc
       if (encodedOffset + 4 + body.length >= M1_BASIC_BYTE_LIMIT) throw new EncodingError(line.range);
       body.push(byte);
     };
-    for (let index = 0; index < line.statements.length; index++) {
-      if (index !== 0) emit(0x3a);
-      const statement = line.statements[index]!;
-      const start = body.length;
-      if (statement.kind === "let") {
-        emit(romTokenBySpelling("LET")!.byte);
-        for (const character of statement.target.identity.canonicalName) emit(character.charCodeAt(0));
-        emit(0x3d);
-        emitExpression(statement.expression, emit);
-      } else if (statement.kind === "simple-command") emitSimpleCommand(statement, emit);
-      else if (statement.kind !== "print") emit(romTokenBySpelling(statement.kind)!.byte);
-      else {
-        emit(romTokenBySpelling("PRINT")!.byte);
-        for (const item of statement.items) {
-          if (item.kind === "print-separator") emit(item.separator.charCodeAt(0));
-          else emitExpression(item.expression, emit);
+    const sequence = (nodes: readonly BasicStatement[]): void => {
+      for (let index = 0; index < nodes.length; index++) {
+        if (index !== 0) emit(0x3a);
+        const statement = nodes[index]!;
+        const start = body.length;
+        const sourceRange = statement.kind === "if" ? statement.headerRange : statement.range;
+        if (statement.kind === "empty") { /* Empty ROM statement slot emits no opcode. */ }
+        else if (statement.kind === "if") {
+          emit(romTokenBySpelling("IF")!.byte);
+          emitExpression(statement.condition, emit);
+          emit(romTokenBySpelling("THEN")!.byte);
+        } else if (statement.kind === "goto" || statement.kind === "gosub") {
+          emit(romTokenBySpelling(statement.kind === "goto" ? "GO TO" : "GO SUB")!.byte);
+          emitExpression(statement.target, emit);
+        } else if (statement.kind === "let") {
+          emit(romTokenBySpelling("LET")!.byte);
+          for (const character of statement.target.identity.canonicalName) emit(character.charCodeAt(0));
+          emit(0x3d);
+          emitExpression(statement.expression, emit);
+        } else if (statement.kind === "simple-command") emitSimpleCommand(statement, emit);
+        else if (statement.kind !== "print") emit(romTokenBySpelling(statement.kind)!.byte);
+        else {
+          emit(romTokenBySpelling("PRINT")!.byte);
+          for (const item of statement.items) {
+            if (item.kind === "print-separator") emit(item.separator.charCodeAt(0));
+            else emitExpression(item.expression, emit);
+          }
         }
+        statements.push(Object.freeze({ sourceRange, encodedRange: Object.freeze({ offset: encodedOffset + 4 + start, length: body.length - start }) }));
+        if (statement.kind === "if") sequence(statement.thenStatements);
       }
-      statements.push(Object.freeze({ sourceRange: statement.range, encodedRange: Object.freeze({ offset: encodedOffset + 4 + start, length: body.length - start }) }));
-    }
+    };
+    sequence(line.statements);
     emit(0x0d);
     bytes.push(line.lineNumber >>> 8, line.lineNumber & 0xff, body.length & 0xff, body.length >>> 8);
     for (const byte of body) bytes.push(byte);
