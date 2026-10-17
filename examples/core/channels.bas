@@ -1,0 +1,4 @@
+10 OPEN #4,"s": PRINT #4;"channel": CLOSE #4
+20 POKE 32768,1: OUT 254,0: COPY
+30 CAT: FORMAT "m": MOVE "old","new": ERASE "old"
+40 RANDOMIZE 1: RESTORE: RUN: NEW

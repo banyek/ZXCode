@@ -1,3 +1,4 @@
+import { unhandledEncodingNode } from "./exhaustive.js";
 import { romTokenBySpelling } from "../source/rom-tokens.js";
 import type { PrintItem, PrintStatement } from "../source/print-items.js";
 import type { TypedExpression } from "../semantic/expression.js";
@@ -17,5 +18,6 @@ export function emitPrintItem(item: PrintItem<TypedExpression>, emit: (byte: num
     case "print-tab": emit(romTokenBySpelling("TAB")!.byte); emitExpression(item.column, emit); break;
     case "print-control": emit(item.token.byte); emitExpression(item.expression, emit); break;
     case "print-channel": emit(0x23); emitExpression(item.stream, emit); break;
+    default: unhandledEncodingNode(item);
   }
 }

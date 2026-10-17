@@ -1,0 +1,5 @@
+10 DIM a(3): DIM b$(3,8)
+20 INPUT ("Name: ";AT 1,2);LINE b$(1);a(1),#0;"?"
+30 INPUT ;,,' : INPUT ()
+40 PRINT AT 1,2;INK 3;PAPER 7;FLASH 0;BRIGHT 1;INVERSE 0;OVER 0;TAB 8;"a""b",a(1)'
+50 LPRINT #3;AT 1,2;TAB 4;"print";b$(1,2 TO 3)

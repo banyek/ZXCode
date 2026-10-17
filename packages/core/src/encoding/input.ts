@@ -1,3 +1,4 @@
+import { unhandledEncodingNode } from "./exhaustive.js";
 import { emitAssignableTarget } from "./targets.js";
 import { romTokenBySpelling } from "../source/rom-tokens.js";
 import type { BasicInputStatement } from "../semantic/input.js";
@@ -19,6 +20,7 @@ export function emitInputStatement(node: BasicInputStatement, emit: (byte: numbe
         for (const printed of item.items) emitPrintItem(printed, emit);
         emit(0x29);
         break;
+      default: unhandledEncodingNode(item);
     }
   }
 }

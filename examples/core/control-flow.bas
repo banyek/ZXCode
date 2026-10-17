@@ -1,0 +1,8 @@
+10 LET total=0: FOR i=3 TO 1 STEP -1: LET total=total+i: NEXT i
+20 IF total=6 THEN GO SUB 100: IF total>0 THEN PRINT total: GO TO 40
+30 PRINT "missed"
+40 RUN 50
+50 RANDOMIZE: CLEAR: GO TO 70
+60 CONTINUE
+70 STOP
+100 LET total=total+1: RETURN

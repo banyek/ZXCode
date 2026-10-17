@@ -28,8 +28,9 @@ def main():
             source.write_text(case["source"])
             subprocess.run([str(binary), "-r", "-o", str(output), str(source)], check=True, capture_output=True)
             actual = output.read_bytes().hex()
-            if actual != case["programHex"]:
-                raise AssertionError((case["source"], case["programHex"], actual))
+            expected = case.get("comparisonHex", case["programHex"])
+            if actual != expected:
+                raise AssertionError((case["source"], expected, actual))
     print("Verified", len(fixture["cases"]), "independent command images; no fixtures changed")
 
 

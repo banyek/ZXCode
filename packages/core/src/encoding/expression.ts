@@ -1,3 +1,4 @@
+import { unhandledEncodingNode } from "./exhaustive.js";
 import type { AccessGroup } from "../source/access.js";
 import { romTokenBySpelling } from "../source/rom-tokens.js";
 import type { TypedExpression } from "../semantic/expression.js";
@@ -40,6 +41,7 @@ export function emitExpression(expression: TypedExpression, emit: (byte: number)
       case "binary": schedule([next.left, operator(next.operator), next.right]); break;
       case "parenthesized": schedule([0x28, next.expression, 0x29]); break;
       case "error": throw new TypeError("Cannot encode an error node.");
+      default: unhandledEncodingNode(next);
     }
   }
 }
