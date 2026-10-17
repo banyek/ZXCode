@@ -1,0 +1,195 @@
+{
+  "provenance": "Independent original 48K STMT-L-1 observations; raw token identities from original ROM catalogue, strings quoted independently; source transport follows design 028",
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "cases": [
+    {
+      "source": "10 PRINT \"PRINT REM THEN GO TO\"",
+      "encoded": "f5225052494e542052454d205448454e20474f20544f22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"PRINT\";\"{BYTE 0xF5}\"",
+      "encoded": "f5225052494e54223b22f522",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"a:REM \"\"THEN\"\"\"",
+      "encoded": "f522613a52454d2022225448454e222222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"\"",
+      "encoded": "f52222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"\"\"\"",
+      "encoded": "f522222222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"\"\"\"\"\"",
+      "encoded": "f5222222222222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"a\"\"\"",
+      "encoded": "f52261222222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"\"\"",
+      "encoded": "f5222222",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT \"a\"\"",
+      "encoded": "f522612222",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT \"{{\"\"}}\"",
+      "encoded": "f5227b22227d22",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x22}:REM\"",
+      "encoded": "f52222223a52454d22",
+      "statements": 1
+    },
+    {
+      "source": "10 REM PRINT : \"unfinished",
+      "encoded": "ea205052494e54203a2022756e66696e6973686564",
+      "unconsumedBytes": 19,
+      "statements": 1
+    },
+    {
+      "source": "10 REM{BYTE 0xFA}{BYTE 0xCB}:GO TO",
+      "encoded": "eafacb3a474f20544f",
+      "unconsumedBytes": 8,
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0xEA}\";a:REM{{raw}}",
+      "encoded": "f522ea223b613aea7b7261777d",
+      "unconsumedBytes": 5,
+      "statements": 2
+    },
+    {
+      "source": "10 IF CODE \"THEN\" THEN REM PRINT:\"unfinished",
+      "encoded": "faaf225448454e22cbea205052494e543a22756e66696e6973686564",
+      "unconsumedBytes": 17,
+      "statements": 2
+    },
+    {
+      "source": "10 IF CODE \"{BYTE 0xCB}\" THEN PRINT \"REM:THEN\"",
+      "encoded": "faaf22cb22cbf52252454d3a5448454e22",
+      "statements": 2
+    },
+    {
+      "source": "10 IF a THEN PRINT \"{BYTE 0xEA}\": REM{BYTE 0xCB}",
+      "encoded": "fa61cbf522ea223aeacb",
+      "unconsumedBytes": 1,
+      "statements": 3
+    },
+    {
+      "source": "10 IF a THEN IF b THEN REM{{IF}}:\"raw",
+      "encoded": "fa61cbfa62cbea7b49467d3a22726177",
+      "unconsumedBytes": 9,
+      "statements": 3
+    },
+    {
+      "source": "10 LET some THEN REM name=a: PRINT somethenremname",
+      "encoded": "f1736f6d657468656e72656d6e616d653d613af5736f6d657468656e72656d6e616d65",
+      "statements": 2
+    },
+    {
+      "source": "10 PRINT some REM name",
+      "encoded": "f5736f6d6572656d6e616d65",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT REM",
+      "encoded": "f572656d",
+      "statements": 1
+    },
+    {
+      "source": "10 LET printer=a:PRINT printer",
+      "encoded": "f17072696e7465723d613af57072696e746572",
+      "statements": 2
+    },
+    {
+      "source": "10 INPUT (\"{BYTE 0xEA}:THEN\");a",
+      "encoded": "ee2822ea3a5448454e22293b61",
+      "statements": 1
+    },
+    {
+      "source": "10 DATA \"{BYTE 0x2C}{BYTE 0x3A}{BYTE 0x22}\",a$",
+      "encoded": "e4222c3a2222222c6124",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x29}{BYTE 0xCC}\"(a TO b)",
+      "encoded": "f52229cc222861cc6229",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"↑\";a^b",
+      "encoded": "f5225e223b615e62",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT INK a;\"{INK 2}\"",
+      "encoded": "f5d9613b22100222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT #a;\"{BYTE 0x23}\"",
+      "encoded": "f523613b222322",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT \"{BYTE 0x23}\";a",
+      "encoded": "ee2223223b61",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{BYTE 0x0E}{BYTE 0x22}\"",
+      "encoded": "f5220e222222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"{{UDG A}}\"",
+      "encoded": "f5227b55444720417d22",
+      "statements": 1
+    },
+    {
+      "source": "10 REM \"{BYTE 0x22}\"",
+      "encoded": "ea20222222",
+      "unconsumedBytes": 3,
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a 1E + n;\"{BYTE 0xEA}\":REM{{raw}}",
+      "encoded": "f56131652b6e3b22ea223aea7b7261777d",
+      "unconsumedBytes": 5,
+      "statements": 2
+    },
+    {
+      "source": "10 PRINT \"s in\";SIN a",
+      "encoded": "f5227320696e223bb261",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT some SIN name",
+      "encoded": "f5736f6d6573696e6e616d65",
+      "statements": 1
+    },
+    {
+      "source": "10 REM x{BYTE 0x0D}{BYTE 0xE2}20 PRINT",
+      "encoded": "ea20780de23230205052494e54",
+      "unconsumedBytes": 11,
+      "statements": 1
+    }
+  ]
+}

@@ -80,6 +80,10 @@ golden provenance and an optional original-ROM load/run check with retained scre
 and snapshot evidence. Normal tests compare exact BASIC/TAP bytes without requiring
 an emulator installation.
 
+The [lexical audit](docs/design/011-text-source-format.md#m3-06-lexical-context-audit)
+also provides `scripts/research/smoke-escapes.py --output-dir PATH` for optional
+original-ROM verification of raw REM data, escaped bytes and colour controls.
+
 ## Development
 
 Use Node.js 24 LTS and npm (the repository includes an `.nvmrc`). From the root:
