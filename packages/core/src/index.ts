@@ -97,3 +97,4 @@ export { documentDiagnostics } from "./service/diagnostics.js";
 export { documentSymbolIndex } from "./service/symbol-index.js";
 export type { SymbolOccurrence, IndexedSymbol, SemanticSymbolIndex } from "./service/symbol-index.js";
 export { documentDefinitions, documentReferences, documentHover } from "./service/navigation.js";
+export { documentCompletions } from "./service/completion.js";
