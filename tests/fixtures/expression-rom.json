@@ -1,0 +1,378 @@
+{
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "cases": [
+    {
+      "source": "1 OR 0 AND 0",
+      "encoded": "310e0000010000c5300e0000000000c6300e0000000000",
+      "operations": [
+        8,
+        7
+      ],
+      "storage": "0000010000"
+    },
+    {
+      "source": "0 AND 1 OR 1",
+      "encoded": "300e0000000000c6310e0000010000c5310e0000010000",
+      "operations": [
+        8,
+        7
+      ],
+      "storage": "0000010000"
+    },
+    {
+      "source": "1 AND 2=2",
+      "encoded": "310e0000010000c6320e00000200003d320e0000020000",
+      "operations": [
+        14,
+        8
+      ],
+      "storage": "0000010000"
+    },
+    {
+      "source": "1=2 AND 0",
+      "encoded": "310e00000100003d320e0000020000c6300e0000000000",
+      "operations": [
+        14,
+        8
+      ],
+      "storage": "0000000000"
+    },
+    {
+      "source": "2<3+1",
+      "encoded": "320e00000200003c330e00000300002b310e0000010000",
+      "operations": [
+        15,
+        13
+      ],
+      "storage": "0000010000"
+    },
+    {
+      "source": "1+2<4",
+      "encoded": "310e00000100002b320e00000200003c340e0000040000",
+      "operations": [
+        15,
+        13
+      ],
+      "storage": "0000010000"
+    },
+    {
+      "source": "1+2*3",
+      "encoded": "310e00000100002b320e00000200002a330e0000030000",
+      "operations": [
+        4,
+        15
+      ],
+      "storage": "0000070000"
+    },
+    {
+      "source": "2*3+1",
+      "encoded": "320e00000200002a330e00000300002b310e0000010000",
+      "operations": [
+        4,
+        15
+      ],
+      "storage": "0000070000"
+    },
+    {
+      "source": "2*3^2",
+      "encoded": "320e00000200002a330e00000300005e320e0000020000",
+      "operations": [
+        6,
+        4
+      ],
+      "storage": "8510000001"
+    },
+    {
+      "source": "2^3*2",
+      "encoded": "320e00000200005e330e00000300002a320e0000020000",
+      "operations": [
+        6,
+        4
+      ],
+      "storage": "8500000000"
+    },
+    {
+      "source": "2^3^2",
+      "encoded": "320e00000200005e330e00000300005e320e0000020000",
+      "operations": [
+        6,
+        6
+      ],
+      "storage": "8700000000"
+    },
+    {
+      "source": "8/4/2",
+      "encoded": "380e00000800002f340e00000400002f320e0000020000",
+      "operations": [
+        5,
+        5
+      ],
+      "storage": "8100000000"
+    },
+    {
+      "source": "8-4-2",
+      "encoded": "380e00000800002d340e00000400002d320e0000020000",
+      "operations": [
+        3,
+        3
+      ],
+      "storage": "0000020000"
+    },
+    {
+      "source": "1<2<3",
+      "encoded": "310e00000100003c320e00000200003c330e0000030000",
+      "operations": [
+        13,
+        13
+      ],
+      "storage": "0000010000"
+    },
+    {
+      "source": "-2^2",
+      "encoded": "2d320e00000200005e320e0000020000",
+      "operations": [
+        6,
+        27
+      ],
+      "storage": "8380000000"
+    },
+    {
+      "source": "2^-2",
+      "encoded": "320e00000200005e2d320e0000020000",
+      "operations": [
+        27,
+        6
+      ],
+      "storage": "7f00000000"
+    },
+    {
+      "source": "-2*3",
+      "encoded": "2d320e00000200002a330e0000030000",
+      "operations": [
+        27,
+        4
+      ],
+      "storage": "00fffaff00"
+    },
+    {
+      "source": "2*-3",
+      "encoded": "320e00000200002a2d330e0000030000",
+      "operations": [
+        27,
+        4
+      ],
+      "storage": "00fffaff00"
+    },
+    {
+      "source": "NOT 1=0",
+      "encoded": "c3310e00000100003d300e0000000000",
+      "operations": [
+        14,
+        48
+      ],
+      "storage": "0000010000"
+    },
+    {
+      "source": "NOT 1 AND 0",
+      "encoded": "c3310e0000010000c6300e0000000000",
+      "operations": [
+        48,
+        8
+      ],
+      "storage": "0000000000"
+    },
+    {
+      "source": "NOT 0 OR 1",
+      "encoded": "c3300e0000000000c5310e0000010000",
+      "operations": [
+        48,
+        7
+      ],
+      "storage": "0000010000"
+    },
+    {
+      "source": "NOT NOT 1",
+      "encoded": "c3c3310e0000010000",
+      "operations": [
+        48,
+        48
+      ],
+      "storage": "0000010000"
+    },
+    {
+      "source": "SIN 1^2",
+      "encoded": "b2310e00000100005e320e0000020000",
+      "operations": [
+        31,
+        6
+      ],
+      "storage": "8035444cad"
+    },
+    {
+      "source": "SIN (1^2)",
+      "encoded": "b228310e00000100005e320e000002000029",
+      "operations": [
+        6,
+        31
+      ],
+      "storage": "80576aa477"
+    },
+    {
+      "source": "ABS -2^2",
+      "encoded": "bd2d320e00000200005e320e0000020000",
+      "operations": [
+        6,
+        27,
+        42
+      ],
+      "storage": "8300000000"
+    },
+    {
+      "source": "INT 3/2",
+      "encoded": "ba330e00000300002f320e0000020000",
+      "operations": [
+        39,
+        5
+      ],
+      "storage": "8140000000"
+    },
+    {
+      "source": "+2^3",
+      "encoded": "2b320e00000200005e330e0000030000",
+      "operations": [
+        6
+      ],
+      "storage": "8400000000"
+    },
+    {
+      "source": "+-2^2",
+      "encoded": "2b2d320e00000200005e320e0000020000",
+      "operations": [
+        6,
+        27
+      ],
+      "storage": "8380000000"
+    },
+    {
+      "source": "-+2^2",
+      "encoded": "2d2b320e00000200005e320e0000020000",
+      "operations": [
+        6,
+        27
+      ],
+      "storage": "8380000000"
+    },
+    {
+      "source": "2^+3^2",
+      "encoded": "320e00000200005e2b330e00000300005e320e0000020000",
+      "operations": [
+        6,
+        6
+      ],
+      "storage": "8700000000"
+    },
+    {
+      "source": "(1+2)*3",
+      "encoded": "28310e00000100002b320e0000020000292a330e0000030000",
+      "operations": [
+        15,
+        4
+      ],
+      "storage": "0000090000"
+    },
+    {
+      "source": "1+(2*3)",
+      "encoded": "310e00000100002b28320e00000200002a330e000003000029",
+      "operations": [
+        4,
+        15
+      ],
+      "storage": "0000070000"
+    },
+    {
+      "source": "1<=2",
+      "encoded": "310e0000010000c7320e0000020000",
+      "operations": [
+        9
+      ],
+      "storage": "0000010000"
+    },
+    {
+      "source": "2>=1",
+      "encoded": "320e0000020000c8310e0000010000",
+      "operations": [
+        10
+      ],
+      "storage": "0000010000"
+    },
+    {
+      "source": "1<>2",
+      "encoded": "310e0000010000c9320e0000020000",
+      "operations": [
+        11
+      ],
+      "storage": "0000010000"
+    },
+    {
+      "source": "3>2",
+      "encoded": "330e00000300003e320e0000020000",
+      "operations": [
+        12
+      ],
+      "storage": "0000010000"
+    },
+    {
+      "source": "2=2",
+      "encoded": "320e00000200003d320e0000020000",
+      "operations": [
+        14
+      ],
+      "storage": "0000010000"
+    },
+    {
+      "source": "3<2",
+      "encoded": "330e00000300003c320e0000020000",
+      "operations": [
+        13
+      ],
+      "storage": "0000000000"
+    }
+  ],
+  "binaryCases": [
+    {
+      "source": "BIN",
+      "encoded": "c4",
+      "entry": 11419,
+      "operations": [],
+      "storage": "0000000000"
+    },
+    {
+      "source": "BIN ",
+      "encoded": "c420",
+      "entry": 11419,
+      "operations": [],
+      "storage": "0000000000"
+    },
+    {
+      "source": "BIN 1 0",
+      "encoded": "c4312030",
+      "entry": 11419,
+      "operations": [],
+      "storage": "0000020000"
+    },
+    {
+      "source": "BIN 00000000000000001",
+      "encoded": "c43030303030303030303030303030303031",
+      "entry": 11419,
+      "operations": [],
+      "storage": "0000010000"
+    },
+    {
+      "source": "BIN 1111111111111111",
+      "encoded": "c431313131313131313131313131313131",
+      "entry": 11419,
+      "operations": [],
+      "storage": "0000ffff00"
+    }
+  ]
+}

@@ -11,3 +11,10 @@ body, whole-line, content, and line-ending ranges. `parseBasic` adds the lexer/C
 and dedicated statement/literal nodes for the documented M1 subset. Its lexer
 preserves quoted content and REM raw tails; parser recovery retains error nodes.
 The physical scanner itself does not tokenize bodies.
+
+`parseExpression` and PRINT expression slots share the M2-02 precedence parser
+and immutable `Expression` CST. Error/missing-delimiter nodes retain insertion
+ranges; multi-character comparisons are lexical units. Original-ROM reduction
+fixtures and the parser contract are in
+[the expression design](../../../../docs/design/006-expression-grammar.md).
+Nonliteral nodes remain unbuildable until semantic typing and encoding support.

@@ -36,6 +36,11 @@ rounding, with independent ROM observations as fixtures. See the
 optional Python/SkoolKit verification procedure. The production core and normal
 CI do not require an emulator or ROM.
 
+M2 implementation has begun: a shared 91-token ROM catalogue and a recoverable
+[expression parser](docs/design/006-expression-grammar.md) are available. General
+expressions produce explicit compatibility diagnostics until semantic typing and
+encoding support land; CLI builds still support the M1 subset.
+
 See [docs/design](docs/design/).
 
 ## Check and build
