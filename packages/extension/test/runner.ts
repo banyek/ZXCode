@@ -1,12 +1,28 @@
 import assert from "node:assert/strict";
+import { join } from "node:path";
 import * as vscode from "vscode";
 import type { ZXCodeExtensionApi } from "../src/extension.js";
 /** Invoked by the real Extension Development Host; rejection fails the smoke run. */
 export async function run(): Promise<void> {
   const extension = vscode.extensions.getExtension<ZXCodeExtensionApi>("banyek.zxcode-vscode");
   assert.ok(extension, "Development extension is installed in the isolated host");
+  const testFiles = process.env.ZXCODE_TEST_FILES;
+  assert.ok(testFiles, "Smoke files belong to the isolated test directory");
+  const automaticUri = vscode.Uri.file(join(testFiles, "automatic.zxbas"));
+  await vscode.workspace.fs.writeFile(automaticUri, Buffer.from("10 STOP\n"));
+  const automatic = await vscode.workspace.openTextDocument(automaticUri);
+  assert.equal(automatic.languageId, "zx-spectrum-basic");
+  await vscode.window.showTextDocument(automatic);
+  const deadline = Date.now() + 10000;
+  while (!extension.isActive && Date.now() < deadline) await new Promise((resolve) => setTimeout(resolve, 25));
+  assert.ok(extension.isActive, "Language selection automatically activates ZXCode");
   const api = await extension.activate();
-  assert.ok(extension.isActive);
+  const genericUri = vscode.Uri.file(join(testFiles, "generic.bas"));
+  await vscode.workspace.fs.writeFile(genericUri, Buffer.from("10 STOP\n"));
+  const generic = await vscode.workspace.openTextDocument(genericUri);
+  assert.notEqual(generic.languageId, "zx-spectrum-basic", "Generic .bas is not claimed globally");
+  const selected = await vscode.languages.setTextDocumentLanguage(generic, "zx-spectrum-basic");
+  assert.equal(selected.languageId, "zx-spectrum-basic");
   const document = await vscode.workspace.openTextDocument({ language: "plaintext", content: '10 REM £©↑\r\n20 GO TO 100\r\n100 PRINT "hello"\r\n' });
   const snapshot = api.documents.snapshot(document);
   assert.strictEqual(api.documents.snapshot(document), snapshot);
@@ -40,5 +56,5 @@ export async function run(): Promise<void> {
   assert.equal(api.queries.diagnostics(snapshot).value.length, 0);
   api.documents.close(document);
   assert.notStrictEqual(api.documents.snapshot(document).identity, next.identity);
-  console.log("ZXCode real-host smoke passed: activation, sessions, diagnostics, navigation, UTF-16/CRLF ranges and stale-result rejection");
+  console.log("ZXCode real-host smoke passed: language registration/activation, sessions, diagnostics, navigation, UTF-16/CRLF ranges and stale-result rejection");
 }

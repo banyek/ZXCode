@@ -1,0 +1,153 @@
+{
+  "name": "ZX Spectrum BASIC",
+  "scopeName": "source.zx-spectrum-basic",
+  "fileTypes": [
+    "zxbas"
+  ],
+  "patterns": [
+    {
+      "include": "#program-line"
+    },
+    {
+      "match": "^[ \\t]*[0-9]+(?=[ \\t]|$)",
+      "name": "constant.numeric.line-number.spectrum-basic"
+    },
+    {
+      "include": "#body"
+    }
+  ],
+  "repository": {
+    "program-line": {
+      "begin": "^([ \\t]*)([0-9]+)([ \\t]+)",
+      "beginCaptures": {
+        "2": {
+          "name": "constant.numeric.line-number.spectrum-basic"
+        }
+      },
+      "end": "$",
+      "name": "meta.line.spectrum-basic",
+      "patterns": [
+        {
+          "include": "#rem-start"
+        },
+        {
+          "include": "#body"
+        }
+      ]
+    },
+    "rem-start": {
+      "begin": "\\G[ \\t]*((?i:REM))(?![A-Za-z0-9$])",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.definition.comment.spectrum-basic"
+        }
+      },
+      "end": "$",
+      "name": "comment.line.rem.spectrum-basic",
+      "patterns": [
+        {
+          "include": "#escapes"
+        }
+      ]
+    },
+    "strings": {
+      "begin": "\"",
+      "end": "\"(?!\")|$",
+      "name": "string.quoted.double.spectrum-basic",
+      "patterns": [
+        {
+          "match": "\"\"",
+          "name": "constant.character.escape.quote.spectrum-basic"
+        },
+        {
+          "include": "#escapes"
+        }
+      ]
+    },
+    "escapes": {
+      "match": "\\{\\{|\\}\\}|\\{[^}\\r\\n]*\\}",
+      "name": "constant.character.escape.spectrum-basic"
+    },
+    "body": {
+      "patterns": [
+        {
+          "include": "#strings"
+        },
+        {
+          "begin": ":",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.separator.statement.spectrum-basic"
+            }
+          },
+          "end": "$",
+          "patterns": [
+            {
+              "include": "#rem-start"
+            },
+            {
+              "include": "#body"
+            }
+          ]
+        },
+        {
+          "begin": "(?i)(?<![A-Za-z0-9$])THEN(?![A-Za-z0-9$])",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.control.then.spectrum-basic"
+            }
+          },
+          "end": "$",
+          "patterns": [
+            {
+              "include": "#rem-start"
+            },
+            {
+              "include": "#body"
+            }
+          ]
+        },
+        {
+          "match": "(?i)(?<![A-Za-z0-9$])(?:RANDOMIZE(?![A-Za-z0-9$])|CONTINUE(?![A-Za-z0-9$])|CLOSE[ \\t]*#|INVERSE(?![A-Za-z0-9$])|RESTORE(?![A-Za-z0-9$])|DEF[ \\t]+FN(?![A-Za-z0-9$])|FORMAT(?![A-Za-z0-9$])|OPEN[ \\t]*#|VERIFY(?![A-Za-z0-9$])|CIRCLE(?![A-Za-z0-9$])|BRIGHT(?![A-Za-z0-9$])|LPRINT(?![A-Za-z0-9$])|BORDER(?![A-Za-z0-9$])|GO[ \\t]+SUB(?![A-Za-z0-9$])|RETURN(?![A-Za-z0-9$])|ERASE(?![A-Za-z0-9$])|MERGE(?![A-Za-z0-9$])|PAPER(?![A-Za-z0-9$])|FLASH(?![A-Za-z0-9$])|LLIST(?![A-Za-z0-9$])|GO[ \\t]+TO(?![A-Za-z0-9$])|INPUT(?![A-Za-z0-9$])|PAUSE(?![A-Za-z0-9$])|PRINT(?![A-Za-z0-9$])|CLEAR(?![A-Za-z0-9$])|MOVE(?![A-Za-z0-9$])|BEEP(?![A-Za-z0-9$])|OVER(?![A-Za-z0-9$])|STOP(?![A-Za-z0-9$])|READ(?![A-Za-z0-9$])|DATA(?![A-Za-z0-9$])|LOAD(?![A-Za-z0-9$])|LIST(?![A-Za-z0-9$])|NEXT(?![A-Za-z0-9$])|POKE(?![A-Za-z0-9$])|PLOT(?![A-Za-z0-9$])|SAVE(?![A-Za-z0-9$])|DRAW(?![A-Za-z0-9$])|COPY(?![A-Za-z0-9$])|CAT(?![A-Za-z0-9$])|INK(?![A-Za-z0-9$])|OUT(?![A-Za-z0-9$])|NEW(?![A-Za-z0-9$])|DIM(?![A-Za-z0-9$])|FOR(?![A-Za-z0-9$])|LET(?![A-Za-z0-9$])|RUN(?![A-Za-z0-9$])|CLS(?![A-Za-z0-9$])|IF(?![A-Za-z0-9$]))",
+          "name": "keyword.control.statement.spectrum-basic"
+        },
+        {
+          "match": "(?i)(?<![A-Za-z0-9$])(?:SCREEN\\$(?![A-Za-z0-9$])|POINT(?![A-Za-z0-9$])|ATTR(?![A-Za-z0-9$])|VAL\\$(?![A-Za-z0-9$])|CODE(?![A-Za-z0-9$])|PEEK(?![A-Za-z0-9$])|STR\\$(?![A-Za-z0-9$])|CHR\\$(?![A-Za-z0-9$])|VAL(?![A-Za-z0-9$])|LEN(?![A-Za-z0-9$])|SIN(?![A-Za-z0-9$])|COS(?![A-Za-z0-9$])|TAN(?![A-Za-z0-9$])|ASN(?![A-Za-z0-9$])|ACS(?![A-Za-z0-9$])|ATN(?![A-Za-z0-9$])|EXP(?![A-Za-z0-9$])|INT(?![A-Za-z0-9$])|SQR(?![A-Za-z0-9$])|SGN(?![A-Za-z0-9$])|ABS(?![A-Za-z0-9$])|USR(?![A-Za-z0-9$])|FN(?![A-Za-z0-9$])|LN(?![A-Za-z0-9$])|IN(?![A-Za-z0-9$]))",
+          "name": "support.function.spectrum-basic"
+        },
+        {
+          "match": "(?i)(?<![A-Za-z0-9$])(?:INKEY\\$(?![A-Za-z0-9$])|RND(?![A-Za-z0-9$])|PI(?![A-Za-z0-9$]))",
+          "name": "constant.language.spectrum-basic"
+        },
+        {
+          "match": "(?i)(?<![A-Za-z0-9$])(?:TAB(?![A-Za-z0-9$])|AT(?![A-Za-z0-9$]))",
+          "name": "keyword.other.print.spectrum-basic"
+        },
+        {
+          "match": "(?i)(?<![A-Za-z0-9$])(?:LINE(?![A-Za-z0-9$])|STEP(?![A-Za-z0-9$])|TO(?![A-Za-z0-9$]))",
+          "name": "keyword.control.spectrum-basic"
+        },
+        {
+          "match": "(?i)(?<![A-Za-z0-9$])(?:BIN(?![A-Za-z0-9$]))",
+          "name": "keyword.other.literal.spectrum-basic"
+        },
+        {
+          "match": "(?i)(?<![A-Za-z0-9$])(?:AND|OR|NOT)(?![A-Za-z0-9$])|<=|>=|<>|[-+*/^=<>]",
+          "name": "keyword.operator.spectrum-basic"
+        },
+        {
+          "match": "(?<![A-Za-z0-9$])(?:(?:[0-9]+\\.(?:[ \\t]*[0-9])*|\\.(?:[ \\t]*[0-9])+)(?:[ \\t]*[Ee][ \\t]*[+-]?[ \\t]*[0-9]+)?|[0-9]+(?:[Ee][ \\t]*[+-]?[ \\t]*[0-9]+)?)(?![A-Za-z0-9$])",
+          "name": "constant.numeric.spectrum-basic"
+        },
+        {
+          "match": "[()]",
+          "name": "punctuation.section.group.spectrum-basic"
+        },
+        {
+          "match": "[;,']",
+          "name": "punctuation.separator.item.spectrum-basic"
+        }
+      ]
+    }
+  }
+}
