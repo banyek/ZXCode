@@ -1,0 +1,393 @@
+{
+  "provenance": "Original Sinclair chapters 15/16 packet definitions; original 48K ROM control dispatch table 0x0A11..0x0A22",
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "controls": [
+    {
+      "byte": 6,
+      "name": "COMMA",
+      "arity": 0,
+      "romDispatch": 2655
+    },
+    {
+      "byte": 7,
+      "name": "EDIT",
+      "arity": 0,
+      "romDispatch": 2665
+    },
+    {
+      "byte": 8,
+      "name": "LEFT",
+      "arity": 0,
+      "romDispatch": 2595
+    },
+    {
+      "byte": 9,
+      "name": "RIGHT",
+      "arity": 0,
+      "romDispatch": 2621
+    },
+    {
+      "byte": 10,
+      "name": "DOWN",
+      "arity": 0,
+      "romDispatch": 2665
+    },
+    {
+      "byte": 11,
+      "name": "UP",
+      "arity": 0,
+      "romDispatch": 2665
+    },
+    {
+      "byte": 12,
+      "name": "DELETE",
+      "arity": 0,
+      "romDispatch": 2665
+    },
+    {
+      "byte": 13,
+      "name": "ENTER",
+      "arity": 0,
+      "romDispatch": 2639
+    },
+    {
+      "byte": 16,
+      "name": "INK",
+      "arity": 1,
+      "romDispatch": 2682
+    },
+    {
+      "byte": 17,
+      "name": "PAPER",
+      "arity": 1,
+      "romDispatch": 2682
+    },
+    {
+      "byte": 18,
+      "name": "FLASH",
+      "arity": 1,
+      "romDispatch": 2682
+    },
+    {
+      "byte": 19,
+      "name": "BRIGHT",
+      "arity": 1,
+      "romDispatch": 2682
+    },
+    {
+      "byte": 20,
+      "name": "INVERSE",
+      "arity": 1,
+      "romDispatch": 2682
+    },
+    {
+      "byte": 21,
+      "name": "OVER",
+      "arity": 1,
+      "romDispatch": 2682
+    },
+    {
+      "byte": 22,
+      "name": "AT",
+      "arity": 2,
+      "romDispatch": 2677
+    },
+    {
+      "byte": 23,
+      "name": "TAB",
+      "arity": 2,
+      "romDispatch": 2677
+    }
+  ],
+  "cases": [
+    {
+      "name": "COMMA",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "COMMA",
+          "parameters": []
+        }
+      ],
+      "bytesHex": "06"
+    },
+    {
+      "name": "EDIT",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "EDIT",
+          "parameters": []
+        }
+      ],
+      "bytesHex": "07"
+    },
+    {
+      "name": "LEFT",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "LEFT",
+          "parameters": []
+        }
+      ],
+      "bytesHex": "08"
+    },
+    {
+      "name": "RIGHT",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "RIGHT",
+          "parameters": []
+        }
+      ],
+      "bytesHex": "09"
+    },
+    {
+      "name": "DOWN",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "DOWN",
+          "parameters": []
+        }
+      ],
+      "bytesHex": "0a"
+    },
+    {
+      "name": "UP",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "UP",
+          "parameters": []
+        }
+      ],
+      "bytesHex": "0b"
+    },
+    {
+      "name": "DELETE",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "DELETE",
+          "parameters": []
+        }
+      ],
+      "bytesHex": "0c"
+    },
+    {
+      "name": "ENTER",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "ENTER",
+          "parameters": []
+        }
+      ],
+      "bytesHex": "0d"
+    },
+    {
+      "name": "INK",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "INK",
+          "parameters": [
+            9
+          ]
+        }
+      ],
+      "bytesHex": "1009"
+    },
+    {
+      "name": "PAPER",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "PAPER",
+          "parameters": [
+            9
+          ]
+        }
+      ],
+      "bytesHex": "1109"
+    },
+    {
+      "name": "FLASH",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "FLASH",
+          "parameters": [
+            1
+          ]
+        }
+      ],
+      "bytesHex": "1201"
+    },
+    {
+      "name": "BRIGHT",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "BRIGHT",
+          "parameters": [
+            1
+          ]
+        }
+      ],
+      "bytesHex": "1301"
+    },
+    {
+      "name": "INVERSE",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "INVERSE",
+          "parameters": [
+            1
+          ]
+        }
+      ],
+      "bytesHex": "1401"
+    },
+    {
+      "name": "OVER",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "OVER",
+          "parameters": [
+            1
+          ]
+        }
+      ],
+      "bytesHex": "1501"
+    },
+    {
+      "name": "AT",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "AT",
+          "parameters": [
+            1,
+            13
+          ]
+        }
+      ],
+      "bytesHex": "16010d"
+    },
+    {
+      "name": "TAB",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "TAB",
+          "parameters": [
+            2,
+            1
+          ]
+        }
+      ],
+      "bytesHex": "170201"
+    },
+    {
+      "name": "INK raw payload",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "INK",
+          "parameters": [
+            34
+          ]
+        }
+      ],
+      "bytesHex": "1022"
+    },
+    {
+      "name": "PAPER raw payload",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "PAPER",
+          "parameters": [
+            255
+          ]
+        }
+      ],
+      "bytesHex": "11ff"
+    },
+    {
+      "name": "AT raw payload",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "AT",
+          "parameters": [
+            34,
+            58
+          ]
+        }
+      ],
+      "bytesHex": "16223a"
+    },
+    {
+      "name": "TAB raw payload",
+      "atoms": [
+        {
+          "kind": "control",
+          "name": "TAB",
+          "parameters": [
+            16,
+            255
+          ]
+        }
+      ],
+      "bytesHex": "1710ff"
+    },
+    {
+      "name": "mixed text/control/raw",
+      "atoms": [
+        {
+          "kind": "text",
+          "value": "A"
+        },
+        {
+          "kind": "control",
+          "name": "INK",
+          "parameters": [
+            2
+          ]
+        },
+        {
+          "kind": "text",
+          "value": "£"
+        },
+        {
+          "kind": "control",
+          "name": "AT",
+          "parameters": [
+            1,
+            13
+          ]
+        },
+        {
+          "kind": "text",
+          "value": "\"{:}"
+        },
+        {
+          "kind": "byte",
+          "value": 14
+        },
+        {
+          "kind": "byte",
+          "value": 165
+        }
+      ],
+      "bytesHex": "4110026016010d227b3a7d0ea5"
+    }
+  ]
+}

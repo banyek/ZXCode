@@ -1,4 +1,4 @@
-import { spectrumLiteralByte } from "../source/characters.js";
+import { analyzeSourceText } from "./spectrum-text.js";
 import type { FunctionContext } from "./function-context.js";
 import { validateAccess } from "./access.js";
 import type { AccessGroup } from "../source/access.js";
@@ -115,19 +115,9 @@ export function analyzeExpressionNode(source: SourceDocument, root: Expression, 
     } else if (node.kind === "string-literal") {
       let valid = node.closed;
       if (!valid) report(node, "String literal is incomplete.", DiagnosticCodes.unterminatedString, "syntax");
-      const bytes: number[] = [];
-      for (const part of node.parts) {
-        let offset = part.range.start;
-        for (const character of part.value) {
-          const byte = spectrumLiteralByte(character);
-          if (byte === undefined) {
-            diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unsupportedCharacter, severity: "error", category: "compatibility", message: "Character has no direct Spectrum literal mapping.", range: source.range(offset, offset + character.length) }));
-            valid = false;
-          } else bytes.push(byte);
-          offset += character.length;
-        }
-      }
-      result = valid ? Object.freeze({ kind: "string", type: "string", range: node.range, value: node.value, bytes: Object.freeze(bytes) }) : fail();
+      const text = analyzeSourceText(source, node.parts, diagnostics);
+      valid = valid && text !== undefined;
+      result = valid ? Object.freeze({ kind: "string", type: "string", range: node.range, value: node.value, bytes: text!.bytes }) : fail();
     } else if (node.kind === "name-expression") {
       const identified = identifyVariable(node.spelling, node.spelling.endsWith("$") ? "string-scalar" : "numeric-scalar");
       if (identified.kind === "error") {

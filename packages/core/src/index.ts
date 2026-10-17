@@ -67,3 +67,10 @@ export type { BasicAnalysisOptions } from "./semantic/program.js";
 
 export { SPECTRUM_CHARACTERS, spectrumCharacter, spectrumLiteralByte } from "./source/characters.js";
 export type { SpectrumCharacter, SpectrumCharacterCategory, SpectrumExportIdentity } from "./source/characters.js";
+
+export type { SpectrumTextAtom, SpectrumTextIssue, SpectrumTextDecodeIssue } from "./source/spectrum-text.js";
+export { analyzeSpectrumText } from "./semantic/spectrum-text.js";
+export type { SpectrumTextValue, SpectrumTextAnalysis } from "./semantic/spectrum-text.js";
+export { encodeSpectrumText } from "./encoding/spectrum-text.js";
+export { decodeSpectrumText } from "./decoding/spectrum-text.js";
+export type { DecodedSpectrumText } from "./decoding/spectrum-text.js";

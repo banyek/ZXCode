@@ -37,7 +37,8 @@ and returns `0 OK, 100:1`. M1's hello bytes and load/run acceptance remain intac
 Decimal conversion reproduces original-ROM storage and rounding; see the
 [numeric contract](docs/design/020-numeric-literals.md). M3 numeric lexical hardening now includes the ROM’s contextual fraction/exponent
 whitespace rules. The shared 256-byte Spectrum character map is implemented; controls, graphics/UDG
-notation and source escapes remain M3.
+notation and source escapes remain M3. Control packets now have checked internal
+encoding and lossless text-byte decoding, including truncated-packet diagnostics.
 Printable literals include Spectrum £, © and ↑ alongside the existing ASCII
 coverage (backtick is excluded); strings support doubled quotes and REM tails
 retain literal source bytes. Production and normal CI require
@@ -104,6 +105,7 @@ The repository uses two private npm workspaces with native ES modules:
 - `packages/core/src/syntax`: physical lines, lexer, recoverable CST, and parser.
 - `packages/core/src/semantic`: analysis and validated build model.
 - `packages/core/src/encoding`: Spectrum numeric/program bytes and source maps.
+- `packages/core/src/decoding`: independent text-byte packet decoding.
 - `packages/core/src/tap`: container writing from bytes and explicit metadata.
 - `packages/cli`: host I/O and orchestration through core APIs.
 - `tests`: integration and core tests using Node's built-in test runner.
