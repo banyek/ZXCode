@@ -198,3 +198,46 @@ The earlier open string/REM byte-escape questions are resolved by
 in quoted strings and REM tails; literal braces are doubled and backslashes stay
 literal. Source ranges/raw REM text remain preserved while source parts identify
 exact encoded bytes. Original-ROM string framing restrictions are explicit.
+
+## M3-06 lexical context audit
+
+The post-escape audit adds fixed original-ROM statement observations combining
+keyword-looking literal text, raw keyword bytes, doubled quotes, quote-valued
+escapes, comments after real THEN, nested IF tails, INPUT display groups, DATA
+commas, string slices and raw variable names. The original ROM sees only the
+independently assembled encoded bytes; source escape grammar remains design 028.
+Malformed source escapes are transport syntax errors, not claims that the same
+ASCII brace text would be invalid inside an original-ROM comment/string.
+
+Catalogue annotations on lexer words do not determine their role. Forced LET
+names and ordinary expression names may contain keyword-looking letters; the
+semantic identity emits letters, not tokens. Established expression prefix and
+standalone delimiter conventions from designs 006/010 remain unchanged. No new
+keyword aliases, numeric convenience syntax or Unicode operator aliases result
+from this audit.
+
+Literal contexts preserve the difference between ASCII PRINT text and a raw F5
+byte. A raw REM/THEN/IF byte inside a string never changes statement scanning;
+quotes/colons in REM never create expressions or statements. Numeric-marker 0E
+inside literal data never consumes a five-byte numeric payload. Parser recovery
+and original UTF-16 diagnostic ranges remain checked across escapes/quotes and
+physical LF/CRLF/CR/EOF boundaries. Encoded CR data in REM does not create a source
+line or alter the stored line-length framing.
+
+A reproducible original-ROM smoke checker loads the escape example with real
+cassette routines and disabled acceleration. Its REM contains NUL, CR, FF and a
+STOP token; successful execution must skip all of them. Independent first-line
+images, runtime CODE checks, screen text/ink and ROM completion state are checked.
+
+M3-06 validation: the full Node 24 check passes 192 tests and the 36-case original
+ROM lexical verifier passes. Run the optional runtime proof with SkoolKit 10.1:
+
+```sh
+python scripts/research/smoke-escapes.py --output-dir /tmp/zxcode-lexical-proof
+```
+
+Observed 2026-10-17: independently composed first-line images matched; NUL/CR/FF/
+STOP in REM were skipped; UDG/block/quote CODE checks passed; screen row 0 showed
+red ESCAPES OK (ink 2), row 23 showed 0 OK, 40:1, and ERR_NR=FFh at ROM 0x12AC.
+The verifier retains TAP, snapshot, emulator log, PNG and JSON evidence. Normal
+CI remains independent of Python/SkoolKit/ROM installation.
