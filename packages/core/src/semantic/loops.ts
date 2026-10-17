@@ -22,7 +22,7 @@ export interface BasicNextStatement {
 }
 export function analyzeLoop(source: SourceDocument, node: ForStatement | NextStatement, diagnostics: Diagnostic[]): BasicForStatement | BasicNextStatement | undefined {
   const report = (message: string): void => { diagnostics.push(createDiagnostic({ code: DiagnosticCodes.invalidVariableName, severity: "error", category: "syntax", message, range: node.variable.range })); };
-  if (node.variable.kind === "error-target") { report("Invalid FOR/NEXT control variable."); return undefined; }
+  if (node.variable.kind !== "scalar-target") { report("Invalid FOR/NEXT control variable."); return undefined; }
   const identified = identifyVariable(node.variable.identity.sourceName, "for-control");
   if (identified.kind === "error") { report("FOR/NEXT requires a single-letter numeric variable."); return undefined; }
   const variable: ScalarAssignmentTarget = Object.freeze({ kind: "scalar-target", range: node.variable.range, identity: identified.identity });

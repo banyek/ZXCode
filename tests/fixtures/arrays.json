@@ -1,0 +1,105 @@
+{
+  "reference": "zmakebas 1.3.3, commit 667090faf392e0083bbcf238084dcdd996957285",
+  "cases": [
+    {
+      "source": "10 DIM a(2,3)\n",
+      "programHex": "000a1400e96128320e00000200002c330e0000030000290d"
+    },
+    {
+      "source": "10 DIM a$(2,10)\n",
+      "programHex": "000a1600e9612428320e00000200002c31300e00000a0000290d"
+    },
+    {
+      "source": "10 PRINT a(1,2)\n",
+      "programHex": "000a1400f56128310e00000100002c320e0000020000290d"
+    },
+    {
+      "source": "10 PRINT a$(1,2)\n",
+      "programHex": "000a1500f5612428310e00000100002c320e0000020000290d"
+    },
+    {
+      "source": "10 PRINT a$()\n",
+      "programHex": "000a0600f5612428290d"
+    },
+    {
+      "source": "10 PRINT a$( TO )\n",
+      "programHex": "000a0700f5612428cc290d"
+    },
+    {
+      "source": "10 PRINT a$( TO 2)\n",
+      "programHex": "000a0e00f5612428cc320e0000020000290d"
+    },
+    {
+      "source": "10 PRINT a$(2 TO )\n",
+      "programHex": "000a0e00f5612428320e0000020000cc290d"
+    },
+    {
+      "source": "10 PRINT a$(1 TO 2)\n",
+      "programHex": "000a1500f5612428310e0000010000cc320e0000020000290d"
+    },
+    {
+      "source": "10 PRINT a$(1,)\n",
+      "programHex": "000a0e00f5612428310e00000100002c290d"
+    },
+    {
+      "source": "10 PRINT a$(1, TO 2)\n",
+      "programHex": "000a1600f5612428310e00000100002ccc320e0000020000290d"
+    },
+    {
+      "source": "10 PRINT a$(1)(2 TO 3)\n",
+      "programHex": "000a1e00f5612428310e00000100002928320e0000020000cc330e0000030000290d"
+    },
+    {
+      "source": "10 PRINT \"abc\"(1 TO 2)\n",
+      "programHex": "000a1800f5226162632228310e0000010000cc320e0000020000290d"
+    },
+    {
+      "source": "10 PRINT (a$+b$)(1 TO 2)\n",
+      "programHex": "000a1a00f52861242b62242928310e0000010000cc320e0000020000290d"
+    },
+    {
+      "source": "10 PRINT SCREEN$(1,2)(1)\n",
+      "programHex": "000a1d00f5aa28310e00000100002c320e00000200002928310e0000010000290d"
+    },
+    {
+      "source": "10 PRINT (STR$ PI)(1)\n",
+      "programHex": "000a0f00f528c1a72928310e0000010000290d"
+    },
+    {
+      "source": "10 LET a(1,2)=3\n",
+      "programHex": "000a1c00f16128310e00000100002c320e0000020000293d330e00000300000d"
+    },
+    {
+      "source": "10 LET a$(1 TO 2)=\"x\"\n",
+      "programHex": "000a1900f1612428310e0000010000cc320e0000020000293d2278220d"
+    },
+    {
+      "source": "10 LET a$(1,2 TO 3)=\"x\"\n",
+      "programHex": "000a2100f1612428310e00000100002c320e0000020000cc330e0000030000293d2278220d"
+    },
+    {
+      "source": "10 LET a$(1,)=b$\n",
+      "programHex": "000a1100f1612428310e00000100002c293d62240d"
+    },
+    {
+      "source": "10 LET a$(1)(2 TO 3)=\"x\"\n",
+      "programHex": "000a2200f1612428310e00000100002928320e0000020000cc330e0000030000293d2278220d"
+    },
+    {
+      "source": "10 LET a$()(1)=\"x\"\n",
+      "programHex": "000a1300f16124282928310e0000010000293d2278220d"
+    },
+    {
+      "source": "10 INPUT a(1)\n",
+      "programHex": "000a0c00ee6128310e0000010000290d"
+    },
+    {
+      "source": "10 INPUT LINE a$(1 TO 2)\n",
+      "programHex": "000a1600eeca612428310e0000010000cc320e0000020000290d"
+    },
+    {
+      "source": "10 DIM a(2): LET a(1)=3: PRINT a(1)\n",
+      "programHex": "000a2c00e96128320e0000020000293af16128310e0000010000293d330e00000300003af56128310e0000010000290d"
+    }
+  ]
+}

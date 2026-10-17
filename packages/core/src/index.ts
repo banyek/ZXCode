@@ -44,3 +44,8 @@ export type { PrintStatement } from "./syntax/parser.js";
 export type { BasicPrintStatement } from "./semantic/program.js";
 export type { InputItem, InputStatement } from "./syntax/input.js";
 export type { BasicInputItem, BasicInputStatement } from "./semantic/input.js";
+export type { AccessGroup, AccessSelector } from "./source/access.js";
+export type { AssignableTarget, IndexedAssignmentTarget } from "./source/assignment-target.js";
+export type { BasicAssignableTarget } from "./semantic/targets.js";
+export type { DimStatement } from "./syntax/dim.js";
+export type { BasicDimStatement } from "./semantic/dim.js";

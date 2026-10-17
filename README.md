@@ -45,7 +45,8 @@ FOR/NEXT loops,
 GO TO/GO SUB/RETURN and IF/THEN sequences, plus simple numeric, colour, graphics
 and no-operand commands. Literal jumps retain line relations and nonfatal missing-
 line warnings. Strings support authentic doubled quotes with source ranges.
-Arrays/slices, FN, DATA and cassette grammars are in progress.
+Numeric/string arrays, DIM and open/repeated string slices build, including
+indexed LET/INPUT targets. FN, DATA and cassette grammars are in progress.
 The six commands awaiting capability policy are recognized but currently blocked
 from builds.
 

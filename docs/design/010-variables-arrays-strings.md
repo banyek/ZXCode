@@ -205,3 +205,50 @@ remain in source, while emitted scalar names use their canonical ASCII identity.
 Missing equals signs, incomplete values and trailing tokens remain unbuildable
 even with parser diagnostics removed. The encoder emits LET + checked target +
 `=` + validated expression; independent reference images cover both scalar types.
+
+## M2-11 array, slicing and assignability contract
+
+Original Sinclair manual chapters [8](https://worldofspectrum.org/ZXBasicManual/zxmanchap8.html)
+and [12](https://worldofspectrum.org/ZXBasicManual/zxmanchap12.html), ROM
+[STK-VAR](https://skoolkit.ca/disassemblies/rom/hex/asm/2996.html) and
+[SLICING](https://skoolkit.ca/disassemblies/rom/hex/asm/2A52.html), plus fixed
+original-ROM syntax observations settle the remaining grammar boundary.
+
+- Numeric array names have one letter and at least one numeric subscript. They
+  have a distinct identity family from numeric scalars. Multiple subscripts are
+  allowed; empty groups, TO slices and repeated numeric-result groups are invalid.
+- A named string's first group may have multiple numeric subscripts and an optional
+  final slice. Runtime storage determines whether a single subscript refers to a
+  scalar string character or a string-array element; static analysis must not guess
+  an array declaration or dimension count from that ambiguous spelling.
+- String slicing accepts one numeric selector, an empty whole-string selector,
+  or optional start TO optional finish. A slice must be final in its group. A
+  trailing empty selector is authentic for a named string array (`a$(i,)`); an
+  empty selector before another comma is not. Literal/other string expressions and
+  later repeated groups allow only one selector. `a$()` and `a$( TO )` retain
+  distinct source spellings/bytes, with runtime defaults left to the ROM.
+- Postfix groups bind to primaries before deferred prefix functions. Ordinary
+  prefix string results need parentheses before slicing; SCREEN$'s dedicated pair
+  primary may be sliced directly. This follows the scanner's special continuations,
+  not another BASIC's function-call grammar.
+- Assignable indexed targets must start with a variable name. Numeric array
+  elements and named-string array/slice chains are allowed, including repeated
+  string slices. Literal, arithmetic, function-result and parenthesized-expression
+  bases cannot become assignment targets merely because they have string type.
+  LET, INPUT and later READ share the same extended target union/validator.
+- DIM accepts one single-letter array name (optional `$`) and one nonempty numeric
+  dimension group, without TO or repeated groups. A string DIM's final dimension
+  is character length. Numeric dimensions/subscripts/bounds are expressions; no
+  new constant integer/range, declaration-before-use or shape-allocation rule is
+  introduced. Runtime dimension/value errors remain runtime behaviour.
+
+Shared selector/group containers retain source ranges, optional bounds and exact
+TO/empty distinctions. Expression and target typing use one access validator;
+encoding emits checked semantic selectors without materializing default bounds,
+padding strings, allocating arrays or reparsing source. Existing temporary array/
+slice target coverage guards from M2-06/M2-10 are superseded by this implementation.
+Malformed group delimiters and selectors remain intrinsically incomplete after
+parser diagnostics are removed. Independent ROM fixtures include assignability
+boundaries and independent program images cover open bounds and multidimensional
+forms. Numeric-whitespace lexical variants remain a separate corpus audit item;
+this ticket does not silently broaden the already frozen decimal token spelling.

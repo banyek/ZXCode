@@ -71,7 +71,8 @@ test("invalid targets and incomplete groups recover through statements and survi
   assert.equal(diagnostic.range.end, unfinished.source.text.length);
   for (const body of ['INPUT a(1)', 'INPUT LINE a$(1 TO 2)']) {
     const input = parsed(body);
-    assert.equal(input.syntax.lines[0].statements[0].items[0].target.kind, "error-target");
-    assert.ok(input.diagnostics.some((diagnostic) => diagnostic.category === "compatibility"));
+    assert.equal(input.syntax.lines[0].statements[0].items[0].target.kind, "indexed-target");
+    assert.deepEqual(input.diagnostics, []);
+    assert.equal(analyzeBasic(input).kind, "buildable");
   }
 });

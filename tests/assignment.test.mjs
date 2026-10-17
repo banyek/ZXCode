@@ -55,14 +55,13 @@ test("nonassignable expressions and missing delimiters recover without accepting
   assert.equal(parsed('a=1').syntax.lines[0].statements[0].kind, "error-statement");
 });
 
-test("array/slice target coverage is retained as an extensible target error, not a scalar", () => {
+test("array/slice targets extend the same assignable target union", () => {
   for (const body of ['LET a(1)=2', 'LET a$(2 TO 3)="x"', 'LET a(1=2)=3']) {
     const input = parsed(body);
     const statement = input.syntax.lines[0].statements[0];
     assert.equal(statement.kind, "let");
-    assert.equal(statement.target.kind, "error-target");
-    assert.equal(statement.target.unsupported, true);
-    assert.equal(input.diagnostics[0].category, "compatibility");
-    assert.equal(analyzeBasic({ ...input, diagnostics: [] }).kind, "invalid");
+    assert.equal(statement.target.kind, "indexed-target");
+    assert.deepEqual(input.diagnostics, []);
+    assert.equal(analyzeBasic(input).kind, "buildable");
   }
 });

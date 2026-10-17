@@ -2,12 +2,12 @@ import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument, SourceRange } from "../source/document.js";
 import { identifyVariable } from "../source/variable-identity.js";
-import type { ScalarAssignmentTarget } from "../source/assignment-target.js";
+import type { AssignableTarget } from "../source/assignment-target.js";
 import type { BodyToken } from "./lexer.js";
-import { readExpression } from "./expression.js";
+import { readAccessGroup, readExpression } from "./expression.js";
 import type { Expression } from "./expression.js";
 
-export type AssignmentTarget = ScalarAssignmentTarget
+export type AssignmentTarget = AssignableTarget<Expression>
   | { readonly kind: "error-target"; readonly range: SourceRange; readonly tokens: readonly BodyToken[]; readonly unsupported: boolean };
 export interface LetStatement {
   readonly kind: "let";
@@ -19,15 +19,28 @@ export interface LetStatement {
 
 /** Shared assignable-target entry point for LET and later INPUT/READ grammar. */
 export function parseAssignableTarget(source: SourceDocument, tokens: readonly BodyToken[], range: SourceRange, diagnostics: Diagnostic[]): AssignmentTarget {
-  const spelling = source.textInRange(range);
-  const identified = identifyVariable(spelling, spelling.endsWith("$") ? "string-scalar" : "numeric-scalar");
-  if (identified.kind === "success") return Object.freeze({ kind: "scalar-target", range, identity: identified.identity });
+  const fail = (message: string): AssignmentTarget => {
+    diagnostics.push(createDiagnostic({ code: DiagnosticCodes.invalidAssignmentTarget, severity: "error", category: "syntax", message, range }));
+    return Object.freeze({ kind: "error-target", range, tokens: Object.freeze([...tokens]), unsupported: false });
+  };
   const open = tokens.findIndex((token) => token.text === "(");
-  const prefix = open < 0 ? "" : source.text.slice(range.start, tokens[open]!.range.start).trim();
-  const arrayName = identifyVariable(prefix, prefix.endsWith("$") ? "string-array" : "numeric-array");
-  const unsupported = open > 0 && arrayName.kind === "success";
-  diagnostics.push(createDiagnostic({ code: unsupported ? DiagnosticCodes.unsupportedSyntax : DiagnosticCodes.invalidAssignmentTarget, severity: "error", category: unsupported ? "compatibility" : "syntax", message: unsupported ? "Array and slice assignment targets are not supported yet." : "Expected an assignable scalar variable, not an expression.", range }));
-  return Object.freeze({ kind: "error-target", range, tokens: Object.freeze([...tokens]), unsupported });
+  const nameRange = open < 0 ? range : open === 0 ? source.range(range.start) : source.range(range.start, tokens[open - 1]!.range.end);
+  const spelling = source.textInRange(nameRange);
+  const category = spelling.endsWith("$") ? "string-scalar" : open < 0 ? "numeric-scalar" : "numeric-array";
+  const identified = identifyVariable(spelling, category);
+  if (identified.kind === "error") return fail("Expected an assignable variable/array name, not an expression.");
+  if (open < 0) return Object.freeze({ kind: "scalar-target", range, identity: identified.identity });
+  let cursor = open;
+  let working = tokens;
+  const groups = [];
+  while (working[cursor]?.text === "(") {
+    const parsed = readAccessGroup(source, working, cursor, range.end, diagnostics);
+    working = parsed.tokens;
+    cursor = parsed.next;
+    groups.push(parsed.group);
+  }
+  if (cursor !== working.length) return fail("Unexpected token after assignable array/slice target.");
+  return Object.freeze({ kind: "indexed-target", range, nameRange, identity: identified.identity, groups: Object.freeze(groups) });
 }
 
 export function parseLetStatement(source: SourceDocument, tokens: readonly BodyToken[], range: SourceRange, diagnostics: Diagnostic[]): LetStatement {
