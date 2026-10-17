@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "emulator": "SkoolKit 10.1",
+  "fastLoad": false,
+  "loaderAccelerators": false,
+  "cases": [
+    {
+      "name": "arrays-functions",
+      "screenRows": [
+        "36wo",
+        "CORE OK",
+        "0 OK, 100:1"
+      ],
+      "runtimeSha256": {
+        "screen": "8bb5ee1266cf925dcc9b92934b637e36545f8852f688cfcf4e7abb58a7fd87ac",
+        "program": "79de6503100626fe0ae11e78b792e0d40dfc8244c6824294529da47a0797f22d",
+        "variables": "7e47260affe5c3b28a64f863442de9bfcc8a2f6b6c63227b9d05992af81fa4e1"
+      },
+      "originalTapSha256": "aa9ad62afb99b696beeec744f5b858f3ae90c3d75a581032df9b730fecfa5b8f",
+      "rebuiltTapSha256": "21d6764afd9515d8b0a4032f0d4919995851c8fe53c30d542b3060cbffb6d16c"
+    },
+    {
+      "name": "escapes",
+      "screenRows": [
+        "ESCAPES OK",
+        "0 OK, 40:1"
+      ],
+      "runtimeSha256": {
+        "screen": "0b41ac7f4cdc2ad746bb2d0545d2bf08fdb3f41dc3b625860fab80da2f53de15",
+        "program": "d31960e07920bc213da1247c7bbdc821ecffc09f28688d01fe9e4fbcc11a5283",
+        "variables": "e13b09c305e7e167ca91f8dd8bc0414ab1ba179e5060506b43ccef0c217a2fc2"
+      },
+      "originalTapSha256": "6b894eda00913f4f837c6f719eb0cedbeaa66cf9285b7b33286b3d60bbaa54c9",
+      "rebuiltTapSha256": "5d5ab2474e821137d5a07198c8d13f255c6d682e9b2a43c172cfdff903e6c078"
+    }
+  ]
+}
