@@ -1,0 +1,245 @@
+{
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "cases": [
+    {
+      "source": "10 LIST",
+      "encoded": "f0",
+      "statements": 1
+    },
+    {
+      "source": "10 LIST a",
+      "encoded": "f061",
+      "statements": 1
+    },
+    {
+      "source": "10 LIST #a",
+      "encoded": "f02361",
+      "statements": 1
+    },
+    {
+      "source": "10 LIST #a;b",
+      "encoded": "f023613b62",
+      "statements": 1
+    },
+    {
+      "source": "10 LIST #a,b",
+      "encoded": "f023612c62",
+      "statements": 1
+    },
+    {
+      "source": "10 LLIST #a;b",
+      "encoded": "e123613b62",
+      "statements": 1
+    },
+    {
+      "source": "10 LIST a,b",
+      "encoded": "f0612c62",
+      "romError": 11
+    },
+    {
+      "source": "10 LIST #a;",
+      "encoded": "f023613b",
+      "romError": 11
+    },
+    {
+      "source": "10 LIST #a,",
+      "encoded": "f023612c",
+      "romError": 11
+    },
+    {
+      "source": "10 LIST ;a",
+      "encoded": "f03b61",
+      "romError": 11
+    },
+    {
+      "source": "10 LIST #a b",
+      "encoded": "f023612062",
+      "statements": 1
+    },
+    {
+      "source": "10 LIST #a;a$",
+      "encoded": "f023613b6124",
+      "romError": 11
+    },
+    {
+      "source": "10 LIST a TO b",
+      "encoded": "f061cc62",
+      "romError": 11
+    },
+    {
+      "source": "10 LIST a$",
+      "encoded": "f06124",
+      "romError": 11
+    },
+    {
+      "source": "10 SAVE a$",
+      "encoded": "f86124",
+      "statements": 1
+    },
+    {
+      "source": "10 LOAD a$",
+      "encoded": "ef6124",
+      "statements": 1
+    },
+    {
+      "source": "10 VERIFY a$",
+      "encoded": "d66124",
+      "statements": 1
+    },
+    {
+      "source": "10 MERGE a$",
+      "encoded": "d56124",
+      "statements": 1
+    },
+    {
+      "source": "10 SAVE a",
+      "encoded": "f861",
+      "romError": 11
+    },
+    {
+      "source": "10 LOAD a$ CODE",
+      "encoded": "ef6124af",
+      "statements": 1
+    },
+    {
+      "source": "10 SAVE a$ CODE",
+      "encoded": "f86124af",
+      "romError": 11
+    },
+    {
+      "source": "10 LOAD a$ LINE a",
+      "encoded": "ef6124ca61",
+      "romError": 11
+    },
+    {
+      "source": "10 MERGE a$ CODE",
+      "encoded": "d56124af",
+      "romError": 11
+    },
+    {
+      "source": "10 VERIFY a$ LINE a",
+      "encoded": "d66124ca61",
+      "romError": 11
+    },
+    {
+      "source": "10 LOAD a$ CODE a",
+      "encoded": "ef6124af61",
+      "statements": 1
+    },
+    {
+      "source": "10 LOAD a$ CODE a,b",
+      "encoded": "ef6124af612c62",
+      "statements": 1
+    },
+    {
+      "source": "10 LOAD a$ CODE ,b",
+      "encoded": "ef6124af2c62",
+      "romError": 11
+    },
+    {
+      "source": "10 VERIFY a$ CODE",
+      "encoded": "d66124af",
+      "statements": 1
+    },
+    {
+      "source": "10 SAVE a$ CODE a,b",
+      "encoded": "f86124af612c62",
+      "statements": 1
+    },
+    {
+      "source": "10 SAVE a$ CODE a",
+      "encoded": "f86124af61",
+      "romError": 11
+    },
+    {
+      "source": "10 SAVE a$ LINE a",
+      "encoded": "f86124ca61",
+      "statements": 1
+    },
+    {
+      "source": "10 SAVE a$ SCREEN$",
+      "encoded": "f86124aa",
+      "statements": 1
+    },
+    {
+      "source": "10 LOAD a$ SCREEN$",
+      "encoded": "ef6124aa",
+      "statements": 1
+    },
+    {
+      "source": "10 VERIFY a$ SCREEN$",
+      "encoded": "d66124aa",
+      "statements": 1
+    },
+    {
+      "source": "10 MERGE a$ SCREEN$",
+      "encoded": "d56124aa",
+      "romError": 11
+    },
+    {
+      "source": "10 MERGE a$ DATA b()",
+      "encoded": "d56124e4622829",
+      "romError": 11
+    },
+    {
+      "source": "10 SAVE a$ DATA b()",
+      "encoded": "f86124e4622829",
+      "statements": 1
+    },
+    {
+      "source": "10 SAVE a$ DATA b$()",
+      "encoded": "f86124e462242829",
+      "statements": 1
+    },
+    {
+      "source": "10 SAVE a$ DATA b()$",
+      "encoded": "f86124e462282924",
+      "romError": 11
+    },
+    {
+      "source": "10 LOAD a$ DATA long()",
+      "encoded": "ef6124e46c6f6e672829",
+      "romError": 11
+    },
+    {
+      "source": "10 LOAD a$ DATA b(a)",
+      "encoded": "ef6124e462286129",
+      "romError": 11
+    },
+    {
+      "source": "10 LOAD a$ DATA b",
+      "encoded": "ef6124e462",
+      "romError": 11
+    },
+    {
+      "source": "10 SAVE a$ LINE a CODE b,c",
+      "encoded": "f86124ca61af622c63",
+      "romError": 11
+    },
+    {
+      "source": "10 LOAD a$ CODE a,",
+      "encoded": "ef6124af612c",
+      "romError": 11
+    },
+    {
+      "source": "10 SAVE STR$ a CODE b,c",
+      "encoded": "f8c161af622c63",
+      "statements": 1
+    },
+    {
+      "source": "10 SAVE STR$ CODE \"x\" CODE b,c",
+      "encoded": "f8c1af227822af622c63",
+      "statements": 1
+    },
+    {
+      "source": "10 SAVE a$ CODE b$",
+      "encoded": "f86124af6224",
+      "romError": 11
+    },
+    {
+      "source": "10 SAVE a$ LINE b$",
+      "encoded": "f86124ca6224",
+      "romError": 11
+    }
+  ]
+}

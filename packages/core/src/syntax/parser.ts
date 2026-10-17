@@ -1,3 +1,5 @@
+import { parseCassetteStatement, parseListingStatement } from "./storage-statements.js";
+import type { CassetteStatement, ListingStatement } from "../source/storage-statements.js";
 import type { RemStatement } from "../source/rem.js";
 import { parseDefFnStatement } from "./functions.js";
 import type { DefFnStatement } from "./functions.js";
@@ -45,7 +47,7 @@ export interface JumpStatement {
   readonly target: Expression;
   readonly complete: boolean;
 }
-export type Statement = RemStatement | DefFnStatement | DataStatement | ReadStatement | DimStatement | InputStatement | ForStatement | NextStatement | IfStatement | JumpStatement | LetStatement | SimpleCommandStatement<Expression>
+export type Statement = CassetteStatement<Expression> | ListingStatement<Expression> | RemStatement | DefFnStatement | DataStatement | ReadStatement | DimStatement | InputStatement | ForStatement | NextStatement | IfStatement | JumpStatement | LetStatement | SimpleCommandStatement<Expression>
   | { readonly kind: "empty"; readonly range: SourceRange }
   | PrintStatement
   | { readonly kind: "cls" | "stop"; readonly range: SourceRange }
@@ -82,6 +84,8 @@ function parseStatement(source: SourceDocument, tokens: readonly BodyToken[], ra
     if (!complete) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unexpectedToken, severity: "error", category: "syntax", message: "Unexpected token after jump target expression.", range: parsed.tokens[parsed.next]!.range }));
     return Object.freeze({ kind: direction === "TO" ? "goto" : "gosub", range, target: parsed.expression, complete });
   }
+  if (keyword === "LIST" || keyword === "LLIST") return parseListingStatement(source, tokens, range, diagnostics, keyword === "LIST" ? "list" : "llist");
+  if (keyword === "SAVE" || keyword === "LOAD" || keyword === "VERIFY" || keyword === "MERGE") return parseCassetteStatement(source, tokens, range, diagnostics, keyword);
   if (keyword === "REM") {
     const tailRange = source.range(command.range.end, range.end);
     return Object.freeze({ kind: "rem", range, tailRange, text: source.textInRange(tailRange) });

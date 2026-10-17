@@ -58,3 +58,5 @@ export type { BasicDefFnStatement } from "./semantic/functions.js";
 
 export type { RemStatement } from "./source/rem.js";
 export type { BasicRemStatement } from "./semantic/rem.js";
+
+export type { ListingStatement, CassetteStatement, CassetteForm } from "./source/storage-statements.js";

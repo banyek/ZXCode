@@ -1,0 +1,113 @@
+{
+  "reference": "zmakebas 1.3.3, commit 667090faf392e0083bbcf238084dcdd996957285",
+  "cases": [
+    {
+      "source": "10 LIST\n",
+      "programHex": "000a0200f00d"
+    },
+    {
+      "source": "10 LLIST\n",
+      "programHex": "000a0200e10d"
+    },
+    {
+      "source": "10 LIST 15\n",
+      "programHex": "000a0a00f031350e00000f00000d"
+    },
+    {
+      "source": "10 LIST #2\n",
+      "programHex": "000a0a00f023320e00000200000d"
+    },
+    {
+      "source": "10 LIST #2,15\n",
+      "programHex": "000a1300f023320e00000200002c31350e00000f00000d"
+    },
+    {
+      "source": "10 LLIST #3;20\n",
+      "programHex": "000a1300e123330e00000300003b32300e00001400000d"
+    },
+    {
+      "source": "10 SAVE \"x\"\n",
+      "programHex": "000a0500f82278220d"
+    },
+    {
+      "source": "10 LOAD \"\"\n",
+      "programHex": "000a0400ef22220d"
+    },
+    {
+      "source": "10 VERIFY \"x\"\n",
+      "programHex": "000a0500d62278220d"
+    },
+    {
+      "source": "10 MERGE \"x\"\n",
+      "programHex": "000a0500d52278220d"
+    },
+    {
+      "source": "10 SAVE \"x\" LINE 10\n",
+      "programHex": "000a0e00f8227822ca31300e00000a00000d"
+    },
+    {
+      "source": "10 SAVE \"x\" DATA a()\n",
+      "programHex": "000a0900f8227822e46128290d"
+    },
+    {
+      "source": "10 LOAD \"x\" DATA a$()\n",
+      "programHex": "000a0a00ef227822e4612428290d"
+    },
+    {
+      "source": "10 VERIFY \"x\" DATA a()\n",
+      "programHex": "000a0900d6227822e46128290d"
+    },
+    {
+      "source": "10 SAVE \"x\" SCREEN$\n",
+      "programHex": "000a0600f8227822aa0d"
+    },
+    {
+      "source": "10 LOAD \"x\" SCREEN$\n",
+      "programHex": "000a0600ef227822aa0d"
+    },
+    {
+      "source": "10 VERIFY \"x\" SCREEN$\n",
+      "programHex": "000a0600d6227822aa0d"
+    },
+    {
+      "source": "10 SAVE \"x\" CODE 32768,10\n",
+      "programHex": "000a1a00f8227822af33323736380e00000080002c31300e00000a00000d"
+    },
+    {
+      "source": "10 LOAD \"x\" CODE\n",
+      "programHex": "000a0600ef227822af0d"
+    },
+    {
+      "source": "10 LOAD \"x\" CODE 32768\n",
+      "programHex": "000a1100ef227822af33323736380e00000080000d"
+    },
+    {
+      "source": "10 LOAD \"x\" CODE 32768,10\n",
+      "programHex": "000a1a00ef227822af33323736380e00000080002c31300e00000a00000d"
+    },
+    {
+      "source": "10 VERIFY \"x\" CODE\n",
+      "programHex": "000a0600d6227822af0d"
+    },
+    {
+      "source": "10 VERIFY \"x\" CODE 32768,10\n",
+      "programHex": "000a1a00d6227822af33323736380e00000080002c31300e00000a00000d"
+    },
+    {
+      "source": "10 SAVE STR$ a CODE b,c\n",
+      "programHex": "000a0800f8c161af622c630d"
+    },
+    {
+      "source": "10 SAVE STR$ CODE \"x\" CODE b,c\n",
+      "programHex": "000a0b00f8c1af227822af622c630d"
+    },
+    {
+      "source": "10 IF a THEN LIST #2;15: LOAD a$ CODE\n",
+      "programHex": "000a1b00fa61cbf023320e00000200003b31350e00000f00003aef6124af0d"
+    },
+    {
+      "source": "10 DEF FN f$(x)=STR$ x: SAVE FN f$(2) LINE 10\n",
+      "programHex": "000a2700ce662428780e0000000000293dc1783af8a8662428320e000002000029ca31300e00000a00000d"
+    }
+  ]
+}

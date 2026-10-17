@@ -78,8 +78,8 @@ test("omitted optional operands stay omitted and capability-policy coverage stay
   }
 });
 
-test("special command families still require their own parsers", () => {
-  for (const body of ['LIST 1,2', 'SAVE "x"']) {
-    assert.ok(parsed(`10 ${body}`).diagnostics.some((diagnostic) => diagnostic.code === DiagnosticCodes.unsupportedSyntax), body);
+test("special command parsers reject generic argument lists and incomplete suffixes", () => {
+  for (const body of ['LIST 1,2', 'SAVE "x" CODE']) {
+    assert.ok(parsed(`10 ${body}`).diagnostics.some((diagnostic) => diagnostic.code === DiagnosticCodes.unexpectedToken), body);
   }
 });

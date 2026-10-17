@@ -1,3 +1,4 @@
+import { emitCassette, emitListing } from "./storage-statements.js";
 import { emitAssignableTarget } from "./targets.js";
 import { emitInputStatement } from "./input.js";
 import { emitPrintStatement } from "./print.js";
@@ -62,7 +63,9 @@ export function encodeBasicProgram(program: BuildableProgram<BasicProgram>): Enc
             emitExpression(statement.limit, emit);
             if (statement.step !== undefined) { emit(romTokenBySpelling("STEP")!.byte); emitExpression(statement.step, emit); }
           }
-        } else if (statement.kind === "rem") {
+        } else if (statement.kind === "list" || statement.kind === "llist") emitListing(statement, emit);
+        else if (statement.kind === "cassette") emitCassette(statement, emit);
+        else if (statement.kind === "rem") {
           emit(romTokenBySpelling("REM")!.byte);
           for (const byte of statement.bytes) emit(byte);
         } else if (statement.kind === "def-fn") {
