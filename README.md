@@ -33,7 +33,8 @@ returns cached, versioned shared diagnostics including encoder limits. Semantic
 symbol indexing, hover, definitions and references use the same canonical model;
 parser-context completion uses checked text edits and typed candidates. IDE
 integration follows. Shared original-manual help covers every ROM token, and
-`documentSignatureHelp` supplies typed built-in/FN argument information.
+`documentSignatureHelp` supplies typed built-in/FN argument information, and
+`documentSymbols` exposes an immutable outline in physical source order.
 See the [service contract](docs/design/032-language-service-contract.md).
 
 The [M2 acceptance corpus](docs/design/026-m2-core-acceptance.md) covers all commands

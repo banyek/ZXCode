@@ -102,3 +102,4 @@ export { documentCompletions } from "./service/completion.js";
 export { LANGUAGE_HELP, languageHelp } from "./source/language-help.js";
 export type { LanguageHelpEntry, HelpParameter } from "./source/language-help.js";
 export { documentSignatureHelp } from "./service/signatures.js";
+export { documentSymbols } from "./service/document-symbols.js";

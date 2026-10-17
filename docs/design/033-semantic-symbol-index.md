@@ -63,3 +63,28 @@ passes 228 tests. Dedicated tests cover numeric/string variables, arrays, FN
 results/formals, duplicate binding rules, literal versus dynamic line targets,
 unresolved names, incomplete documents, opaque text, strict offsets and old
 snapshot identities. Query locations and structured documentation are frozen.
+
+## M4-08 document outline
+
+The outline follows physical document order, not sorted execution order. Each
+recoverable numbered line is a top-level line symbol with its original number
+selection and full content range. Duplicate valid headers remain visible with checked ranges. Out-of-range or
+malformed headers remain parser diagnostics and receive no guessed outline
+numbers, modules or scopes.
+
+Meaningful children are existing indexed definition/write sites within a line:
+DIM arrays, LET/INPUT/READ assignments, FOR controls, and DEF FN definitions with
+formal parameters nested beneath their actual definition. Repeated writes on the
+same line retain their own sites in source order; ordinary reads are not outline
+entries. Function/array container ranges use their shared typed statement where
+available, while selection ranges remain exact names. Partial statements without
+semantic identities remain represented by their recoverable line, without a guessed
+symbol. This outline adds presentation hierarchy only, never new language scope.
+
+`documentSymbols` returns a cached immutable query result with the same snapshot
+identity as diagnostics/navigation. Older outlines remain valid after replacements.
+
+Node 24 validation passes 242 tests. Outline fixtures verify physical versus
+execution order, leading-zero headers, repeated writes, nested/duplicate FN
+formals, duplicate numbered lines, malformed/invalid headers, incomplete statements,
+CRLF/Unicode ranges, immutable results and retained old snapshots.
