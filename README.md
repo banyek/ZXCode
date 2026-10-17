@@ -41,6 +41,10 @@ notation and named/raw text escapes are active in quoted strings and REM tails. 
 encoding and lossless text-byte decoding, including truncated-packet diagnostics.
 The core also exposes `readTapBlocks` and `readBasicTap`, with strict length,
 checksum and BASIC metadata validation and structured byte-offset failures.
+The experimental `decodeBasicProgram`, `exportBasicSource` and `inspectBasicTap`
+APIs retain raw bytes and saved variables. Source export reports exact success
+only after recompilation reproduces the original BASIC image; see the
+[import feasibility contract](docs/design/029-import-feasibility.md).
 Container names and payloads remain opaque bytes; see the
 [TAP contract](docs/design/019-tap-container.md).
 Printable literals include Spectrum £, © and ↑ alongside the existing ASCII

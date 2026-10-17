@@ -85,3 +85,8 @@ export type { FormattedSpectrumText } from "./encoding/source-text.js";
 export { MAX_TAP_PAYLOAD_LENGTH } from "./tap/format.js";
 export { readTapBlocks, readBasicTap } from "./tap/reader.js";
 export type { TapReadIssue, TapReadFailure, TapBlock, ReadTapBlocks, ReadBasicTap } from "./tap/reader.js";
+
+export { decodeBasicProgram } from "./decoding/basic.js";
+export type { BasicDecodeIssue, DecodedBasicSegment, DecodedBasicLine, DecodedBasicProgram } from "./decoding/basic.js";
+export { exportBasicSource, inspectBasicTap } from "./import.js";
+export type { BasicSourceExport, BasicTapImport } from "./import.js";
