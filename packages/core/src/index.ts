@@ -55,3 +55,6 @@ export type { BasicDataStatement, BasicReadStatement } from "./semantic/data.js"
 
 export type { DefFnStatement } from "./syntax/functions.js";
 export type { BasicDefFnStatement } from "./semantic/functions.js";
+
+export type { RemStatement } from "./source/rem.js";
+export type { BasicRemStatement } from "./semantic/rem.js";

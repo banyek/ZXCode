@@ -168,3 +168,25 @@ quotes for an interior quote. This authentic form is now in coverage. Syntax
 retains original content plus decoded source parts; semantic string bytes contain
 a single quote, and the BASIC encoder doubles it for storage. Other character,
 control and escape decisions above remain provisional.
+
+## M2-14 REM raw-tail contract
+
+Original Sinclair Appendix C defines REM's remainder as a comment. Independent
+48K ROM STMT-L-1 probes verify that colons, quotes, numeric-looking text and token
+bytes after REM do not create statements or expression syntax. The ROM syntax
+checker returns with CH_ADD at the first nontrivia tail byte; the research verifier
+records that unconsumed tail length explicitly instead of assuming ordinary
+statement consumption.
+
+A source REM node owns the exact range immediately after its keyword through the
+physical line end, including all spaces, case, punctuation and unmatched quotes.
+It also works after colons and IF/THEN. No text in that range is keyword-tokenized,
+number-encoded, quote-decoded or escape-expanded. The encoder emits the REM token
+and checked literal tail bytes. A bare REM has an empty range and no synthetic
+space. A source space after REM is a literal comment byte and remains in output.
+
+This ticket uses the existing literal character coverage: ASCII 32..126 except
+backtick (Spectrum 0x60 is pound). Tabs and other Unicode/control characters are
+preserved in the source node but receive precise compatibility diagnostics rather
+than substitution. Literal braces and backslashes remain literal. Arbitrary byte,
+Spectrum character mapping and escape-policy decisions remain deferred to M3.

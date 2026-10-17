@@ -39,9 +39,8 @@ test("quoted keyword/colon text and REM tails never become ordinary command toke
   const tail = line.tokens.find((token) => token.kind === "raw-tail");
   assert.equal(tail.text, ' PRINT : " unfinished');
   assert.equal(line.tokens.filter((token) => token.kind === "colon").length, 1);
-  assert.equal(parsed.diagnostics.length, 1);
-  assert.equal(parsed.diagnostics[0].code, DiagnosticCodes.unsupportedSyntax);
-  assert.equal(line.statements[1].kind, "error-statement");
+  assert.deepEqual(parsed.diagnostics, []);
+  assert.equal(line.statements[1].kind, "rem");
 });
 
 test("malformed statements recover at colons and physical boundaries", () => {

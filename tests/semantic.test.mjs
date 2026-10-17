@@ -21,7 +21,7 @@ test("semantic validation produces sorted buildable data with original ranges", 
 });
 
 test("syntax, compatibility and numeric errors prevent a buildable result", () => {
-  for (const text of ['10 PRINT "', "10 CLS 1", "10 PRINT 1E39", "10 PRINT 1e", "10 REM raw", "10 STOP\n10 CLS", '10 PRINT "😀"', '10 PRINT "é"', '10 PRINT "`"', '10 PRINT "\t"', "PRINT 1", "10"]) {
+  for (const text of ['10 PRINT "', "10 CLS 1", "10 PRINT 1E39", "10 PRINT 1e", "10 STOP\n10 CLS", '10 PRINT "😀"', '10 PRINT "é"', '10 PRINT "`"', '10 PRINT "\t"', "PRINT 1", "10"]) {
     const result = analyzeBasic(parsed(text));
     assert.equal(result.kind, "invalid", text);
     assert.ok(result.analysis.diagnostics.some((diagnostic) => diagnostic.severity === "error"), text);
