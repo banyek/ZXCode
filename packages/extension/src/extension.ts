@@ -3,6 +3,7 @@ import { languageService } from "@zxcode/core";
 import type { DocumentAnalysisSnapshot, SourceRange } from "@zxcode/core";
 import { EditorDocuments } from "./documents.js";
 import { EditorDiagnostics } from "./diagnostics.js";
+import { registerCommands } from "./commands.js";
 import { registerNavigation } from "./navigation.js";
 import { registerCompletion } from "./completion.js";
 import { toEditorRange } from "./ranges.js";
@@ -13,6 +14,7 @@ export interface ZXCodeExtensionApi {
 }
 export function activate(context: vscode.ExtensionContext): ZXCodeExtensionApi {
   const documents = new EditorDocuments();
-  context.subscriptions.push(new EditorDiagnostics(documents), registerCompletion(documents), registerNavigation(documents), documents);
+  const diagnostics = new EditorDiagnostics(documents);
+  context.subscriptions.push(diagnostics, registerCommands(documents, diagnostics), registerCompletion(documents), registerNavigation(documents), documents);
   return Object.freeze({ documents, queries: languageService, toEditorRange });
 }

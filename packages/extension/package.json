@@ -55,6 +55,30 @@
           "comment.line.rem.spectrum-basic"
         ]
       }
-    ]
+    ],
+    "commands": [
+      {
+        "command": "zxcode.check",
+        "title": "ZXCode: Check BASIC"
+      },
+      {
+        "command": "zxcode.build",
+        "title": "ZXCode: Build TAP"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "zxcode.check",
+          "when": "editorLangId == zx-spectrum-basic",
+          "group": "zxcode"
+        },
+        {
+          "command": "zxcode.build",
+          "when": "editorLangId == zx-spectrum-basic",
+          "group": "zxcode"
+        }
+      ]
+    }
   }
 }
