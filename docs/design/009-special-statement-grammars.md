@@ -146,3 +146,47 @@ For editor use, malformed special grammars should recover at the safest authenti
 - physical line end.
 
 Recovery tokens must remain in the CST so diagnostics can underline the correct source range.
+
+## M2-07 control-flow and sequence contract
+
+Original Sinclair manual [chapter 3](https://worldofspectrum.org/ZXBasicManual/zxmanchap3.html)
+and [Appendix C](https://worldofspectrum.org/ZXBasicManual/zxmanappc.html) establish
+that IF's THEN tail comprises the entire remaining physical line. A false
+condition skips that whole tail; colon does not end the conditional. Nested IF
+nodes therefore own nested statement sequences. There is no ELSE or implicit
+`THEN line-number` shorthand. GO TO and GO SUB keep their numeric expression
+operands; RETURN reuses the already implemented no-operand ROM command.
+
+The source uses canonical `GO TO` / `GO SUB` word sequences (case insensitive,
+ASCII space/tab formatting). No GOTO/GOSUB aliases are introduced by this ticket.
+Numeric conditions/targets use the common expression parser and type checker.
+
+The [original statement loop](https://skoolkit.ca/disassemblies/rom/hex/asm/1B28.html)
+accepts empty colon slots and an empty THEN tail. These are represented explicitly
+as empty statement nodes, rather than errors from the earlier M1 subset. Number-
+only physical source lines remain incomplete snapshots per the source-file policy.
+The loop also limits SUBPPC to 127 statements per line: IF headers and empty slots
+count. Fixed original-ROM syntax observations verify empty cases and the 127/128
+boundary. Excess statements produce compatibility errors, never truncated output.
+
+IF nodes retain both full subtree range and a header range ending at THEN. Encoded
+statement maps flatten actual ROM statement order: IF's header maps separately
+from each statement in its tail, with empty slots represented as zero-length maps.
+The AST keeps conditional ownership; the encoder preserves literal colon and THEN
+boundaries. Recovery stays within the physical line; an incomplete IF retains
+later colon groups but cannot become buildable after diagnostics are stripped.
+The lexer recognizes statement start after THEN only while scanning an IF, so REM
+raw tails there preserve keyword-looking/quoted/colon content (REM build support
+still belongs to its dedicated issue).
+
+### Static line-reference relations
+
+Validated numeric/BIN literal nodes whose stored ROM value is an exact integer in
+1..9999 receive a line-reference relation, with the exact definition range when
+present. Forward references work independently of physical file order. Expressions,
+parenthesized forms and unary expressions remain expressions and are not folded.
+Zero and fractional/out-of-snapshot-range literals do not gain a misleading exact
+line relation. A missing exact literal line produces a semantic warning, never a
+build error. The wording does not claim a runtime failure: the ROM selects the
+first line after that number when no exact line exists. No new static control-flow
+reachability, undefined-variable or subroutine-stack rule is introduced.

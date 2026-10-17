@@ -35,3 +35,5 @@ export type { ColourControl, SimpleCommandDefinition, SimpleCommandShape, Simple
 export type { ScalarAssignmentTarget } from "./source/assignment-target.js";
 export type { AssignmentTarget, LetStatement } from "./syntax/assignment.js";
 export type { BasicLetStatement } from "./semantic/assignment.js";
+export type { IfStatement, JumpStatement } from "./syntax/parser.js";
+export type { BasicIfStatement, BasicJumpStatement, StaticLineReference } from "./semantic/program.js";

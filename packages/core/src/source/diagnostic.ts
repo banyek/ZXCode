@@ -18,6 +18,7 @@ export const DiagnosticCodes = Object.freeze({
   unsupportedSyntax: "ZX2002",
   numericOverflow: "ZX2003",
   programTooLarge: "ZX2004",
+  tooManyStatements: "ZX2005",
   missingLineTarget: "ZX3001",
   typeMismatch: "ZX3002"
 } as const);

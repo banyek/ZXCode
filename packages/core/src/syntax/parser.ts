@@ -19,7 +19,22 @@ export type PrintItem =
   | { readonly kind: "print-expression"; readonly range: SourceRange; readonly expression: Expression }
   | { readonly kind: "print-separator"; readonly range: SourceRange; readonly separator: ";" | "," };
 
-export type Statement = LetStatement | SimpleCommandStatement<Expression>
+export interface IfStatement {
+  readonly kind: "if";
+  readonly range: SourceRange;
+  readonly headerRange: SourceRange;
+  readonly condition: Expression;
+  readonly thenStatements: readonly Statement[];
+  readonly complete: boolean;
+}
+export interface JumpStatement {
+  readonly kind: "goto" | "gosub";
+  readonly range: SourceRange;
+  readonly target: Expression;
+  readonly complete: boolean;
+}
+export type Statement = IfStatement | JumpStatement | LetStatement | SimpleCommandStatement<Expression>
+  | { readonly kind: "empty"; readonly range: SourceRange }
   | { readonly kind: "print"; readonly range: SourceRange; readonly items: readonly PrintItem[] }
   | { readonly kind: "cls" | "stop"; readonly range: SourceRange }
   | { readonly kind: "error-statement"; readonly range: SourceRange; readonly tokens: readonly BodyToken[] };
@@ -41,11 +56,19 @@ function parseStatement(source: SourceDocument, tokens: readonly BodyToken[], ra
     return Object.freeze({ kind: "error-statement", range, tokens: Object.freeze([...tokens]) });
   };
   const command = tokens[0];
-  if (command?.kind !== "word") return fail("Expected an M1 statement; empty/other statement forms are not supported yet.");
+  if (command?.kind !== "word") return fail("Expected a BASIC statement command.", true);
   const keyword = command.text.toUpperCase();
   if (keyword === "CLS" || keyword === "STOP") {
     if (tokens.length !== 1) return fail(`${keyword} does not accept operands.`, true);
     return Object.freeze({ kind: keyword === "CLS" ? "cls" : "stop", range });
+  }
+  if (keyword === "GO") {
+    const direction = tokens[1]?.text.toUpperCase();
+    if (direction !== "TO" && direction !== "SUB") return fail("Expected TO or SUB after GO.", true);
+    const parsed = readExpression(source, tokens, 2, range.end, diagnostics);
+    const complete = parsed.next === parsed.tokens.length;
+    if (!complete) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unexpectedToken, severity: "error", category: "syntax", message: "Unexpected token after jump target expression.", range: parsed.tokens[parsed.next]!.range }));
+    return Object.freeze({ kind: direction === "TO" ? "goto" : "gosub", range, target: parsed.expression, complete });
   }
   if (keyword === "LET") return parseLetStatement(source, tokens, range, diagnostics);
   const simple = parseSimpleCommand(source, tokens, range, diagnostics);
@@ -71,38 +94,59 @@ function parseStatement(source: SourceDocument, tokens: readonly BodyToken[], ra
   return Object.freeze({ kind: "print", range, items: Object.freeze(items) });
 }
 
-/** Recoverable CST/statement parsing on the same path used by future builds. */
+/** IF owns the entire remainder; colons remain statement slots inside that scope. */
+function parseSequence(source: SourceDocument, tokens: readonly BodyToken[], range: SourceRange, diagnostics: Diagnostic[], depth = 0, allowEmpty = false): readonly Statement[] {
+  if (depth >= 127) {
+    diagnostics.push(createDiagnostic({ code: DiagnosticCodes.tooManyStatements, severity: "error", category: "compatibility", message: "The 48K ROM supports at most 127 statements in one BASIC line.", range }));
+    return Object.freeze([Object.freeze({ kind: "error-statement", range, tokens: Object.freeze([...tokens]) })]);
+  }
+  if (tokens.length === 0) return Object.freeze(allowEmpty ? [Object.freeze({ kind: "empty", range: source.range(range.end) })] : []);
+  const statements: Statement[] = [];
+  let start = 0;
+  let insertion = range.start;
+  while (start <= tokens.length) {
+    const first = tokens[start];
+    if (first?.kind === "word" && first.text.toUpperCase() === "IF") {
+      const parsed = readExpression(source, tokens, start + 1, range.end, diagnostics);
+      tokens = parsed.tokens;
+      const then = tokens[parsed.next];
+      const complete = then?.kind === "word" && then.text.toUpperCase() === "THEN";
+      let tailStart = parsed.next + 1;
+      if (!complete) {
+        diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unexpectedToken, severity: "error", category: "syntax", message: "Expected THEN after IF condition.", range: source.range(then?.range.start ?? range.end) }));
+        const colon = tokens.findIndex((token, index) => index >= parsed.next && token.kind === "colon");
+        tailStart = colon < 0 ? tokens.length : colon + 1;
+      }
+      const headerEnd = complete ? then.range.end : parsed.expression.range.end;
+      const tailInsertion = tokens[tailStart]?.range.start ?? range.end;
+      const tail = parseSequence(source, tokens.slice(tailStart), source.range(tailInsertion, range.end), diagnostics, depth + 1, true);
+      statements.push(Object.freeze({ kind: "if", range: source.range(first.range.start, range.end), headerRange: source.range(first.range.start, headerEnd), condition: parsed.expression, thenStatements: tail, complete }));
+      break;
+    }
+    let end = start;
+    while (end < tokens.length && tokens[end]!.kind !== "colon") end++;
+    const group = tokens.slice(start, end);
+    const statementRange = group.length === 0 ? source.range(insertion) : source.range(group[0]!.range.start, group[group.length - 1]!.range.end);
+    statements.push(group.length === 0 ? Object.freeze({ kind: "empty", range: statementRange }) : parseStatement(source, group, statementRange, diagnostics));
+    if (end === tokens.length) break;
+    insertion = tokens[end]!.range.end;
+    start = end + 1;
+  }
+  return Object.freeze(statements);
+}
+
+/** Recoverable CST/statement parsing on the same path used by builds. */
 export function parseBasic(source: SourceDocument): ParsedDocument<BasicSyntaxProgram> {
   const physical = scanPhysicalLines(source);
   const diagnostics = [...physical.diagnostics];
   const lines: BasicSyntaxLine[] = [];
   for (const line of physical.syntax.lines) {
-    if (line.kind !== "numbered") {
-      lines.push(line);
-      continue;
-    }
+    if (line.kind !== "numbered") { lines.push(line); continue; }
     const lexed = lexBody(source, line.bodyRange);
     diagnostics.push(...lexed.diagnostics);
-    const statements: Statement[] = [];
-    let group: BodyToken[] = [];
-    let insertion = line.bodyRange.start;
-    let separatorSeen = false;
-    const flush = (): void => {
-      const range = group.length === 0 ? source.range(insertion)
-        : source.range(group[0]!.range.start, group[group.length - 1]!.range.end);
-      statements.push(parseStatement(source, group, range, diagnostics));
-      group = [];
-    };
-    for (const token of lexed.tokens) {
-      if (token.kind === "whitespace" || token.kind === "eof") continue;
-      if (token.kind === "colon") {
-        flush();
-        insertion = token.range.end;
-        separatorSeen = true;
-      } else group.push(token);
-    }
-    if (group.length !== 0 || separatorSeen) flush();
-    lines.push(Object.freeze({ ...line, tokens: lexed.tokens, statements: Object.freeze(statements) }));
+    const significant = lexed.tokens.filter((token) => token.kind !== "whitespace" && token.kind !== "eof");
+    const statements = parseSequence(source, significant, line.bodyRange, diagnostics);
+    lines.push(Object.freeze({ ...line, tokens: lexed.tokens, statements }));
   }
   return Object.freeze({ source, syntax: Object.freeze({ kind: "basic-program", lines: Object.freeze(lines) }), diagnostics: Object.freeze(diagnostics) });
 }
