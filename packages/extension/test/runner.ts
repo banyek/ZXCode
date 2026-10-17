@@ -67,6 +67,26 @@ export async function run(): Promise<void> {
   assert.equal(await vscode.workspace.applyEdit(fixAction.edit),true);
   assert.equal(fixDocument.getText(),'10 PRINT "£©↑"\r\n');
   assert.equal(api.queries.diagnostics(api.documents.snapshot(fixDocument)).value.length,0);
+  const workspaceA = vscode.Uri.file(join(testFiles,"workspace-a.zxbas")), workspaceB = vscode.Uri.file(join(testFiles,"workspace-b.zxbas"));
+  await vscode.workspace.fs.writeFile(workspaceA,Buffer.from('10 LET workspacecount=1\n20 GO TO 99\n'));
+  await vscode.workspace.fs.writeFile(workspaceB,Buffer.from('99 LET workspacecount=2\n'));
+  const ignoredBas = vscode.Uri.file(join(testFiles,"unopened.bas"));
+  await vscode.workspace.fs.writeFile(ignoredBas,Buffer.from('10 LET genericworkspace=1\n'));
+  let workspaceMatches:vscode.SymbolInformation[]=[];
+  for(let attempt=0;attempt<20;attempt++) {
+    workspaceMatches=(await vscode.commands.executeCommand<vscode.SymbolInformation[]>("vscode.executeWorkspaceSymbolProvider","workspacecount")) ?? [];
+    if(workspaceMatches.filter(item=>[workspaceA.toString(),workspaceB.toString()].includes(item.location.uri.toString())).length === 2) break;
+    await new Promise(resolve=>setTimeout(resolve,50));
+  }
+  assert.equal(workspaceMatches.filter(item=>[workspaceA.toString(),workspaceB.toString()].includes(item.location.uri.toString())).length,2);
+  assert.ok(!vscode.workspace.textDocuments.some(document=>document.uri.toString() === workspaceA.toString()),"Workspace query does not open discovered disk files");
+  assert.ok(!((await vscode.commands.executeCommand<vscode.SymbolInformation[]>("vscode.executeWorkspaceSymbolProvider","genericworkspace")) ?? []).some(item=>item.location.uri.toString() === ignoredBas.toString()),"Unopened generic .bas is not claimed");
+  const dirtyWorkspace = await vscode.workspace.openTextDocument(workspaceA);
+  const dirtyWorkspaceEditor = await vscode.window.showTextDocument(dirtyWorkspace);
+  await dirtyWorkspaceEditor.edit(builder=>builder.replace(new vscode.Range(0,7,0,21),"dirtyworkspace"));
+  const dirtySymbols=(await vscode.commands.executeCommand<vscode.SymbolInformation[]>("vscode.executeWorkspaceSymbolProvider","dirtyworkspace")) ?? [];
+  assert.ok(dirtySymbols.some(item=>item.location.uri.toString() === workspaceA.toString()),"Workspace navigation uses unsaved text");
+  assert.ok(api.queries.diagnostics(api.documents.snapshot(dirtyWorkspace)).value.some(diagnostic=>diagnostic.code === "ZX3001"),"Other files do not resolve missing local lines");
   const genericUri = vscode.Uri.file(join(testFiles, "generic.bas"));
   await vscode.workspace.fs.writeFile(genericUri, Buffer.from("10 STOP\n"));
   const generic = await vscode.workspace.openTextDocument(genericUri);

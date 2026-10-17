@@ -83,6 +83,10 @@
       {
         "command": "zxcode.applyRenumber",
         "title": "ZXCode: Apply Renumber"
+      },
+      {
+        "command": "zxcode.openProgram",
+        "title": "ZXCode: Open BASIC Program"
       }
     ],
     "menus": {
