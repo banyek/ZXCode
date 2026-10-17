@@ -5,7 +5,10 @@ import type { AccessGroup } from "../source/access.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument, SourceRange } from "../source/document.js";
-import { romTokenBySpelling } from "../source/rom-tokens.js";
+import { BUILTIN_SIGNATURES } from "../source/builtin-signatures.js";
+import type { ExpectedExpressionType } from "../source/builtin-signatures.js";
+export { BUILTIN_SIGNATURES } from "../source/builtin-signatures.js";
+export type { BuiltinSignature, ExpectedExpressionType } from "../source/builtin-signatures.js";
 import type { RomToken } from "../source/rom-tokens.js";
 import { identifyVariable } from "../source/variable-identity.js";
 import type { VariableIdentity } from "../source/variable-identity.js";
@@ -15,22 +18,6 @@ import { convertNumericLiteral } from "./numeric.js";
 import type { NumericLiteralValue } from "./numeric.js";
 
 export type ExpressionType = "numeric" | "string" | "unknown" | "error";
-export type ExpectedExpressionType = "numeric" | "string" | "numeric-or-string";
-export interface BuiltinSignature {
-  readonly token: RomToken;
-  readonly arguments: readonly ExpectedExpressionType[];
-  readonly result: "numeric" | "string";
-}
-const signature = (name: string, args: readonly ExpectedExpressionType[], result: "numeric" | "string"): BuiltinSignature => Object.freeze({ token: romTokenBySpelling(name)!, arguments: Object.freeze([...args]), result });
-export const BUILTIN_SIGNATURES: readonly BuiltinSignature[] = Object.freeze([
-  signature("RND", [], "numeric"), signature("PI", [], "numeric"), signature("INKEY$", [], "string"),
-  ...["POINT", "ATTR"].map((name) => signature(name, ["numeric", "numeric"], "numeric")),
-  signature("SCREEN$", ["numeric", "numeric"], "string"), signature("VAL$", ["string"], "string"),
-  ...["CODE", "VAL", "LEN"].map((name) => signature(name, ["string"], "numeric")),
-  ...["SIN", "COS", "TAN", "ASN", "ACS", "ATN", "LN", "EXP", "INT", "SQR", "SGN", "ABS", "PEEK", "IN"].map((name) => signature(name, ["numeric"], "numeric")),
-  signature("USR", ["numeric-or-string"], "numeric"),
-  signature("STR$", ["numeric"], "string"), signature("CHR$", ["numeric"], "string")
-]);
 const signatures = new Map(BUILTIN_SIGNATURES.map((item) => [item.token.spelling, item]));
 interface TypedBase { readonly range: SourceRange; readonly type: ExpressionType }
 export type TypedExpression = TypedBase & (

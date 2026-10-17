@@ -1,3 +1,5 @@
+import { languageHelp } from "../source/language-help.js";
+import { helpDocumentation } from "./help.js";
 import { parserCompletionContext } from "../syntax/completion-context.js";
 import { ROM_TOKENS } from "../source/rom-tokens.js";
 import { commandAvailability } from "../source/target-profile.js";
@@ -33,7 +35,8 @@ export function documentCompletions(snapshot: DocumentAnalysisSnapshot, offset: 
   const add = (label: string, kind: LanguageCompletionItem["kind"], newText = label, rank = "2", alias = label): void => {
     if (!fold(alias).startsWith(fold(state.prefix)) || seen.has(`${kind}:${label}`)) return;
     seen.add(`${kind}:${label}`);
-    items.push(Object.freeze({ label, kind, edit: Object.freeze({ range: state.editRange, newText }), sortKey: `${rank}:${label}` }));
+    const help = languageHelp(label) ?? (label.startsWith("FN ") ? languageHelp("FN") : undefined);
+    items.push(Object.freeze({ label, kind, ...(help === undefined ? {} : { detail: help.syntax[0]!, documentation: helpDocumentation(help) }), edit: Object.freeze({ range: state.editRange, newText }), sortKey: `${rank}:${label}` }));
   };
   if (state.kind === "statement-start") {
     for (const token of ROM_TOKENS) if (token.category === "statement" && commandAvailability(token.spelling, snapshot.targetProfile)?.defaultCompletion) add(token.spelling, "command");
