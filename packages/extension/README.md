@@ -23,3 +23,10 @@ host with isolated settings/extensions. On Linux use `xvfb-run -a npm run
 test:extension`. To reuse a local installation, set `ZXCODE_VSCODE_EXECUTABLE` to
 its executable. The smoke verifies activation, document versions, shared queries,
 Unicode/CRLF range conversion and stale-result rejection.
+
+Use **ZXCode: Check BASIC** or **ZXCode: Build TAP** from the command palette or
+BASIC editor context menu. Commands compile current unsaved text. Build writes a
+sibling `.tap` for saved sources, or asks for an output location for untitled
+source. ZXCode Output reports diagnostics and the full generated TAP URI; Problems
+continues to show shared diagnostics. The initial TAP header name is ZXCODE and
+autostart is disabled. Failed builds preserve existing output.
