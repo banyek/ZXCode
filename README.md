@@ -121,3 +121,8 @@ adapters sit outside the parser/encoder pipeline.
 
 TypeScript 6.0.3 is pinned within the supported range of TypeScript ESLint 8.71.2.
 The toolchain uses no runtime framework dependencies.
+
+CAT, FORMAT, MOVE and ERASE are authentic ROM commands and build with a runtime
+capability warning on the default 48K target. OPEN # and CLOSE # support base-ROM
+channels. Core callers may declare execution capabilities through `targetProfile`;
+this does not enable additional syntax. See [capability policy](docs/design/025-runtime-capability-policy.md).

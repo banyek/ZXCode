@@ -1,3 +1,5 @@
+import { SPECTRUM_48K_TARGET } from "../source/target-profile.js";
+import type { TargetProfile } from "../source/target-profile.js";
 import { analyzeCassetteStatement, analyzeListingStatement } from "./storage-statements.js";
 import type { CassetteStatement, ListingStatement } from "../source/storage-statements.js";
 import { analyzeRemStatement } from "./rem.js";
@@ -87,7 +89,8 @@ export type BasicAnalysisResult =
   | { readonly kind: "invalid"; readonly analysis: AnalyzedProgram<BasicProgram> };
 
 /** Analyze parsed nodes once; error nodes/diagnostics cannot acquire the brand. */
-export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>): BasicAnalysisResult {
+export interface BasicAnalysisOptions { readonly targetProfile?: TargetProfile }
+export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>, options: BasicAnalysisOptions = {}): BasicAnalysisResult {
   const source = parsed.source;
   const diagnostics = [...parsed.diagnostics];
   const lines: BasicLine[] = [];
@@ -160,7 +163,7 @@ export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>): BasicA
     if (node.kind === "input") return analyzeInputStatement(source, node, diagnostics, context);
     if (node.kind === "for" || node.kind === "next") return analyzeLoop(source, node, diagnostics, context);
     if (node.kind === "let") return analyzeLetStatement(source, node, diagnostics, context);
-    if (node.kind === "simple-command") return analyzeSimpleCommand(source, node, diagnostics, context);
+    if (node.kind === "simple-command") return analyzeSimpleCommand(source, node, diagnostics, context, options.targetProfile ?? SPECTRUM_48K_TARGET);
     if (node.kind === "print" || node.kind === "lprint") return analyzePrintStatement(source, node, diagnostics, context);
     return Object.freeze({ kind: node.kind, range: node.range });
   };

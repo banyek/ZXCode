@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import { analyzeBasic, checkProgram, DiagnosticCodes, parseBasic, SIMPLE_COMMANDS, SourceDocument } from "@zxcode/core";
-import { emitSimpleCommand } from "../packages/core/dist/encoding/simple-commands.js";
 
 function parsed(text) { return parseBasic(new SourceDocument("commands", text)); }
 
@@ -15,19 +14,9 @@ test("all thirty simple ROM commands have independent parser and encoder fixture
     const statement = input.syntax.lines[0].statements[0];
     const name = statement.kind === "simple-command" ? statement.definition.token.spelling : statement.kind.toUpperCase();
     covered.add(name);
-    const analysis = analyzeBasic(input);
-    if (statement.kind === "simple-command" && statement.definition.pendingCapabilityPolicy) {
-      assert.equal(analysis.kind, "invalid");
-      const body = [];
-      emitSimpleCommand(analysis.analysis.program.lines[0].statements[0], (byte) => body.push(byte));
-      body.push(13);
-      const image = Buffer.from([0, 10, body.length & 255, body.length >> 8, ...body]);
-      assert.equal(image.toString("hex"), reference.programHex, reference.source);
-    } else {
-      const result = checkProgram(input.source);
-      assert.equal(result.kind, "success", reference.source);
-      assert.equal(Buffer.from(result.encodedProgram.programBytes).toString("hex"), reference.programHex, reference.source);
-    }
+    const result = checkProgram(input.source);
+    assert.equal(result.kind, "success", reference.source);
+    assert.equal(Buffer.from(result.encodedProgram.programBytes).toString("hex"), reference.programHex, reference.source);
   }
   assert.equal(SIMPLE_COMMANDS.length, 30);
   assert.deepEqual([...covered].sort(), SIMPLE_COMMANDS.map((definition) => definition.token.spelling).sort());
@@ -63,7 +52,7 @@ test("missing/extra operands and graphics delimiters recover and cannot bypass v
   }
 });
 
-test("omitted optional operands stay omitted and capability-policy coverage stays explicit", () => {
+test("omitted optional operands stay omitted and runtime capability warnings stay explicit", () => {
   for (const body of ['RUN', 'RANDOMIZE', 'CLEAR', 'RESTORE']) {
     const input = parsed(`10 ${body}`);
     assert.equal(input.syntax.lines[0].statements[0].operands.length, 0);
@@ -73,8 +62,9 @@ test("omitted optional operands stay omitted and capability-policy coverage stay
     const input = parsed(`10 ${body}`);
     assert.deepEqual(input.diagnostics, []);
     const result = checkProgram(input.source);
-    assert.equal(result.kind, "error");
-    assert.ok(result.diagnostics.some((diagnostic) => diagnostic.code === DiagnosticCodes.unsupportedSyntax && diagnostic.message.includes("capability")));
+    assert.equal(result.kind, "success");
+    const extension = !body.startsWith("OPEN") && !body.startsWith("CLOSE");
+    assert.equal(result.diagnostics.some((diagnostic) => diagnostic.code === DiagnosticCodes.missingRuntimeCapability), extension);
   }
 });
 

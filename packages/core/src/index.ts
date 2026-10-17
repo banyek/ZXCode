@@ -60,3 +60,7 @@ export type { RemStatement } from "./source/rem.js";
 export type { BasicRemStatement } from "./semantic/rem.js";
 
 export type { ListingStatement, CassetteStatement, CassetteForm } from "./source/storage-statements.js";
+
+export { commandAvailability, SPECTRUM_48K_TARGET } from "./source/target-profile.js";
+export type { CommandAvailability, RuntimeCapability, TargetProfile } from "./source/target-profile.js";
+export type { BasicAnalysisOptions } from "./semantic/program.js";

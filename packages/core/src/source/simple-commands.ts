@@ -6,10 +6,8 @@ export type SimpleCommandShape = "none" | "optional-number" | "number" | "colour
 export interface SimpleCommandDefinition {
   readonly token: RomToken;
   readonly shape: SimpleCommandShape;
-  readonly pendingCapabilityPolicy: boolean;
 }
-const peripheral = new Set(["CAT", "FORMAT", "MOVE", "ERASE", "OPEN #", "CLOSE #"]);
-const define = (name: string, shape: SimpleCommandShape): SimpleCommandDefinition => Object.freeze({ token: romTokenBySpelling(name)!, shape, pendingCapabilityPolicy: peripheral.has(name) });
+const define = (name: string, shape: SimpleCommandShape): SimpleCommandDefinition => Object.freeze({ token: romTokenBySpelling(name)!, shape });
 export const SIMPLE_COMMANDS: readonly SimpleCommandDefinition[] = Object.freeze([
   ...["STOP", "RETURN", "NEW", "CONTINUE", "CLS", "COPY", "CAT"].map((name) => define(name, "none")),
   ...["RUN", "RANDOMIZE", "CLEAR", "RESTORE"].map((name) => define(name, "optional-number")),

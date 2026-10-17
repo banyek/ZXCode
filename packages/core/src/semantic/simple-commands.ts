@@ -1,3 +1,5 @@
+import { commandAvailability, SPECTRUM_48K_TARGET } from "../source/target-profile.js";
+import type { TargetProfile } from "../source/target-profile.js";
 import type { FunctionContext } from "./function-context.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
@@ -8,7 +10,7 @@ import type { Expression } from "../syntax/expression.js";
 import { analyzeExpressionNode, requireExpressionType } from "./expression.js";
 import type { ExpectedExpressionType, TypedExpression } from "./expression.js";
 
-export function analyzeSimpleCommand(source: SourceDocument, node: SimpleCommandStatement<Expression>, diagnostics: Diagnostic[], context?: FunctionContext): SimpleCommandStatement<TypedExpression> | undefined {
+export function analyzeSimpleCommand(source: SourceDocument, node: SimpleCommandStatement<Expression>, diagnostics: Diagnostic[], context?: FunctionContext, target: TargetProfile = SPECTRUM_48K_TARGET): SimpleCommandStatement<TypedExpression> | undefined {
   const definition = simpleCommandByName(node.definition.token.spelling);
   const report = (message: string, syntax = true): void => {
     diagnostics.push(createDiagnostic({ code: syntax ? DiagnosticCodes.unexpectedToken : DiagnosticCodes.unsupportedSyntax, severity: "error", category: syntax ? "syntax" : "compatibility", message, range: node.range }));
@@ -34,6 +36,7 @@ export function analyzeSimpleCommand(source: SourceDocument, node: SimpleCommand
     if (!requireExpressionType(typed, "numeric", diagnostics)) valid = false;
     return Object.freeze({ ...control, token: definition?.token ?? control.token, expression: typed });
   });
-  if (definition.pendingCapabilityPolicy) report("Build support for this ROM command is pending runtime capability checking.", false);
+  const availability = commandAvailability(definition.token.spelling, target);
+  if (valid && availability?.available === false) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.missingRuntimeCapability, severity: "warning", category: "compatibility", capability: availability.requiredCapability!, message: `${definition.token.spelling} is authentic ROM vocabulary but requires Interface 1 or a compatible extension; target '${target.id}' does not declare that capability.`, range: node.range }));
   return valid ? Object.freeze({ kind: "simple-command", range: node.range, definition, operands: Object.freeze(operands), controls: Object.freeze(controls), complete: true }) : undefined;
 }
