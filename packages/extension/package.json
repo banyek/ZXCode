@@ -79,6 +79,26 @@
           "group": "zxcode"
         }
       ]
+    },
+    "configuration": {
+      "title": "ZXCode",
+      "properties": {
+        "zxcode.build.outputDirectory": {
+          "type": "string",
+          "default": "",
+          "scope": "resource",
+          "description": "TAP output subdirectory relative to the BASIC source directory. Empty writes beside the source. Use slash-separated names without dot segments or absolute paths."
+        },
+        "zxcode.target.profile": {
+          "type": "string",
+          "enum": [
+            "spectrum-48k"
+          ],
+          "default": "spectrum-48k",
+          "scope": "resource",
+          "description": "Original ZX Spectrum 48K ROM BASIC. Other machines and dialects are not supported."
+        }
+      }
     }
   }
 }
