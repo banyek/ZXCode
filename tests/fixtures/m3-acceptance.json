@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "fixtures": [
+    {
+      "file": "numeric-surface-rom.json",
+      "referenceSha256": "d241a881f36e2aec3a3075984037ab640ebfe03d4464ae4127cb8feba580e83c",
+      "cases": 33,
+      "rejected": 3,
+      "exactExports": 30,
+      "unsupportedExports": 0,
+      "imageSha256": "677290f55220dee9b533b5f6ad2fb3b99689b90f1d13f363030d663f982b6e1c"
+    },
+    {
+      "file": "lexical-rom.json",
+      "referenceSha256": "64659769defe2685a31a0183d076358baeb4f96e22e0b808a9af52bbd56719ee",
+      "cases": 36,
+      "rejected": 2,
+      "exactExports": 34,
+      "unsupportedExports": 0,
+      "imageSha256": "d41cf868c97ce4e15778cbbdbce9889078f2e0650993e35bb3ca40bba1e0737e"
+    },
+    {
+      "file": "escapes-rom.json",
+      "referenceSha256": "41cfbc6f5eb4187a7a52628418f359eb730addf784977e4ed1342a1bba2861cb",
+      "cases": 281,
+      "rejected": 4,
+      "exactExports": 269,
+      "unsupportedExports": 8,
+      "imageSha256": "c01610d7c7c6e4c0f090e77b91e0564a08d6743f1490dcde4d5368325a07f811"
+    },
+    {
+      "file": "rem-rom.json",
+      "referenceSha256": "cee8e6a90a83ae279ab657c46250751599c624ab651932e856577cf4f23d756a",
+      "cases": 11,
+      "rejected": 0,
+      "exactExports": 11,
+      "unsupportedExports": 0,
+      "imageSha256": "78fd9ee931529d9ddcc5c081c1866db0b4590b33eea02c31ce2ba415d96850b1"
+    },
+    {
+      "file": "graphics-notation.json",
+      "referenceSha256": "3f71b63ad36699a27e43c8019d3af9267f2ef21ffd1f56ea3f436a4ce7ddd42c",
+      "cases": 37,
+      "rejected": 0,
+      "exactExports": 37,
+      "unsupportedExports": 0,
+      "imageSha256": "79daf1368bebb9b013591a0eef18bd1599a92f7f28f1f8b73a073d674e4804ed"
+    },
+    {
+      "file": "controls-rom.json",
+      "referenceSha256": "3e77153a5514407b72f0f06b2325a4b44278f587a3e251cadb1e19ad256c6b97",
+      "cases": 21,
+      "rejected": 0,
+      "exactExports": 0,
+      "unsupportedExports": 0,
+      "imageSha256": "3c34d09f0d256e4c83f1bfbaf63755d6a673cb869c2c8696e559cd28845ec099"
+    },
+    {
+      "file": "core-corpus.json",
+      "referenceSha256": "5c953e4a00b0c2695fa4e582397cda88f084bff5066ce2ec5f61cbb4f05c3a28",
+      "cases": 8,
+      "rejected": 0,
+      "exactExports": 8,
+      "unsupportedExports": 0,
+      "imageSha256": "e62fffa1832fe9eb23677f10f97de8575f4cf0e1ea54835a76de02aa0448ae19"
+    },
+    {
+      "file": "tap-metadata.json",
+      "referenceSha256": "f7205301e7d4901ded99c0d4546f9ebc6c86c727105481dff1388be370f6f3b3",
+      "cases": 11,
+      "rejected": 0,
+      "exactExports": 0,
+      "unsupportedExports": 0,
+      "imageSha256": "b1845dc979f323de356bd746b7c08c2fe2bae24d8bddfa9205a0e08fd29a671c"
+    },
+    {
+      "file": "autostart-rom.json",
+      "referenceSha256": "426f85af9c12b1b245e4ae7f8a694923971ed7bb77baa8d551bca13367d138c1",
+      "cases": 10,
+      "rejected": 0,
+      "exactExports": 0,
+      "unsupportedExports": 0,
+      "imageSha256": "ac5480d01f8c3227bd28447809374195cb086a36619bd3010b4495ca402a12ae"
+    }
+  ]
+}

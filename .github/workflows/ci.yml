@@ -9,7 +9,12 @@ permissions:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    name: check (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -20,3 +25,9 @@ jobs:
       - run: npm run check
       - run: npm run zxcode -- --help
       - run: npm exec -- zxcode --help
+      - run: node scripts/compatibility/acceptance.mjs --report artifacts/m3-compatibility.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m3-compatibility-${{ matrix.os }}
+          path: artifacts/m3-compatibility.json
+          if-no-files-found: error
