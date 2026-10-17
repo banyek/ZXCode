@@ -246,3 +246,37 @@ storage. Backslashes remain literal; no modern escape language or provisional
 braced Spectrum-byte escapes are introduced. All original M1 golden bytes remain
 unchanged. Incomplete quoting and malformed item delimiters retain error state
 so removing diagnostics alone cannot enable a build.
+
+## M2-10 INPUT research contract
+
+Sources: original Sinclair manual Appendix C (INPUT) and the original
+[INPUT routine](https://skoolkit.ca/disassemblies/rom/hex/asm/2089.html), especially
+IN-ITEM-1 at 0x20C1, LINE handling at 0x20D8 and variable dispatch at 0x20ED.
+Independent syntax-mode probes distinguish read targets from display-only items.
+
+INPUT has its own item stream, not a reused PrintItem array. Its item kinds are:
+assignable target (with per-item LINE flag), display item, parenthesized display
+group, separator and empty insertion point. Numeric/string scalar targets reuse
+LET's target grammar and identities; array/slice targets remain explicit coverage
+errors until M2-11 extends that shared target union.
+
+At an input target position, a raw letter name is a read target, so `INPUT a+1`
+is invalid. Prefix-function/value tokens, literals, AT/TAB, colour controls and
+stream changes are display items. In text, established keyword-prefix roles take
+priority; spaced raw names can retain their ordinary name identity. Parentheses
+at item start invoke the ROM PRINT-item subgrammar: `INPUT (a;b$);c` displays a
+and b$ and then reads c. The group is not an expression argument list and does
+not turn its bare names into input targets. Nested expression parentheses inside
+that group continue to use the common expression parser. The encoder preserves
+parentheses, separators and control tokens without inserting a PRINT opcode.
+
+LINE requires an assignable string target; it changes how that one input value is
+read, not the variable's type. It may occur after other items, and later targets
+need not use LINE. Scalar target/result context checks remain semantic diagnostics;
+nonassignable expressions and missing delimiters are syntax errors.
+
+Separators match PRINT (semicolon/comma/apostrophe), including leading/repeated/
+trailing forms. Bare INPUT with no item/separator is invalid, while an empty
+parenthesized display group is authentic. Adjacent items still require separators.
+Display typing/encoding reuses the low-level PRINT item helpers; INPUT retains its
+own target and group structure. All original M1/PRINT fixtures stay fixed.

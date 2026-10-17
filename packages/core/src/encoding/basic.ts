@@ -1,3 +1,4 @@
+import { emitInputStatement } from "./input.js";
 import { emitPrintStatement } from "./print.js";
 import { emitSimpleCommand } from "./simple-commands.js";
 import { romTokenBySpelling } from "../source/rom-tokens.js";
@@ -66,6 +67,7 @@ export function encodeBasicProgram(program: BuildableProgram<BasicProgram>): Enc
           emit(0x3d);
           emitExpression(statement.expression, emit);
         } else if (statement.kind === "simple-command") emitSimpleCommand(statement, emit);
+        else if (statement.kind === "input") emitInputStatement(statement, emit);
         else if (statement.kind === "print" || statement.kind === "lprint") emitPrintStatement(statement, emit);
         else emit(romTokenBySpelling(statement.kind)!.byte);
         statements.push(Object.freeze({ sourceRange, encodedRange: Object.freeze({ offset: encodedOffset + 4 + start, length: body.length - start }) }));
