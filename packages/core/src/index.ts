@@ -92,3 +92,4 @@ export { exportBasicSource, inspectBasicTap } from "./import.js";
 export type { BasicSourceExport, BasicTapImport } from "./import.js";
 
 export type { LanguageDocumentInput, DocumentSnapshotIdentity, DocumentAnalysisSnapshot, DocumentSessionOptions, DocumentAnalysisSession, LanguageQueryResult, DocumentationLink, LanguageDocumentation, LanguageTextEdit, CompletionContext, LanguageCompletionItem, LanguageCompletionList, LanguageHover, LanguageSymbolKind, LanguageSymbol, LanguageSignatureParameter, LanguageSignature, LanguageSignatureHelp, LanguageReferenceOptions, LanguageServiceQueries } from "./service/contract.js";
+export { createDocumentSession } from "./service/session.js";
