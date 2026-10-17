@@ -1,0 +1,41 @@
+{
+  "reference": "zmakebas 1.3.3, commit 667090faf392e0083bbcf238084dcdd996957285",
+  "cases": [
+    {
+      "source": "10 DEF FN f(x)=x*x\n",
+      "programHex": "000a1000ce6628780e0000000000293d782a780d"
+    },
+    {
+      "source": "10 DEF FN f$(x$)=x$(2 TO )\n",
+      "programHex": "000a1b00ce66242878240e0000000000293d782428320e0000020000cc290d"
+    },
+    {
+      "source": "10 DEF FN f(x,y$)=x+LEN y$\n",
+      "programHex": "000a1b00ce6628780e00000000002c79240e0000000000293d782bb179240d"
+    },
+    {
+      "source": "10 DEF FN f(x,x)=x\n",
+      "programHex": "000a1600ce6628780e00000000002c780e0000000000293d780d"
+    },
+    {
+      "source": "10 PRINT FN f(2,3)\n",
+      "programHex": "000a1500f5a86628320e00000200002c330e0000030000290d"
+    },
+    {
+      "source": "10 PRINT FN f$(\"abc\")(2 TO )\n",
+      "programHex": "000a1600f5a866242822616263222928320e0000020000cc290d"
+    },
+    {
+      "source": "10 DEF FN f(x)=FN g(x): DEF FN g(y)=y+1\n",
+      "programHex": "000a2800ce6628780e0000000000293da8672878293ace6728790e0000000000293d792b310e00000100000d"
+    },
+    {
+      "source": "10 PRINT FN f(2)\n20 DEF FN f(x)=x*2\n",
+      "programHex": "000a0d00f5a86628320e0000020000290d00141600ce6628780e0000000000293d782a320e00000200000d"
+    },
+    {
+      "source": "10 PRINT FN f()\n",
+      "programHex": "000a0600f5a86628290d"
+    }
+  ]
+}

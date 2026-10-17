@@ -1,3 +1,4 @@
+import type { FunctionContext } from "./function-context.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument, SourceRange } from "../source/document.js";
@@ -13,9 +14,9 @@ export interface BasicLetStatement {
   readonly target: BasicAssignableTarget;
   readonly expression: TypedExpression;
 }
-export function analyzeLetStatement(source: SourceDocument, node: LetStatement, diagnostics: Diagnostic[]): BasicLetStatement | undefined {
-  const target = analyzeAssignableTarget(source, node.target, diagnostics);
-  const expression = analyzeExpressionNode(source, node.expression, diagnostics);
+export function analyzeLetStatement(source: SourceDocument, node: LetStatement, diagnostics: Diagnostic[], context?: FunctionContext): BasicLetStatement | undefined {
+  const target = analyzeAssignableTarget(source, node.target, diagnostics, context);
+  const expression = analyzeExpressionNode(source, node.expression, diagnostics, context);
   if (!node.complete) {
     if (!diagnostics.some((item) => item.severity === "error" && item.range.start >= node.range.start && item.range.end <= node.range.end)) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.invalidAssignmentTarget, severity: "error", category: "syntax", message: "LET assignment delimiter is invalid.", range: node.range }));
     return undefined;

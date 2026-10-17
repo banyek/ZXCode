@@ -1,3 +1,5 @@
+import { parseDefFnStatement } from "./functions.js";
+import type { DefFnStatement } from "./functions.js";
 import { parseDataStatement, parseReadStatement } from "./data.js";
 import type { DataStatement, ReadStatement } from "./data.js";
 import { parseDimStatement } from "./dim.js";
@@ -42,7 +44,7 @@ export interface JumpStatement {
   readonly target: Expression;
   readonly complete: boolean;
 }
-export type Statement = DataStatement | ReadStatement | DimStatement | InputStatement | ForStatement | NextStatement | IfStatement | JumpStatement | LetStatement | SimpleCommandStatement<Expression>
+export type Statement = DefFnStatement | DataStatement | ReadStatement | DimStatement | InputStatement | ForStatement | NextStatement | IfStatement | JumpStatement | LetStatement | SimpleCommandStatement<Expression>
   | { readonly kind: "empty"; readonly range: SourceRange }
   | PrintStatement
   | { readonly kind: "cls" | "stop"; readonly range: SourceRange }
@@ -79,6 +81,7 @@ function parseStatement(source: SourceDocument, tokens: readonly BodyToken[], ra
     if (!complete) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unexpectedToken, severity: "error", category: "syntax", message: "Unexpected token after jump target expression.", range: parsed.tokens[parsed.next]!.range }));
     return Object.freeze({ kind: direction === "TO" ? "goto" : "gosub", range, target: parsed.expression, complete });
   }
+  if (keyword === "DEF") return parseDefFnStatement(source, tokens, range, diagnostics);
   if (keyword === "DATA") return parseDataStatement(source, tokens, range, diagnostics);
   if (keyword === "READ") return parseReadStatement(source, tokens, range, diagnostics);
   if (keyword === "DIM") return parseDimStatement(source, tokens, range, diagnostics);

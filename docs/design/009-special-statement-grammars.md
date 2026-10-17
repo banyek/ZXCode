@@ -308,3 +308,38 @@ control flow; no speculative static errors are introduced for those conditions.
 Quoted commas, colons and doubled quotes remain literal contents through the
 shared string model, while ordinary colons separate statements. Neither DATA nor
 READ introduces a raw-tail lexer mode or a foreign BASIC dialect's data syntax.
+
+## M2-13 DEF FN/FN research contract
+
+Original Sinclair chapter 9 establishes single-letter function/formal names with
+optional `$`, mandatory parentheses with zero or more arguments, and result type
+from the function name. Formals shadow globals only in their own function body;
+a called function does not inherit its caller's formals. ROM routine
+[S-FN-SBRN](https://skoolkit.ca/disassemblies/rom/hex/asm/27BD.html) searches stored
+program order for the first matching function name/type and checks argument count
+and types at runtime. Calls retain arguments and an optional definition range;
+forward definitions and nested IF tails participate. Missing definitions produce
+semantic warnings, while a resolvable parameter count/type mismatch is a semantic
+error. No function execution, recursion restriction or declaration-before-use
+rule is introduced. Duplicate definitions retain first-match lookup semantics.
+
+Independent syntax-mode ROM probes at STMT-L-1 verify empty/multiple parameter
+lists, result/body type checking, and duplicate formal acceptance. Duplicates are
+preserved, with first-match local binding, rather than introducing a new syntax
+restriction. Formal references retain their owning definition/parameter range and
+local identity; numeric array names remain a separate family. The common expression
+visitor receives explicit immutable function context, never ambient mutable state.
+
+The ROM inserts six storage bytes after each formal name: marker 0x0E and five
+value bytes (also for string formals). Encoder output reserves zeroed value bytes,
+independently compared with zmakebas; calls contain no such formal storage. The
+standalone ROM verifier accounts for observed insertion lengths explicitly, so
+ordinary statement cases still require exact original input consumption. Function
+calls can be sliced when string-valued; incomplete delimiters/names/formals/bodies
+remain recoverable but cannot become buildable by stripping diagnostics.
+
+The five reserved formal value bytes are not initialized by ROM syntax checking;
+the compiler writes deterministic zeros because FN execution fills them before
+use. zmakebas agrees for nonempty lists but inserts an extraneous storage slot for
+`DEF FN f()=...`; empty-list fixtures therefore use the original-ROM observation
+(no insertion), not that comparison tool's output.

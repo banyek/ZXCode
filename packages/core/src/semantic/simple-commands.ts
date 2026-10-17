@@ -1,3 +1,4 @@
+import type { FunctionContext } from "./function-context.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument } from "../source/document.js";
@@ -7,7 +8,7 @@ import type { Expression } from "../syntax/expression.js";
 import { analyzeExpressionNode, requireExpressionType } from "./expression.js";
 import type { ExpectedExpressionType, TypedExpression } from "./expression.js";
 
-export function analyzeSimpleCommand(source: SourceDocument, node: SimpleCommandStatement<Expression>, diagnostics: Diagnostic[]): SimpleCommandStatement<TypedExpression> | undefined {
+export function analyzeSimpleCommand(source: SourceDocument, node: SimpleCommandStatement<Expression>, diagnostics: Diagnostic[], context?: FunctionContext): SimpleCommandStatement<TypedExpression> | undefined {
   const definition = simpleCommandByName(node.definition.token.spelling);
   const report = (message: string, syntax = true): void => {
     diagnostics.push(createDiagnostic({ code: syntax ? DiagnosticCodes.unexpectedToken : DiagnosticCodes.unsupportedSyntax, severity: "error", category: syntax ? "syntax" : "compatibility", message, range: node.range }));
@@ -21,13 +22,13 @@ export function analyzeSimpleCommand(source: SourceDocument, node: SimpleCommand
   if (!arity || (node.controls.length !== 0 && !["plot", "draw", "circle"].includes(shape))) { report("Incorrect command operand/control structure."); return undefined; }
   let valid = true;
   const operands = node.operands.map((operand, index) => {
-    const typed = analyzeExpressionNode(source, operand, diagnostics);
+    const typed = analyzeExpressionNode(source, operand, diagnostics, context);
     const expected: ExpectedExpressionType = shape === "string" || shape === "string-pair" || (shape === "open" && index === 1) ? "string" : "numeric";
     if (!requireExpressionType(typed, expected, diagnostics)) valid = false;
     return typed;
   });
   const controls = node.controls.map((control) => {
-    const typed = analyzeExpressionNode(source, control.expression, diagnostics);
+    const typed = analyzeExpressionNode(source, control.expression, diagnostics, context);
     const definition = simpleCommandByName(control.token.spelling);
     if (definition?.shape !== "colour" || (control.separator !== ";" && control.separator !== ",")) { report("Malformed graphics colour control."); valid = false; }
     if (!requireExpressionType(typed, "numeric", diagnostics)) valid = false;

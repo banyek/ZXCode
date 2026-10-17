@@ -1,3 +1,4 @@
+import type { FunctionContext } from "./function-context.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument, SourceRange } from "../source/document.js";
@@ -20,16 +21,16 @@ export interface BasicNextStatement {
   readonly range: SourceRange;
   readonly variable: ScalarAssignmentTarget;
 }
-export function analyzeLoop(source: SourceDocument, node: ForStatement | NextStatement, diagnostics: Diagnostic[]): BasicForStatement | BasicNextStatement | undefined {
+export function analyzeLoop(source: SourceDocument, node: ForStatement | NextStatement, diagnostics: Diagnostic[], context?: FunctionContext): BasicForStatement | BasicNextStatement | undefined {
   const report = (message: string): void => { diagnostics.push(createDiagnostic({ code: DiagnosticCodes.invalidVariableName, severity: "error", category: "syntax", message, range: node.variable.range })); };
   if (node.variable.kind !== "scalar-target") { report("Invalid FOR/NEXT control variable."); return undefined; }
   const identified = identifyVariable(node.variable.identity.sourceName, "for-control");
   if (identified.kind === "error") { report("FOR/NEXT requires a single-letter numeric variable."); return undefined; }
   const variable: ScalarAssignmentTarget = Object.freeze({ kind: "scalar-target", range: node.variable.range, identity: identified.identity });
   if (node.kind === "next") return Object.freeze({ kind: "next", range: node.range, variable });
-  const start = analyzeExpressionNode(source, node.start, diagnostics);
-  const limit = analyzeExpressionNode(source, node.limit, diagnostics);
-  const step = node.step === undefined ? undefined : analyzeExpressionNode(source, node.step, diagnostics);
+  const start = analyzeExpressionNode(source, node.start, diagnostics, context);
+  const limit = analyzeExpressionNode(source, node.limit, diagnostics, context);
+  const step = node.step === undefined ? undefined : analyzeExpressionNode(source, node.step, diagnostics, context);
   const startValid = requireExpressionType(start, "numeric", diagnostics);
   const limitValid = requireExpressionType(limit, "numeric", diagnostics);
   const stepValid = step === undefined || requireExpressionType(step, "numeric", diagnostics);
