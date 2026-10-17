@@ -1,0 +1,52 @@
+--- a/src/settings.h
++++ b/src/settings.h
+@@ -52,6 +52,7 @@
+ 
+ extern z80_bit remote_protocol_enabled;
+ extern int remote_protocol_port;
++extern int remote_protocol_loopback_only;
+ #define REMOTE_MAX_PROMPT_LENGTH 100
+ extern char remote_prompt_command_string[];
+ extern z80_bit remote_protocol_char_mode;
+--- a/src/settings.c
++++ b/src/settings.c
+@@ -160,6 +160,7 @@
+ 
+ 
+ int remote_protocol_port=DEFAULT_REMOTE_PROTOCOL_PORT;
++int remote_protocol_loopback_only=0;
+ z80_bit remote_protocol_enabled={0};
+ char remote_prompt_command_string[REMOTE_MAX_PROMPT_LENGTH]="command";
+ z80_bit remote_protocol_char_mode={0};
+--- a/src/zrcp/remote.c
++++ b/src/zrcp/remote.c
+@@ -6423,7 +6423,7 @@
+ //#endif
+ 
+ 
+-    int result=assignar_adr_internet(sock_listen,NULL,remote_protocol_port);
++    int result=assignar_adr_internet(sock_listen,remote_protocol_loopback_only ? "127.0.0.1" : NULL,remote_protocol_port);
+ 
+ //#ifndef MINGW
+   if (result<0) {
+--- a/src/start.c
++++ b/src/start.c
+@@ -1006,6 +1006,7 @@
+ 
+ #ifdef USE_PTHREADS
+         "--enable-remoteprotocol             Enable ZRCP remote protocol\n"
++        "--remoteprotocol-loopback-only      Bind ZRCP only to 127.0.0.1\n"
+         "--remoteprotocol-port n             Set remote protocol port (default: 10000)\n"
+         "--remoteprotocol-prompt p           Change the command prompt shown on remote protocol\n"
+         "--remoteprotocol-linemode-telnet    Enables Linemode Telnet (char mode) connection\n"
+@@ -7124,6 +7125,10 @@
+                     remote_protocol_enabled.v=1;
+          }
+ 
++         else if (!strcmp(argv[puntero_parametro],"--remoteprotocol-loopback-only")) {
++            remote_protocol_loopback_only=1;
++         }
++
+          else if (!strcmp(argv[puntero_parametro],"--remoteprotocol-port")) {
+             siguiente_parametro_argumento();
+             int valor=atoi(argv[puntero_parametro]);
