@@ -12,7 +12,8 @@
     "lint": "eslint . --max-warnings 0",
     "test": "npm run build && node --test tests/*.test.mjs",
     "check": "npm run typecheck && npm run lint && npm test",
-    "zxcode": "node packages/cli/bin/zxcode.mjs"
+    "zxcode": "node packages/cli/bin/zxcode.mjs",
+    "test:compatibility": "npm run build && node scripts/compatibility/run-corpus.mjs"
   },
   "devDependencies": {
     "@types/node": "24.19.2",

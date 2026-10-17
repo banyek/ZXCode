@@ -63,6 +63,10 @@ Byte 13 is supported in REM; quoted strings use ordinary `CHR$ 13` expressions.
 See the [source escape contract](docs/design/028-text-source-escapes.md) and
 [working example](examples/escapes.bas).
 
+`npm run test:compatibility` checks the pinned 448-case independent M3 corpus.
+Its deterministic report records exact export guarantees and known limits; see
+the [corpus contract](docs/design/030-m3-compatibility-corpus.md).
+
 See [docs/design](docs/design/).
 
 ## Check and build
