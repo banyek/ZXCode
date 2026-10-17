@@ -15,6 +15,9 @@ export interface ForStatement {
   readonly limit: Expression;
   readonly step?: Expression;
   readonly complete: boolean;
+  readonly equalsRange?: SourceRange;
+  readonly toRange?: SourceRange;
+  readonly stepRange?: SourceRange;
 }
 export interface NextStatement {
   readonly kind: "next";
@@ -49,11 +52,13 @@ export function parseForStatement(source: SourceDocument, input: readonly BodyTo
     return result.expression;
   };
   const start = expression();
-  if (tokens[cursor]?.text.toUpperCase() === "TO") cursor++;
+  const toRange = tokens[cursor]?.text.toUpperCase() === "TO" ? tokens[cursor]!.range : undefined;
+  if (toRange !== undefined) cursor++;
   else report("Expected TO after FOR initial value.");
   const limit = expression();
   let step: Expression | undefined;
-  if (tokens[cursor]?.text.toUpperCase() === "STEP") { cursor++; step = expression(); }
+  const stepRange = tokens[cursor]?.text.toUpperCase() === "STEP" ? tokens[cursor]!.range : undefined;
+  if (stepRange !== undefined) { cursor++; step = expression(); }
   if (cursor < tokens.length) report("Unexpected token after FOR range/STEP.");
-  return Object.freeze({ kind: "for", range, variable: target, start, limit, ...(step === undefined ? {} : { step }), complete });
+  return Object.freeze({ kind: "for", range, variable: target, start, limit, ...(step === undefined ? {} : { step }), ...(equals < 0 ? {} : { equalsRange: tokens[equals]!.range }), ...(toRange === undefined ? {} : { toRange }), ...(stepRange === undefined ? {} : { stepRange }), complete });
 }

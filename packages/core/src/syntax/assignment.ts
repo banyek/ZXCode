@@ -15,6 +15,7 @@ export interface LetStatement {
   readonly target: AssignmentTarget;
   readonly expression: Expression;
   readonly complete: boolean;
+  readonly equalsRange?: SourceRange;
 }
 
 /** Shared assignable-target entry point for LET and later INPUT/READ grammar. */
@@ -64,5 +65,5 @@ export function parseLetStatement(source: SourceDocument, tokens: readonly BodyT
     complete = false;
     diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unexpectedToken, severity: "error", category: "syntax", message: "Unexpected token after LET expression.", range: parsed.tokens[parsed.next]!.range }));
   }
-  return Object.freeze({ kind: "let", range, target, expression: parsed.expression, complete });
+  return Object.freeze({ kind: "let", range, target, expression: parsed.expression, ...(equals < 0 ? {} : { equalsRange: tokens[equals]!.range }), complete });
 }
