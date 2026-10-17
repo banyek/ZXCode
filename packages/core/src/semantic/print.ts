@@ -1,3 +1,4 @@
+import type { FunctionContext } from "./function-context.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument } from "../source/document.js";
@@ -7,11 +8,11 @@ import type { Expression } from "../syntax/expression.js";
 import { analyzeExpressionNode, requireExpressionType } from "./expression.js";
 import type { ExpectedExpressionType, TypedExpression } from "./expression.js";
 
-export function analyzePrintStatement(source: SourceDocument, node: PrintStatement<Expression>, diagnostics: Diagnostic[]): PrintStatement<TypedExpression> | undefined {
+export function analyzePrintStatement(source: SourceDocument, node: PrintStatement<Expression>, diagnostics: Diagnostic[], context?: FunctionContext): PrintStatement<TypedExpression> | undefined {
   let valid = node.complete;
   const items: PrintItem<TypedExpression>[] = [];
   const convert = (expression: Expression, expected: ExpectedExpressionType): TypedExpression => {
-    const result = analyzeExpressionNode(source, expression, diagnostics);
+    const result = analyzeExpressionNode(source, expression, diagnostics, context);
     if (!requireExpressionType(result, expected, diagnostics)) valid = false;
     return result;
   };

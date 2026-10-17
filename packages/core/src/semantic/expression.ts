@@ -1,3 +1,4 @@
+import type { FunctionContext } from "./function-context.js";
 import { validateAccess } from "./access.js";
 import type { AccessGroup } from "../source/access.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
@@ -36,7 +37,8 @@ export type TypedExpression = TypedBase & (
   | { readonly kind: "string"; readonly value: string; readonly bytes: readonly number[] }
   | { readonly kind: "number"; readonly value: NumericLiteralValue }
   | { readonly kind: "binary-literal"; readonly digits: string; readonly value: NumericLiteralValue }
-  | { readonly kind: "name"; readonly identity: VariableIdentity }
+  | { readonly kind: "name"; readonly identity: VariableIdentity; readonly formalRange?: SourceRange; readonly definitionRange?: SourceRange }
+  | { readonly kind: "user-function-call"; readonly identity: VariableIdentity; readonly nameRange: SourceRange; readonly arguments: readonly TypedExpression[]; readonly definitionRange?: SourceRange }
   | { readonly kind: "builtin-value"; readonly token: RomToken }
   | { readonly kind: "builtin-call"; readonly token: RomToken; readonly arguments: readonly TypedExpression[] }
   | { readonly kind: "unary"; readonly operator: "+" | "-" | "NOT"; readonly operand: TypedExpression }
@@ -58,14 +60,14 @@ export function requireExpressionType(expression: TypedExpression, expected: Exp
 }
 
 /** Shared nonrecursive semantic visitor; never evaluates runtime expressions. */
-export function analyzeExpressionNode(source: SourceDocument, root: Expression, diagnostics: Diagnostic[]): TypedExpression {
+export function analyzeExpressionNode(source: SourceDocument, root: Expression, diagnostics: Diagnostic[], context?: FunctionContext): TypedExpression {
   const results = new Map<Expression, TypedExpression>();
   const work: { node: Expression; visited: boolean }[] = [{ node: root, visited: false }];
   const childrenOf = (node: Expression): readonly Expression[] => node.kind === "access-expression"
     ? [node.base, ...node.group.selectors.flatMap((selector) => selector.kind === "index" ? [selector.expression] : [...(selector.from === undefined ? [] : [selector.from]), ...(selector.to === undefined ? [] : [selector.to])])]
     : node.kind === "binary-expression" ? [node.left, node.right]
     : node.kind === "unary-expression" ? [node.operand] : node.kind === "parenthesized-expression" ? [node.expression]
-      : node.kind === "builtin-call" ? node.arguments : [];
+      : (node.kind === "builtin-call" || node.kind === "user-function-call") ? node.arguments : [];
   const report = (node: Expression, message: string, code: string, category: Diagnostic["category"]): void => {
     if (!diagnostics.some((item) => item.severity === "error" && item.range.start >= node.range.start && item.range.end <= node.range.end)) diagnostics.push(createDiagnostic({ code, severity: "error", category, message, range: node.range }));
   };
@@ -130,7 +132,26 @@ export function analyzeExpressionNode(source: SourceDocument, root: Expression, 
       if (identified.kind === "error") {
         report(node, "Invalid variable name.", DiagnosticCodes.invalidVariableName, "syntax");
         result = fail();
-      } else result = Object.freeze({ kind: "name", type: identified.identity.valueType, range: node.range, identity: identified.identity });
+      } else {
+        const formal = context?.local?.parameters.find((item) => item.identity.canonicalName === identified.identity.canonicalName);
+        result = Object.freeze({ kind: "name", type: identified.identity.valueType, range: node.range, identity: formal?.identity ?? identified.identity, ...(formal === undefined ? {} : { formalRange: formal.range, definitionRange: context!.local!.range }) });
+      }
+    } else if (node.kind === "user-function-call") {
+      const identity = node.name.identity;
+      const definition = identity === undefined ? undefined : context?.definitions.get(identity.key);
+      let valid = node.complete && identity !== undefined && args.every((item) => item.type !== "error" && item.type !== "unknown");
+      if (!node.complete || identity === undefined) report(node, "Function call requires a single-letter name and complete argument parentheses.", DiagnosticCodes.unexpectedToken, "syntax");
+      if (definition !== undefined) {
+        if (definition.parameters.length !== args.length) {
+          report(node, "Function argument count does not match its first stored definition.", DiagnosticCodes.parameterMismatch, "semantic");
+          valid = false;
+        }
+        for (let index = 0; index < args.length; index++) {
+          const parameter = definition.parameters[index];
+          if (parameter !== undefined && !requireExpressionType(args[index]!, parameter.identity.valueType, diagnostics)) valid = false;
+        }
+      } else if (identity !== undefined && context !== undefined) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.missingFunctionDefinition, severity: "warning", category: "semantic", message: `No stored definition for FN ${identity.canonicalName}.`, range: node.name.range }));
+      result = !valid ? fail() : Object.freeze({ kind: "user-function-call", type: identity!.valueType, range: node.range, identity: identity!, nameRange: node.name.range, arguments: Object.freeze(args), ...(definition === undefined ? {} : { definitionRange: definition.range }) });
     } else if (node.kind === "builtin-value" || node.kind === "builtin-call") {
       const definition = signatures.get(node.token.spelling);
       let valid = definition !== undefined && definition.arguments.length === args.length;

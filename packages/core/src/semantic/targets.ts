@@ -1,3 +1,4 @@
+import type { FunctionContext } from "./function-context.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument } from "../source/document.js";
@@ -9,7 +10,7 @@ import { analyzeExpressionNode } from "./expression.js";
 import type { TypedExpression } from "./expression.js";
 
 export type BasicAssignableTarget = AssignableTarget<TypedExpression>;
-export function analyzeAssignableTarget(source: SourceDocument, node: AssignmentTarget, diagnostics: Diagnostic[]): BasicAssignableTarget | undefined {
+export function analyzeAssignableTarget(source: SourceDocument, node: AssignmentTarget, diagnostics: Diagnostic[], context?: FunctionContext): BasicAssignableTarget | undefined {
   const report = (message: string): void => {
     if (!diagnostics.some((item) => item.severity === "error" && item.range.sourceId === source.id && item.range.start >= node.range.start && item.range.end <= node.range.end)) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.invalidAssignmentTarget, severity: "error", category: "syntax", message, range: node.range }));
   };
@@ -20,7 +21,7 @@ export function analyzeAssignableTarget(source: SourceDocument, node: Assignment
   if (node.kind === "scalar-target") return Object.freeze({ kind: "scalar-target", range: node.range, identity: identified.identity });
   let expression: Expression = Object.freeze({ kind: "name-expression", range: node.nameRange, spelling: name, identity: identified.identity });
   for (const group of node.groups) expression = Object.freeze({ kind: "access-expression", range: source.range(node.range.start, group.range.end), base: expression, group });
-  const analyzed = analyzeExpressionNode(source, expression, diagnostics);
+  const analyzed = analyzeExpressionNode(source, expression, diagnostics, context);
   if (analyzed.type === "error" || analyzed.type === "unknown") return undefined;
   const groups = [];
   let base = analyzed;

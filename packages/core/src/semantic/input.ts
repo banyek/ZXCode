@@ -1,3 +1,4 @@
+import type { FunctionContext } from "./function-context.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument, SourceRange } from "../source/document.js";
@@ -10,7 +11,7 @@ import { analyzePrintStatement } from "./print.js";
 
 export type BasicInputItem = SourceInputItem<TypedExpression, BasicAssignableTarget>;
 export type BasicInputStatement = SourceInputStatement<TypedExpression, BasicAssignableTarget>;
-export function analyzeInputStatement(source: SourceDocument, node: InputStatement, diagnostics: Diagnostic[]): BasicInputStatement | undefined {
+export function analyzeInputStatement(source: SourceDocument, node: InputStatement, diagnostics: Diagnostic[], context?: FunctionContext): BasicInputStatement | undefined {
   let valid = node.complete;
   const items: BasicInputItem[] = [];
   const report = (range: SourceRange, message: string, code: string = DiagnosticCodes.unexpectedToken, category: Diagnostic["category"] = "syntax"): void => {
@@ -23,18 +24,18 @@ export function analyzeInputStatement(source: SourceDocument, node: InputStateme
       if (item.kind === "input-separator" && ![";", ",", "'"].includes(item.separator)) report(item.range, "Invalid INPUT separator.");
       items.push(item);
     } else if (item.kind === "input-target") {
-      const target = analyzeAssignableTarget(source, item.target, diagnostics);
+      const target = analyzeAssignableTarget(source, item.target, diagnostics, context);
       if (target === undefined) { valid = false; continue; }
       if (item.lineMode && target.identity.valueType !== "string") { report(target.range, "INPUT LINE requires a string variable.", DiagnosticCodes.typeMismatch, "semantic"); continue; }
       items.push(Object.freeze({ ...item, target }));
     } else if (item.kind === "input-display") {
-      const printed = analyzePrintStatement(source, { kind: "print", range: item.range, items: [item.item], complete: true }, diagnostics);
+      const printed = analyzePrintStatement(source, { kind: "print", range: item.range, items: [item.item], complete: true }, diagnostics, context);
       const converted = printed?.items[0];
       if (converted === undefined || converted.kind === "print-empty" || converted.kind === "print-separator") { valid = false; continue; }
       items.push(Object.freeze({ ...item, item: converted }));
     } else {
       if (!item.complete) report(item.range, "INPUT display group is incomplete.");
-      const printed = analyzePrintStatement(source, { kind: "print", range: item.range, items: item.items, complete: true }, diagnostics);
+      const printed = analyzePrintStatement(source, { kind: "print", range: item.range, items: item.items, complete: true }, diagnostics, context);
       if (printed === undefined) { valid = false; continue; }
       items.push(Object.freeze({ ...item, items: printed.items, complete: true }));
     }

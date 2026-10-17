@@ -22,6 +22,13 @@ export function emitExpression(expression: TypedExpression, emit: (byte: number)
       case "string": schedule([0x22, ...next.bytes.flatMap((byte) => byte === 0x22 ? [byte, byte] : [byte]), 0x22]); break;
       case "name": schedule(text(next.identity.canonicalName)); break;
       case "builtin-value": emit(next.token.byte); break;
+      case "user-function-call": {
+        const parts: (number | TypedExpression)[] = [romTokenBySpelling("FN")!.byte, ...text(next.identity.canonicalName), 0x28];
+        next.arguments.forEach((argument, index) => { if (index !== 0) parts.push(0x2c); parts.push(argument); });
+        parts.push(0x29);
+        schedule(parts);
+        break;
+      }
       case "builtin-call": {
         const parts: (number | TypedExpression)[] = [next.token.byte];
         if (next.arguments.length === 2) parts.push(0x28, next.arguments[0]!, 0x2c, next.arguments[1]!, 0x29);

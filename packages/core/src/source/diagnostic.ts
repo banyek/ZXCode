@@ -20,7 +20,9 @@ export const DiagnosticCodes = Object.freeze({
   programTooLarge: "ZX2004",
   tooManyStatements: "ZX2005",
   missingLineTarget: "ZX3001",
-  typeMismatch: "ZX3002"
+  typeMismatch: "ZX3002",
+  missingFunctionDefinition: "ZX3003",
+  parameterMismatch: "ZX3004"
 } as const);
 
 export interface DiagnosticRelatedInformation {

@@ -1,3 +1,5 @@
+import { readFunctionName } from "./function-name.js";
+import type { FunctionName } from "./function-name.js";
 import type { AccessGroup, AccessSelector } from "../source/access.js";
 import { identifyVariable } from "../source/variable-identity.js";
 import type { VariableIdentity } from "../source/variable-identity.js";
@@ -14,6 +16,7 @@ export type LiteralExpression =
   | { readonly kind: "numeric-literal"; readonly range: SourceRange; readonly lexeme: string };
 
 export type Expression = LiteralExpression
+  | { readonly kind: "user-function-call"; readonly range: SourceRange; readonly name: FunctionName; readonly arguments: readonly Expression[]; readonly complete: boolean }
   | { readonly kind: "access-expression"; readonly range: SourceRange; readonly base: Expression; readonly group: AccessGroup<Expression> }
   | { readonly kind: "binary-literal"; readonly range: SourceRange; readonly digitsRange: SourceRange; readonly lexeme: string }
   | { readonly kind: "name-expression"; readonly range: SourceRange; readonly spelling: string; readonly identity: VariableIdentity }
@@ -94,6 +97,21 @@ export function readExpression(source: SourceDocument, inputTokens: readonly Bod
         digitsEnd = tokens[cursor++]!.range.end;
       }
       return postfix(Object.freeze({ kind: "binary-literal", range: span(token.range.start), digitsRange: source.range(digitsStart, digitsEnd), lexeme }), depth);
+    }
+    if (text === "FN") {
+      const named = readFunctionName(source, tokens, cursor, end, "function", diagnostics);
+      cursor = named.next;
+      const args: Expression[] = [];
+      const opened = expect("(");
+      if (opened && spelling() !== ")") {
+        while (true) {
+          args.push(binary(0, depth + 1));
+          if (spelling() !== ",") break;
+          cursor++;
+        }
+      }
+      const complete = expect(")") && opened && named.name.identity !== undefined;
+      return postfix(Object.freeze({ kind: "user-function-call", range: span(token.range.start), name: named.name, arguments: Object.freeze(args), complete }), depth);
     }
     if (romToken?.category === "function" && text !== "FN") {
       const args: Expression[] = [];

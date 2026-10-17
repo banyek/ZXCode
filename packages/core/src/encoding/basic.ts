@@ -62,6 +62,19 @@ export function encodeBasicProgram(program: BuildableProgram<BasicProgram>): Enc
             emitExpression(statement.limit, emit);
             if (statement.step !== undefined) { emit(romTokenBySpelling("STEP")!.byte); emitExpression(statement.step, emit); }
           }
+        } else if (statement.kind === "def-fn") {
+          emit(romTokenBySpelling("DEF FN")!.byte);
+          for (const character of statement.identity.canonicalName) emit(character.charCodeAt(0));
+          emit(0x28);
+          statement.parameters.forEach((parameter, index) => {
+            if (index !== 0) emit(0x2c);
+            for (const character of parameter.identity.canonicalName) emit(character.charCodeAt(0));
+            emit(0x0e);
+            for (let byte = 0; byte < 5; byte++) emit(0);
+          });
+          emit(0x29);
+          emit(0x3d);
+          emitExpression(statement.body, emit);
         } else if (statement.kind === "data" || statement.kind === "read") {
           emit(romTokenBySpelling(statement.kind)!.byte);
           const count = statement.kind === "data" ? statement.items.length : statement.targets.length;

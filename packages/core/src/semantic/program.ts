@@ -1,3 +1,6 @@
+import { analyzeDefFnStatement, functionBinding } from "./functions.js";
+import type { BasicDefFnStatement } from "./functions.js";
+import type { FunctionBinding, FunctionContext } from "./function-context.js";
 import { analyzeDataStatement, analyzeReadStatement } from "./data.js";
 import type { BasicDataStatement, BasicReadStatement } from "./data.js";
 import { analyzeDimStatement } from "./dim.js";
@@ -57,7 +60,7 @@ export interface BasicIfStatement {
   readonly condition: TypedExpression;
   readonly thenStatements: readonly BasicStatement[];
 }
-export type BasicStatement = BasicDataStatement | BasicReadStatement | BasicDimStatement | BasicInputStatement | BasicForStatement | BasicNextStatement | BasicIfStatement | BasicJumpStatement
+export type BasicStatement = BasicDefFnStatement | BasicDataStatement | BasicReadStatement | BasicDimStatement | BasicInputStatement | BasicForStatement | BasicNextStatement | BasicIfStatement | BasicJumpStatement
   | { readonly kind: "empty"; readonly range: SourceRange }
   | BasicLetStatement | SimpleCommandStatement<TypedExpression>
   | BasicPrintStatement
@@ -102,6 +105,20 @@ export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>): BasicA
     if (diagnostics.some((item) => item.severity === "error" && item.range.sourceId === range.sourceId && item.range.start >= range.start && item.range.end <= range.end)) return;
     diagnostics.push(createDiagnostic({ code, severity: "error", category, message, range }));
   };
+  const functions = new Map<string, FunctionBinding>();
+  const numbered = parsed.syntax.lines.filter((line) => line.kind === "numbered").sort((a, b) => a.lineNumber - b.lineNumber);
+  for (const line of numbered) {
+    const pending = [...line.statements].reverse();
+    while (pending.length !== 0) {
+      const node = pending.pop()!;
+      if (node.kind === "if") pending.push(...[...node.thenStatements].reverse());
+      if (node.kind === "def-fn") {
+        const binding = functionBinding(node);
+        if (binding !== undefined && !functions.has(binding.identity.key)) functions.set(binding.identity.key, binding);
+      }
+    }
+  }
+  const context: FunctionContext = { definitions: functions };
   const statement = (node: Statement): BasicStatement | undefined => {
     if (node.kind === "error-statement") {
       report(node.range, "Malformed/unsupported statements cannot be built.", DiagnosticCodes.unsupportedSyntax, "compatibility");
@@ -109,7 +126,7 @@ export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>): BasicA
     }
     if (node.kind === "empty") return node;
     if (node.kind === "goto" || node.kind === "gosub") {
-      const target = analyzeExpressionNode(source, node.target, diagnostics);
+      const target = analyzeExpressionNode(source, node.target, diagnostics, context);
       const valid = requireExpressionType(target, "numeric", diagnostics);
       if (!node.complete) report(node.range, "Jump target expression is malformed.", DiagnosticCodes.unexpectedToken, "syntax");
       if (!valid || !node.complete) return undefined;
@@ -117,7 +134,7 @@ export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>): BasicA
       return Object.freeze({ kind: node.kind, range: node.range, target, ...(reference === undefined ? {} : { lineReference: reference }) });
     }
     if (node.kind === "if") {
-      const condition = analyzeExpressionNode(source, node.condition, diagnostics);
+      const condition = analyzeExpressionNode(source, node.condition, diagnostics, context);
       let valid = requireExpressionType(condition, "numeric", diagnostics);
       if (!node.complete) { report(node.range, "IF requires THEN and a recoverable statement tail.", DiagnosticCodes.unexpectedToken, "syntax"); valid = false; }
       const tail: BasicStatement[] = [];
@@ -129,14 +146,15 @@ export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>): BasicA
       if (tail.length === 0) tail.push(Object.freeze({ kind: "empty", range: source.range(node.range.end) }));
       return valid ? Object.freeze({ kind: "if", range: node.range, headerRange: node.headerRange, condition, thenStatements: Object.freeze(tail) }) : undefined;
     }
-    if (node.kind === "data") return analyzeDataStatement(source, node, diagnostics);
-    if (node.kind === "read") return analyzeReadStatement(source, node, diagnostics);
-    if (node.kind === "dim") return analyzeDimStatement(source, node, diagnostics);
-    if (node.kind === "input") return analyzeInputStatement(source, node, diagnostics);
-    if (node.kind === "for" || node.kind === "next") return analyzeLoop(source, node, diagnostics);
-    if (node.kind === "let") return analyzeLetStatement(source, node, diagnostics);
-    if (node.kind === "simple-command") return analyzeSimpleCommand(source, node, diagnostics);
-    if (node.kind === "print" || node.kind === "lprint") return analyzePrintStatement(source, node, diagnostics);
+    if (node.kind === "def-fn") return analyzeDefFnStatement(source, node, diagnostics, context);
+    if (node.kind === "data") return analyzeDataStatement(source, node, diagnostics, context);
+    if (node.kind === "read") return analyzeReadStatement(source, node, diagnostics, context);
+    if (node.kind === "dim") return analyzeDimStatement(source, node, diagnostics, context);
+    if (node.kind === "input") return analyzeInputStatement(source, node, diagnostics, context);
+    if (node.kind === "for" || node.kind === "next") return analyzeLoop(source, node, diagnostics, context);
+    if (node.kind === "let") return analyzeLetStatement(source, node, diagnostics, context);
+    if (node.kind === "simple-command") return analyzeSimpleCommand(source, node, diagnostics, context);
+    if (node.kind === "print" || node.kind === "lprint") return analyzePrintStatement(source, node, diagnostics, context);
     return Object.freeze({ kind: node.kind, range: node.range });
   };
   for (const line of parsed.syntax.lines) {

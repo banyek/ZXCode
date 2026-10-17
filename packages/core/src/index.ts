@@ -52,3 +52,6 @@ export type { BasicDimStatement } from "./semantic/dim.js";
 
 export type { DataStatement, ReadStatement } from "./syntax/data.js";
 export type { BasicDataStatement, BasicReadStatement } from "./semantic/data.js";
+
+export type { DefFnStatement } from "./syntax/functions.js";
+export type { BasicDefFnStatement } from "./semantic/functions.js";

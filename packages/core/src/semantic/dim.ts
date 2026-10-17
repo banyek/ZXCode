@@ -1,3 +1,4 @@
+import type { FunctionContext } from "./function-context.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument, SourceRange } from "../source/document.js";
@@ -14,7 +15,7 @@ export interface BasicDimStatement {
   readonly identity: VariableIdentity;
   readonly dimensions: readonly TypedExpression[];
 }
-export function analyzeDimStatement(source: SourceDocument, node: DimStatement, diagnostics: Diagnostic[]): BasicDimStatement | undefined {
+export function analyzeDimStatement(source: SourceDocument, node: DimStatement, diagnostics: Diagnostic[], context?: FunctionContext): BasicDimStatement | undefined {
   const fail = (message: string): undefined => {
     if (!diagnostics.some((item) => item.severity === "error" && item.range.sourceId === source.id && item.range.start >= node.range.start && item.range.end <= node.range.end)) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unexpectedToken, severity: "error", category: "syntax", message, range: node.range }));
     return undefined;
@@ -29,7 +30,7 @@ export function analyzeDimStatement(source: SourceDocument, node: DimStatement, 
   let valid = true;
   for (const selector of group.selectors) {
     if (selector.kind !== "index") continue;
-    const expression = analyzeExpressionNode(source, selector.expression, diagnostics);
+    const expression = analyzeExpressionNode(source, selector.expression, diagnostics, context);
     if (!requireExpressionType(expression, "numeric", diagnostics)) valid = false;
     dimensions.push(expression);
   }

@@ -18,7 +18,7 @@ export function validateAccess(base: TypedExpression, group: AccessGroup<TypedEx
   if (base.type === "numeric") {
     const identity = base.kind === "name" ? identifyVariable(base.identity.sourceName, "numeric-array") : undefined;
     if (identity?.kind !== "success") report("Numeric array access requires a single-letter array name.");
-    else named = Object.freeze({ ...base, kind: "name", identity: identity.identity });
+    else named = Object.freeze({ kind: "name", type: base.type, range: base.range, identity: identity.identity });
     if (group.selectors.length === 0 || group.selectors.some((selector) => selector.kind !== "index")) report("Numeric arrays require numeric subscripts, not empty/TO slices.");
   } else if (base.type === "string") {
     if (base.kind !== "name" && group.selectors.length > 1) report("A string value accepts only one slice/index selector.");

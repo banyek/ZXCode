@@ -15,7 +15,7 @@ from skoolkit.simulator import Simulator
 ROM_SHA256 = "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42"
 
 
-def probe(encoded):
+def probe(encoded, inserted_bytes=0):
     rom = Path(ROM48).read_bytes()
     if len(rom) != 16384 or hashlib.sha256(rom).hexdigest() != ROM_SHA256:
         raise RuntimeError("Unexpected ROM image")
@@ -40,7 +40,7 @@ def probe(encoded):
         pc = simulator.registers[24]
         if pc == 0xFFFF:
             consumed = memory[0x5C5D] + 256 * memory[0x5C5E] - 0x8000
-            if consumed != len(source):
+            if consumed != len(source) + inserted_bytes:
                 raise RuntimeError("Incomplete statement consumption")
             return {"statements": memory[0x5C47]}
         if pc == 8:
@@ -63,7 +63,7 @@ def main():
         raise RuntimeError("Unexpected fixture ROM")
     for case in fixture["cases"]:
         expected = {key: case[key] for key in ("statements", "romError") if key in case}
-        actual = probe(case["encoded"])
+        actual = probe(case["encoded"], case.get("insertedBytes", 0))
         if actual != expected:
             raise AssertionError((case["source"], expected, actual))
     print("Verified", len(fixture["cases"]), "original-ROM statement cases; no fixtures changed")

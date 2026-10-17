@@ -46,7 +46,7 @@ GO TO/GO SUB/RETURN and IF/THEN sequences, plus simple numeric, colour, graphics
 and no-operand commands. Literal jumps retain line relations and nonfatal missing-
 line warnings. Strings support authentic doubled quotes with source ranges.
 Numeric/string arrays, DIM and open/repeated string slices build, including
-indexed LET/INPUT/READ targets, expression-valued DATA and RESTORE. FN and cassette grammars are in progress.
+indexed LET/INPUT/READ targets, expression-valued DATA and RESTORE. DEF FN/FN with scoped formal bindings. Cassette grammars are in progress.
 The six commands awaiting capability policy are recognized but currently blocked
 from builds.
 

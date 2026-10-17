@@ -1,0 +1,129 @@
+{
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "cases": [
+    {
+      "source": "10 DEF FN f()=a",
+      "encoded": "ce6628293d61",
+      "statements": 1
+    },
+    {
+      "source": "10 DEF FN f(x)=x",
+      "encoded": "ce662878293d78",
+      "insertedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 DEF FN f$(x$)=x$",
+      "encoded": "ce6624287824293d7824",
+      "insertedBytes": 6,
+      "statements": 1
+    },
+    {
+      "source": "10 DEF FN f(x,y$)=x",
+      "encoded": "ce6628782c7924293d78",
+      "insertedBytes": 12,
+      "statements": 1
+    },
+    {
+      "source": "10 DEF FN f(x,x)=x",
+      "encoded": "ce6628782c78293d78",
+      "insertedBytes": 12,
+      "statements": 1
+    },
+    {
+      "source": "10 DEF FN f(x)=x$",
+      "encoded": "ce662878293d7824",
+      "romError": 11
+    },
+    {
+      "source": "10 DEF FN f$(x)=x",
+      "encoded": "ce66242878293d78",
+      "romError": 11
+    },
+    {
+      "source": "10 DEF FN ff(x)=x",
+      "encoded": "ce66662878293d78",
+      "romError": 11
+    },
+    {
+      "source": "10 DEF FN f(xy)=x",
+      "encoded": "ce66287879293d78",
+      "romError": 11
+    },
+    {
+      "source": "10 DEF FN f(x,)=x",
+      "encoded": "ce6628782c293d78",
+      "romError": 11
+    },
+    {
+      "source": "10 DEF FN f(,x)=x",
+      "encoded": "ce66282c78293d78",
+      "romError": 11
+    },
+    {
+      "source": "10 DEF FN f=x",
+      "encoded": "ce663d78",
+      "romError": 11
+    },
+    {
+      "source": "10 DEF FN f()",
+      "encoded": "ce662829",
+      "romError": 11
+    },
+    {
+      "source": "10 DEF FN f()=",
+      "encoded": "ce6628293d",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT FN f()",
+      "encoded": "f5a8662829",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT FN f(a,b$)",
+      "encoded": "f5a86628612c622429",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT FN f$(a)(b TO c)",
+      "encoded": "f5a866242861292862cc6329",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT FN f",
+      "encoded": "f5a866",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT FN ff(a)",
+      "encoded": "f5a86666286129",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT FN f(a,)",
+      "encoded": "f5a86628612c29",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT FN f(,a)",
+      "encoded": "f5a866282c6129",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT FN f(a",
+      "encoded": "f5a8662861",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT FN f() + a",
+      "encoded": "f5a86628292b61",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT FN f$()+a",
+      "encoded": "f5a8662428292b61",
+      "romError": 11
+    }
+  ]
+}
