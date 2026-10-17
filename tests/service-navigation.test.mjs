@@ -83,7 +83,7 @@ test('hover preserves string types for scalar/array storage, FN results and loca
   const s=snapshot('10 DIM b$(2,3)\n20 LET c$="x": PRINT b$(1);c$\n30 DEF FN f$(s$)=s$\n40 PRINT FN f$(c$)\n');
   for(const [offset,expected] of [
     [s.source.text.indexOf('c$'),'c$: string variable'],
-    [s.source.text.indexOf('b$'),'b$: string array'],
+    [s.source.text.indexOf('b$'),'b$: string variable / array'],
     [s.source.text.lastIndexOf('FN f$')+3,'FN f$: string function'],
     [s.source.text.indexOf(')=s$')+2,'s$: string formal parameter']
   ]) assert.ok(documentHover(s,offset).value.documentation.summary.includes(expected));
