@@ -12,7 +12,7 @@ import type { BodyToken, StringPart } from "./lexer.js";
 import type { ParsedDocument } from "./document.js";
 
 export type LiteralExpression =
-  | { readonly kind: "string-literal"; readonly range: SourceRange; readonly contentRange: SourceRange; readonly value: string; readonly parts: readonly StringPart[]; readonly closed: boolean }
+  | { readonly kind: "string-literal"; readonly range: SourceRange; readonly contentRange: SourceRange; readonly value: string | undefined; readonly parts: readonly StringPart[]; readonly closed: boolean }
   | { readonly kind: "numeric-literal"; readonly range: SourceRange; readonly lexeme: string };
 
 export type Expression = LiteralExpression

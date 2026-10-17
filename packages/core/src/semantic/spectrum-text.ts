@@ -1,8 +1,8 @@
 import { SPECTRUM_CHARACTERS, spectrumLiteralByte } from "../source/characters.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
-import type { SourceDocument, SourceRange } from "../source/document.js";
-import type { SpectrumTextAtom, SpectrumTextIssue } from "../source/spectrum-text.js";
+import type { SourceDocument } from "../source/document.js";
+import type { SourceTextContext, SourceTextPart, SpectrumTextAtom, SpectrumTextIssue } from "../source/spectrum-text.js";
 
 const textBrand: unique symbol = Symbol("Checked Spectrum text");
 const checkedValues = new WeakSet<object>();
@@ -60,13 +60,34 @@ export function checkedSpectrumTextBytes(value: SpectrumTextValue): readonly num
   return value.bytes;
 }
 
-/** Adapt literal part issues to original source coordinates, including doubled quotes. */
-export function analyzeSourceText(source: SourceDocument, parts: readonly { readonly value: string; readonly range: SourceRange }[], diagnostics: Diagnostic[]): SpectrumTextValue | undefined {
-  const analyzed = analyzeSpectrumText(parts.map((part) => ({ kind: "text", value: part.value })));
-  if (analyzed.kind === "success") return analyzed.value;
-  for (const issue of analyzed.issues) {
-    const part = parts[issue.itemIndex]!;
-    diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unsupportedCharacter, severity: "error", category: "compatibility", message: issue.message, range: source.range(part.range.start + issue.offset, part.range.start + issue.offset + issue.length) }));
+/** Quoted ROM strings cannot contain byte 13, including control payload bytes. */
+export function spectrumStringIssues(value: SpectrumTextValue): readonly SpectrumTextIssue[] {
+  checkedSpectrumTextBytes(value);
+  if (!value.bytes.includes(13)) return Object.freeze([]);
+  const issues: SpectrumTextIssue[] = [];
+  value.atoms.forEach((atom, itemIndex) => {
+    const bytes = atom.kind === "byte" ? [atom.value] : atom.kind === "control" ? [controls.get(atom.name)!.byte, ...atom.parameters] : [];
+    if (bytes.includes(13)) issues.push(Object.freeze({ code: "unrepresentable-string-byte", message: "Byte 13 cannot be stored inside a quoted 48K ROM string; use CHR$ 13 in an expression.", itemIndex, offset: 0, length: 0 }));
+  });
+  return Object.freeze(issues);
+}
+
+/** Adapt source parts to checked bytes without losing physical source ranges. */
+export function analyzeSourceText(source: SourceDocument, parts: readonly SourceTextPart[], diagnostics: Diagnostic[], context: SourceTextContext = "string"): SpectrumTextValue | undefined {
+  let valid = true;
+  for (const part of parts) if (part.kind === "error") {
+    valid = false;
+    if (!diagnostics.some((item) => item.code === DiagnosticCodes.invalidEscape && item.range.sourceId === source.id && item.range.start === part.range.start && item.range.end === part.range.end)) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.invalidEscape, severity: "error", category: "syntax", message: part.message, range: part.range }));
   }
-  return undefined;
+  const usable = parts.filter((part) => part.kind !== "error");
+  const analyzed = analyzeSpectrumText(usable.map((part) => part.kind === "text" ? { kind: "text", value: part.value } : part.atom));
+  const issues = analyzed.kind === "error" ? analyzed.issues : context === "string" ? spectrumStringIssues(analyzed.value) : [];
+  for (const issue of issues) {
+    valid = false;
+    const part = usable[issue.itemIndex]!;
+    const range = part.kind === "text" ? source.range(part.range.start + issue.offset, part.range.start + issue.offset + issue.length) : part.range;
+    const compatibility = issue.code === "unrepresentable-character" || issue.code === "unrepresentable-string-byte";
+    diagnostics.push(createDiagnostic({ code: issue.code === "unrepresentable-string-byte" ? DiagnosticCodes.unrepresentableStringByte : compatibility ? DiagnosticCodes.unsupportedCharacter : DiagnosticCodes.invalidEscape, severity: "error", category: compatibility ? "compatibility" : "syntax", message: issue.message, range }));
+  }
+  return valid && analyzed.kind === "success" ? analyzed.value : undefined;
 }

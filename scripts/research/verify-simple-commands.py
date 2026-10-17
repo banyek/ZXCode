@@ -25,7 +25,7 @@ def main():
         source = Path(directory) / "commands.bas"
         output = Path(directory) / "commands.bin"
         for case in fixture["cases"]:
-            source.write_text(case["source"])
+            source.write_text(case.get("comparisonSource", case["source"]))
             subprocess.run([str(binary), "-r", "-o", str(output), str(source)], check=True, capture_output=True)
             actual = output.read_bytes().hex()
             expected = case.get("comparisonHex", case["programHex"])

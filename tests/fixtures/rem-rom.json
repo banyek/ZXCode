@@ -41,7 +41,7 @@
       "statements": 1
     },
     {
-      "source": "10 REM {0xFF} \\n",
+      "source": "10 REM {{0xFF}} \\n",
       "encoded": "ea207b307846467d205c6e",
       "unconsumedBytes": 9,
       "statements": 1
@@ -64,5 +64,6 @@
       "unconsumedBytes": 5,
       "statements": 2
     }
-  ]
+  ],
+  "sourceFormatNote": "Literal braces use M3-05 doubled source notation; independently observed encoded ROM input bytes are unchanged."
 }

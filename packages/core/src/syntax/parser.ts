@@ -1,3 +1,4 @@
+import { parseRemTextParts } from "./text-escapes.js";
 import { parseCassetteStatement, parseListingStatement } from "./storage-statements.js";
 import type { CassetteStatement, ListingStatement } from "../source/storage-statements.js";
 import type { RemStatement } from "../source/rem.js";
@@ -88,7 +89,7 @@ function parseStatement(source: SourceDocument, tokens: readonly BodyToken[], ra
   if (keyword === "SAVE" || keyword === "LOAD" || keyword === "VERIFY" || keyword === "MERGE") return parseCassetteStatement(source, tokens, range, diagnostics, keyword);
   if (keyword === "REM") {
     const tailRange = source.range(command.range.end, range.end);
-    return Object.freeze({ kind: "rem", range, tailRange, text: source.textInRange(tailRange) });
+    return Object.freeze({ kind: "rem", range, tailRange, text: source.textInRange(tailRange), parts: parseRemTextParts(source, tailRange, diagnostics) });
   }
   if (keyword === "DEF") return parseDefFnStatement(source, tokens, range, diagnostics);
   if (keyword === "DATA") return parseDataStatement(source, tokens, range, diagnostics);
