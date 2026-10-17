@@ -2,6 +2,12 @@ import assert from "node:assert/strict";
 import { join } from "node:path";
 import * as vscode from "vscode";
 import type { ZXCodeExtensionApi } from "../src/extension.js";
+import { toEditorDiagnostic } from "../src/diagnostics.js";
+async function waitFor(predicate: () => boolean, message: string): Promise<void> {
+  const deadline = Date.now() + 10000;
+  while (!predicate() && Date.now() < deadline) await new Promise((resolve) => setTimeout(resolve, 25));
+  assert.ok(predicate(), message);
+}
 /** Invoked by the real Extension Development Host; rejection fails the smoke run. */
 export async function run(): Promise<void> {
   const extension = vscode.extensions.getExtension<ZXCodeExtensionApi>("banyek.zxcode-vscode");
@@ -13,9 +19,7 @@ export async function run(): Promise<void> {
   const automatic = await vscode.workspace.openTextDocument(automaticUri);
   assert.equal(automatic.languageId, "zx-spectrum-basic");
   await vscode.window.showTextDocument(automatic);
-  const deadline = Date.now() + 10000;
-  while (!extension.isActive && Date.now() < deadline) await new Promise((resolve) => setTimeout(resolve, 25));
-  assert.ok(extension.isActive, "Language selection automatically activates ZXCode");
+  await waitFor(() => extension.isActive, "Language selection automatically activates ZXCode");
   const api = await extension.activate();
   const genericUri = vscode.Uri.file(join(testFiles, "generic.bas"));
   await vscode.workspace.fs.writeFile(genericUri, Buffer.from("10 STOP\n"));
@@ -36,6 +40,16 @@ export async function run(): Promise<void> {
   assert.equal(editorRange.start.character, 0);
   const glyph = snapshot.source.text.indexOf("£");
   assert.equal(document.getText(api.toEditorRange(document, snapshot, snapshot.source.range(glyph, glyph + 3))), "£©↑");
+  for (const [severity, expected] of [["error", vscode.DiagnosticSeverity.Error], ["warning", vscode.DiagnosticSeverity.Warning], ["information", vscode.DiagnosticSeverity.Information], ["hint", vscode.DiagnosticSeverity.Hint]] as const) {
+    const converted = toEditorDiagnostic(document, snapshot, {code:"ZX9001",severity,category:"tooling",message:"Shared message",range:snapshot.source.range(glyph,glyph+3),related:[{message:"Related",range:snapshot.source.range(0,2)}]});
+    assert.equal(converted.severity, expected);
+    assert.equal(converted.code, "ZX9001");
+    assert.equal(converted.source, "ZXCode");
+    assert.equal(converted.message, "Shared message");
+    assert.equal(document.getText(converted.range), "£©↑");
+    assert.equal(converted.relatedInformation?.[0]?.location.uri.toString(), document.uri.toString());
+    assert.equal(document.getText(converted.relatedInformation![0]!.location.range), "10");
+  }
   assert.ok(document.getText().includes("\r\n"));
   const unicodeEdit = new vscode.WorkspaceEdit();
   unicodeEdit.insert(document.uri, document.positionAt(glyph + 3), "😀");
@@ -56,5 +70,27 @@ export async function run(): Promise<void> {
   assert.equal(api.queries.diagnostics(snapshot).value.length, 0);
   api.documents.close(document);
   assert.notStrictEqual(api.documents.snapshot(document).identity, next.identity);
-  console.log("ZXCode real-host smoke passed: language registration/activation, sessions, diagnostics, navigation, UTF-16/CRLF ranges and stale-result rejection");
+  assert.equal(vscode.languages.getDiagnostics(document.uri).length, 0, "Plaintext is not automatically diagnosed");
+  const problemsUri = vscode.Uri.file(join(testFiles, "problems.zxbas"));
+  await vscode.workspace.fs.writeFile(problemsUri, Buffer.from("10 PRINT AT 10,"));
+  const problems = await vscode.workspace.openTextDocument(problemsUri);
+  await waitFor(() => vscode.languages.getDiagnostics(problemsUri).some((diagnostic) => diagnostic.code === "ZX1101"), "Malformed BASIC appears in Problems");
+  const visible = vscode.languages.getDiagnostics(problemsUri).find((diagnostic) => diagnostic.code === "ZX1101")!;
+  assert.equal(visible.severity, vscode.DiagnosticSeverity.Error);
+  assert.equal(visible.source, "ZXCode");
+  const checkedProblems = api.documents.snapshot(problems);
+  const coreProblem = api.queries.diagnostics(checkedProblems).value.find((diagnostic) => diagnostic.code === "ZX1101")!;
+  assert.ok(visible.range.isEqual(api.toEditorRange(problems, checkedProblems, coreProblem.range)));
+  const validEdit = new vscode.WorkspaceEdit();
+  validEdit.replace(problemsUri, new vscode.Range(problems.positionAt(0), problems.positionAt(problems.getText().length)), "10 STOP");
+  assert.equal(await vscode.workspace.applyEdit(validEdit), true);
+  await waitFor(() => vscode.languages.getDiagnostics(problemsUri).length === 0, "Valid edits clear stale Problems");
+  const warningEdit = new vscode.WorkspaceEdit();
+  warningEdit.replace(problemsUri, new vscode.Range(problems.positionAt(0), problems.positionAt(problems.getText().length)), "10 GO TO 999");
+  assert.equal(await vscode.workspace.applyEdit(warningEdit), true);
+  await waitFor(() => vscode.languages.getDiagnostics(problemsUri).some((diagnostic) => diagnostic.code === "ZX3001"), "Semantic warnings appear after edits");
+  assert.equal(vscode.languages.getDiagnostics(problemsUri).find((diagnostic) => diagnostic.code === "ZX3001")!.severity, vscode.DiagnosticSeverity.Warning);
+  await vscode.languages.setTextDocumentLanguage(problems, "plaintext");
+  await waitFor(() => vscode.languages.getDiagnostics(problemsUri).length === 0, "Changing language closes owned Problems");
+  console.log("ZXCode real-host smoke passed: language registration/activation, sessions, live Problems, diagnostics, navigation, UTF-16/CRLF ranges and stale-result rejection");
 }
