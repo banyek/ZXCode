@@ -1,6 +1,6 @@
 import { readFileSync, statSync, writeFileSync } from "node:fs";
 import { basename, dirname, extname, join, resolve } from "node:path";
-import { buildTap, checkProgram, SourceDocument } from "@zxcode/core";
+import { buildTap, checkProgram, SourceDocument, spectrumLiteralByte } from "@zxcode/core";
 import type { Diagnostic } from "@zxcode/core";
 
 const help = `ZXCode — 1982 BASIC. 2026 developer experience.
@@ -58,9 +58,10 @@ function parseOptions(args: readonly string[]): Options {
 }
 
 function filenameBytes(name: string): Uint8Array {
-  if (/^[\x20-\x5f\x61-\x7e]{1,10}$/.exec(name)?.[0] !== name) throw new UsageError("Spectrum filename needs 1..10 directly representable characters; use --name to override it.");
+  const encoded = Array.from(name, (character) => spectrumLiteralByte(character));
+  if (encoded.length < 1 || encoded.length > 10 || encoded.some((byte) => byte === undefined)) throw new UsageError("Spectrum filename needs 1..10 directly representable characters; use --name to override it.");
   const bytes = new Uint8Array(10).fill(0x20);
-  for (let index = 0; index < name.length; index++) bytes[index] = name.charCodeAt(index);
+  encoded.forEach((byte, index) => { bytes[index] = byte!; });
   return bytes;
 }
 
