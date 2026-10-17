@@ -1,3 +1,5 @@
+import { analyzePrintStatement } from "./print.js";
+import type { PrintItem as SourcePrintItem, PrintStatement as SourcePrintStatement } from "../source/print-items.js";
 import { analyzeLoop } from "./loops.js";
 import type { BasicForStatement, BasicNextStatement } from "./loops.js";
 import { analyzeLetStatement } from "./assignment.js";
@@ -28,9 +30,8 @@ export interface BuildableProgram<TProgram> extends AnalyzedProgram<TProgram> {
 
 export type BasicExpression = TypedExpression;
 
-export type BasicPrintItem =
-  | { readonly kind: "print-expression"; readonly range: SourceRange; readonly expression: BasicExpression }
-  | { readonly kind: "print-separator"; readonly range: SourceRange; readonly separator: ";" | "," };
+export type BasicPrintItem = SourcePrintItem<TypedExpression>;
+export type BasicPrintStatement = SourcePrintStatement<TypedExpression>;
 
 export interface StaticLineReference {
   readonly lineNumber: number;
@@ -53,7 +54,7 @@ export interface BasicIfStatement {
 export type BasicStatement = BasicForStatement | BasicNextStatement | BasicIfStatement | BasicJumpStatement
   | { readonly kind: "empty"; readonly range: SourceRange }
   | BasicLetStatement | SimpleCommandStatement<TypedExpression>
-  | { readonly kind: "print"; readonly range: SourceRange; readonly items: readonly BasicPrintItem[] }
+  | BasicPrintStatement
   | { readonly kind: "cls" | "stop"; readonly range: SourceRange };
 
 export interface BasicLine {
@@ -125,21 +126,8 @@ export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>): BasicA
     if (node.kind === "for" || node.kind === "next") return analyzeLoop(source, node, diagnostics);
     if (node.kind === "let") return analyzeLetStatement(source, node, diagnostics);
     if (node.kind === "simple-command") return analyzeSimpleCommand(source, node, diagnostics);
-    if (node.kind !== "print") return Object.freeze({ kind: node.kind, range: node.range });
-    const items: BasicPrintItem[] = [];
-    let valid = true;
-    for (const item of node.items) {
-      if (item.kind === "print-separator") items.push(item);
-      else {
-        const value = analyzeExpressionNode(source, item.expression, diagnostics);
-        if (value.type === "error" || value.type === "unknown") {
-          valid = false;
-          report(value.range, "Expression is incomplete or invalid.", DiagnosticCodes.unexpectedToken, "syntax");
-        }
-        else items.push(Object.freeze({ kind: "print-expression", range: item.range, expression: value }));
-      }
-    }
-    return valid ? Object.freeze({ kind: "print", range: node.range, items: Object.freeze(items) }) : undefined;
+    if (node.kind === "print" || node.kind === "lprint") return analyzePrintStatement(source, node, diagnostics);
+    return Object.freeze({ kind: node.kind, range: node.range });
   };
   for (const line of parsed.syntax.lines) {
     if (line.kind === "blank") continue;
@@ -166,6 +154,7 @@ export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>): BasicA
     for (const node of line.statements) {
       const value = statement(node);
       if (value !== undefined) statements.push(value);
+      else report(node.range, "Statement is incomplete or unsupported.", DiagnosticCodes.unsupportedSyntax, "compatibility");
     }
     lines.push(Object.freeze({ lineNumber: line.lineNumber, range: line.range, numberRange: line.numberRange, statements: Object.freeze(statements) }));
   }

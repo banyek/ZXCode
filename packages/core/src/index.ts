@@ -39,3 +39,6 @@ export type { IfStatement, JumpStatement } from "./syntax/parser.js";
 export type { BasicIfStatement, BasicJumpStatement, StaticLineReference } from "./semantic/program.js";
 export type { ForStatement, NextStatement } from "./syntax/loops.js";
 export type { BasicForStatement, BasicNextStatement } from "./semantic/loops.js";
+export type { StringPart } from "./syntax/lexer.js";
+export type { PrintStatement } from "./syntax/parser.js";
+export type { BasicPrintStatement } from "./semantic/program.js";

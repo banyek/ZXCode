@@ -46,7 +46,7 @@ test("quoted keyword/colon text and REM tails never become ordinary command toke
 
 test("malformed statements recover at colons and physical boundaries", () => {
   const parsed = parse('10 CLS 1: PRINT AT 1,2: STOP\n20 PRINT "not closed : STOP\n30 CLS');
-  assert.deepEqual(parsed.syntax.lines[0].statements.map((statement) => statement.kind), ["error-statement", "error-statement", "stop"]);
+  assert.deepEqual(parsed.syntax.lines[0].statements.map((statement) => statement.kind), ["error-statement", "print", "stop"]);
   assert.equal(parsed.syntax.lines[1].statements.length, 1);
   assert.equal(parsed.syntax.lines[1].statements[0].items[0].expression.closed, false);
   assert.equal(parsed.syntax.lines[2].statements[0].kind, "cls");
@@ -54,7 +54,7 @@ test("malformed statements recover at colons and physical boundaries", () => {
 });
 
 test("incomplete/unsupported source retains nodes and insertion positions rather than throwing", () => {
-  for (const text of ["10", "10 PRINT 1e+", '10 PRINT "', "10 PRINT (", "10 WHILE 1", "PRINT 1\n20 STOP", '10 PRINT "a""b"']) {
+  for (const text of ["10", "10 PRINT 1e+", '10 PRINT "', "10 PRINT (", "10 WHILE 1", "PRINT 1\n20 STOP"]) {
     const parsed = parse(text);
     assert.ok(parsed.diagnostics.length > 0, text);
     assert.ok(parsed.syntax.lines.length > 0);

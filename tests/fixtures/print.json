@@ -1,0 +1,169 @@
+{
+  "reference": "zmakebas 1.3.3, commit 667090faf392e0083bbcf238084dcdd996957285",
+  "cases": [
+    {
+      "source": "10 PRINT\n",
+      "programHex": "000a0200f50d"
+    },
+    {
+      "source": "10 PRINT ;\n",
+      "programHex": "000a0300f53b0d"
+    },
+    {
+      "source": "10 PRINT ,\n",
+      "programHex": "000a0300f52c0d"
+    },
+    {
+      "source": "10 PRINT '\n",
+      "programHex": "000a0300f5270d"
+    },
+    {
+      "source": "10 PRINT ;,;\n",
+      "programHex": "000a0500f53b2c3b0d"
+    },
+    {
+      "source": "10 PRINT \"a\";1,\n",
+      "programHex": "000a0e00f52261223b310e00000100002c0d"
+    },
+    {
+      "source": "10 PRINT AT 1,2;\"x\"\n",
+      "programHex": "000a1600f5ac310e00000100002c320e00000200003b2278220d"
+    },
+    {
+      "source": "10 PRINT AT 1,2,\"x\"\n",
+      "programHex": "000a1600f5ac310e00000100002c320e00000200002c2278220d"
+    },
+    {
+      "source": "10 PRINT TAB 4;\"x\"\n",
+      "programHex": "000a0e00f5ad340e00000400003b2278220d"
+    },
+    {
+      "source": "10 PRINT #2;\"x\"\n",
+      "programHex": "000a0e00f523320e00000200003b2278220d"
+    },
+    {
+      "source": "10 PRINT #2\n",
+      "programHex": "000a0a00f523320e00000200000d"
+    },
+    {
+      "source": "10 PRINT \"a\"\"b\"\n",
+      "programHex": "000a0800f52261222262220d"
+    },
+    {
+      "source": "10 PRINT \"\"\"\"\n",
+      "programHex": "000a0600f5222222220d"
+    },
+    {
+      "source": "10 PRINT \"REM : INK\"\n",
+      "programHex": "000a0d00f52252454d203a20494e4b220d"
+    },
+    {
+      "source": "10 LET a$=\"a\"\"b\"\n",
+      "programHex": "000a0b00f161243d2261222262220d"
+    },
+    {
+      "source": "10 PRINT INK 1;\"x\"\n",
+      "programHex": "000a0e00f5d9310e00000100003b2278220d"
+    },
+    {
+      "source": "10 PRINT PAPER 1;\"x\"\n",
+      "programHex": "000a0e00f5da310e00000100003b2278220d"
+    },
+    {
+      "source": "10 PRINT FLASH 1;\"x\"\n",
+      "programHex": "000a0e00f5db310e00000100003b2278220d"
+    },
+    {
+      "source": "10 PRINT BRIGHT 1;\"x\"\n",
+      "programHex": "000a0e00f5dc310e00000100003b2278220d"
+    },
+    {
+      "source": "10 PRINT INVERSE 1;\"x\"\n",
+      "programHex": "000a0e00f5dd310e00000100003b2278220d"
+    },
+    {
+      "source": "10 PRINT OVER 1;\"x\"\n",
+      "programHex": "000a0e00f5de310e00000100003b2278220d"
+    },
+    {
+      "source": "10 LPRINT\n",
+      "programHex": "000a0200e00d"
+    },
+    {
+      "source": "10 LPRINT ;\n",
+      "programHex": "000a0300e03b0d"
+    },
+    {
+      "source": "10 LPRINT ,\n",
+      "programHex": "000a0300e02c0d"
+    },
+    {
+      "source": "10 LPRINT '\n",
+      "programHex": "000a0300e0270d"
+    },
+    {
+      "source": "10 LPRINT ;,;\n",
+      "programHex": "000a0500e03b2c3b0d"
+    },
+    {
+      "source": "10 LPRINT \"a\";1,\n",
+      "programHex": "000a0e00e02261223b310e00000100002c0d"
+    },
+    {
+      "source": "10 LPRINT AT 1,2;\"x\"\n",
+      "programHex": "000a1600e0ac310e00000100002c320e00000200003b2278220d"
+    },
+    {
+      "source": "10 LPRINT AT 1,2,\"x\"\n",
+      "programHex": "000a1600e0ac310e00000100002c320e00000200002c2278220d"
+    },
+    {
+      "source": "10 LPRINT TAB 4;\"x\"\n",
+      "programHex": "000a0e00e0ad340e00000400003b2278220d"
+    },
+    {
+      "source": "10 LPRINT #2;\"x\"\n",
+      "programHex": "000a0e00e023320e00000200003b2278220d"
+    },
+    {
+      "source": "10 LPRINT #2\n",
+      "programHex": "000a0a00e023320e00000200000d"
+    },
+    {
+      "source": "10 LPRINT \"a\"\"b\"\n",
+      "programHex": "000a0800e02261222262220d"
+    },
+    {
+      "source": "10 LPRINT \"\"\"\"\n",
+      "programHex": "000a0600e0222222220d"
+    },
+    {
+      "source": "10 LPRINT \"REM : INK\"\n",
+      "programHex": "000a0d00e02252454d203a20494e4b220d"
+    },
+    {
+      "source": "10 LPRINT INK 1;\"x\"\n",
+      "programHex": "000a0e00e0d9310e00000100003b2278220d"
+    },
+    {
+      "source": "10 LPRINT PAPER 1;\"x\"\n",
+      "programHex": "000a0e00e0da310e00000100003b2278220d"
+    },
+    {
+      "source": "10 LPRINT FLASH 1;\"x\"\n",
+      "programHex": "000a0e00e0db310e00000100003b2278220d"
+    },
+    {
+      "source": "10 LPRINT BRIGHT 1;\"x\"\n",
+      "programHex": "000a0e00e0dc310e00000100003b2278220d"
+    },
+    {
+      "source": "10 LPRINT INVERSE 1;\"x\"\n",
+      "programHex": "000a0e00e0dd310e00000100003b2278220d"
+    },
+    {
+      "source": "10 LPRINT OVER 1;\"x\"\n",
+      "programHex": "000a0e00e0de310e00000100003b2278220d"
+    }
+  ]
+}

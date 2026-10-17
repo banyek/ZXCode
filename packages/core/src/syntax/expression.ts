@@ -5,11 +5,11 @@ import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument, SourceRange } from "../source/document.js";
 import type { RomToken } from "../source/rom-tokens.js";
 import { lexBody } from "./lexer.js";
-import type { BodyToken } from "./lexer.js";
+import type { BodyToken, StringPart } from "./lexer.js";
 import type { ParsedDocument } from "./document.js";
 
 export type LiteralExpression =
-  | { readonly kind: "string-literal"; readonly range: SourceRange; readonly contentRange: SourceRange; readonly value: string; readonly closed: boolean }
+  | { readonly kind: "string-literal"; readonly range: SourceRange; readonly contentRange: SourceRange; readonly value: string; readonly parts: readonly StringPart[]; readonly closed: boolean }
   | { readonly kind: "numeric-literal"; readonly range: SourceRange; readonly lexeme: string };
 
 export type Expression = LiteralExpression
@@ -58,7 +58,7 @@ export function readExpression(source: SourceDocument, inputTokens: readonly Bod
     if (token === undefined || boundaries.has(text)) return error("Expected an expression.", false);
     if (depth >= 256) return error("Expression exceeds the supported 256-level nesting budget.", true, true);
     cursor++;
-    if (token.kind === "string") return Object.freeze({ kind: "string-literal", range: token.range, contentRange: token.contentRange, value: source.textInRange(token.contentRange), closed: token.closed });
+    if (token.kind === "string") return Object.freeze({ kind: "string-literal", range: token.range, contentRange: token.contentRange, value: token.value, parts: token.parts, closed: token.closed });
     if (token.kind === "number") {
       if (/[Ee][+-]?$/.test(token.text)) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.invalidNumericLiteral, severity: "error", category: "syntax", message: "Expected decimal exponent digits.", range: token.range }));
       return Object.freeze({ kind: "numeric-literal", range: token.range, lexeme: token.text });
