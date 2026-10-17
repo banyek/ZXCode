@@ -1,0 +1,153 @@
+{
+  "provenance": "Sinclair Appendix A / chapter 14 byte ranges; original-ROM PO-GR-1 quadrant masks; notation fixed by design 027",
+  "cases": [
+    {
+      "notation": "{BLOCK 0}",
+      "byte": 128
+    },
+    {
+      "notation": "{BLOCK 1}",
+      "byte": 129
+    },
+    {
+      "notation": "{BLOCK 2}",
+      "byte": 130
+    },
+    {
+      "notation": "{BLOCK 3}",
+      "byte": 131
+    },
+    {
+      "notation": "{BLOCK 4}",
+      "byte": 132
+    },
+    {
+      "notation": "{BLOCK 5}",
+      "byte": 133
+    },
+    {
+      "notation": "{BLOCK 6}",
+      "byte": 134
+    },
+    {
+      "notation": "{BLOCK 7}",
+      "byte": 135
+    },
+    {
+      "notation": "{BLOCK 8}",
+      "byte": 136
+    },
+    {
+      "notation": "{BLOCK 9}",
+      "byte": 137
+    },
+    {
+      "notation": "{BLOCK 10}",
+      "byte": 138
+    },
+    {
+      "notation": "{BLOCK 11}",
+      "byte": 139
+    },
+    {
+      "notation": "{BLOCK 12}",
+      "byte": 140
+    },
+    {
+      "notation": "{BLOCK 13}",
+      "byte": 141
+    },
+    {
+      "notation": "{BLOCK 14}",
+      "byte": 142
+    },
+    {
+      "notation": "{BLOCK 15}",
+      "byte": 143
+    },
+    {
+      "notation": "{UDG A}",
+      "byte": 144
+    },
+    {
+      "notation": "{UDG B}",
+      "byte": 145
+    },
+    {
+      "notation": "{UDG C}",
+      "byte": 146
+    },
+    {
+      "notation": "{UDG D}",
+      "byte": 147
+    },
+    {
+      "notation": "{UDG E}",
+      "byte": 148
+    },
+    {
+      "notation": "{UDG F}",
+      "byte": 149
+    },
+    {
+      "notation": "{UDG G}",
+      "byte": 150
+    },
+    {
+      "notation": "{UDG H}",
+      "byte": 151
+    },
+    {
+      "notation": "{UDG I}",
+      "byte": 152
+    },
+    {
+      "notation": "{UDG J}",
+      "byte": 153
+    },
+    {
+      "notation": "{UDG K}",
+      "byte": 154
+    },
+    {
+      "notation": "{UDG L}",
+      "byte": 155
+    },
+    {
+      "notation": "{UDG M}",
+      "byte": 156
+    },
+    {
+      "notation": "{UDG N}",
+      "byte": 157
+    },
+    {
+      "notation": "{UDG O}",
+      "byte": 158
+    },
+    {
+      "notation": "{UDG P}",
+      "byte": 159
+    },
+    {
+      "notation": "{UDG Q}",
+      "byte": 160
+    },
+    {
+      "notation": "{UDG R}",
+      "byte": 161
+    },
+    {
+      "notation": "{UDG S}",
+      "byte": 162
+    },
+    {
+      "notation": "{UDG T}",
+      "byte": 163
+    },
+    {
+      "notation": "{UDG U}",
+      "byte": 164
+    }
+  ]
+}

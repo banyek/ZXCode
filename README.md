@@ -37,7 +37,7 @@ and returns `0 OK, 100:1`. M1's hello bytes and load/run acceptance remain intac
 Decimal conversion reproduces original-ROM storage and rounding; see the
 [numeric contract](docs/design/020-numeric-literals.md). M3 numeric lexical hardening now includes the ROM’s contextual fraction/exponent
 whitespace rules. The shared 256-byte Spectrum character map is implemented; controls, graphics/UDG
-notation and source escapes remain M3. Control packets now have checked internal
+notation now has a verified portable component; source escape activation remains M3. Control packets now have checked internal
 encoding and lossless text-byte decoding, including truncated-packet diagnostics.
 Printable literals include Spectrum £, © and ↑ alongside the existing ASCII
 coverage (backtick is excluded); strings support doubled quotes and REM tails

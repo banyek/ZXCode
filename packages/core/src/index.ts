@@ -74,3 +74,6 @@ export type { SpectrumTextValue, SpectrumTextAnalysis } from "./semantic/spectru
 export { encodeSpectrumText } from "./encoding/spectrum-text.js";
 export { decodeSpectrumText } from "./decoding/spectrum-text.js";
 export type { DecodedSpectrumText } from "./decoding/spectrum-text.js";
+
+export { SPECTRUM_GRAPHIC_NOTATIONS, spectrumGraphicNotation, parseSpectrumGraphicNotation } from "./source/graphics-notation.js";
+export type { SpectrumGraphicIdentity, SpectrumGraphicNotation } from "./source/graphics-notation.js";
