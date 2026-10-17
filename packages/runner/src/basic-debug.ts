@@ -10,7 +10,7 @@ import type {BasicDebugImage,BasicSourceLocation} from "./basic-location.js";
 import type {DebugMachineBackend,DebugMachineSession,MachineStop,MachineResult,MachineInspection,MachineInspectionRequest,MachineFailure} from "./debug-machine.js";
 export interface BasicBreakpointRequest {readonly line:number;readonly column?:number}
 export interface BasicBreakpoint {readonly id:number;readonly verified:boolean;readonly line:number;readonly column?:number;readonly message:string;readonly encodedOffset?:number}
-export type BasicDebugEvent={readonly kind:"running"}|{readonly kind:"invalidated"}|{readonly kind:"stopped";readonly reason:"entry"|"breakpoint"|"pause"|"unmapped";readonly location?:BasicSourceLocation;readonly message?:string}|{readonly kind:"output";readonly message:string}|{readonly kind:"terminated";readonly message:string};
+export type BasicDebugEvent={readonly kind:"running"}|{readonly kind:"invalidated"}|{readonly kind:"stopped";readonly reason:"entry"|"breakpoint"|"step"|"pause"|"unmapped";readonly location?:BasicSourceLocation;readonly message?:string}|{readonly kind:"output";readonly message:string}|{readonly kind:"terminated";readonly message:string};
 const good=<T>(value:T):MachineResult<T>=>Object.freeze({kind:"success",value});
 const bad=(message:string):MachineFailure=>Object.freeze({kind:"error",code:"invalid-state",message});
 export class BasicDebugSession {
@@ -18,7 +18,7 @@ export class BasicDebugSession {
   readonly #machine:DebugMachineSession;readonly #directory:string;readonly #epoch:number;
   readonly #listeners=new Set<(event:BasicDebugEvent)=>void>();readonly #breakpoints=new Map<number,BasicBreakpoint>();
   #nextBreakpoint=0;#location:BasicSourceLocation | undefined;#lastStop:MachineStop;#state:"ready"|"running"|"stopped"|"closed"="ready";
-  #attested=false;#entryPending=true;#stopOnEntry=true;#userPause=false;#romHash:string | undefined;#disabled:string | undefined;#falseHits=0;
+  #stepPending=false;#attested=false;#entryPending=true;#stopOnEntry=true;#userPause=false;#romHash:string | undefined;#disabled:string | undefined;#falseHits=0;
   #tail:Promise<void>=Promise.resolve();#unsubscribe:()=>void;#deadline:ReturnType<typeof setTimeout> | undefined;#closing:Promise<MachineResult<void>> | undefined;
   constructor(image:BasicDebugImage,metadata:RunBuildMetadata,machine:DebugMachineSession,stop:MachineStop,directory:string,artifactPath:string) {
     this.image=image;this.metadata=metadata;this.#machine=machine;this.#lastStop=stop;this.#epoch=stop.epoch;this.#directory=directory;this.artifactPath=artifactPath;
@@ -37,9 +37,9 @@ export class BasicDebugSession {
   #schedule(stop:MachineStop):void {
     this.#tail=this.#tail.then(()=>this.#handle(stop)).catch(error=>{if(!this.#isClosed()) {this.#location=undefined;this.#state="stopped";this.#disabled=String(error);this.#emit({kind:"stopped",reason:"unmapped",message:this.#disabled});}});
   }
-  #publish(stop:MachineStop,reason:"entry"|"breakpoint"|"pause"|"unmapped",location?:BasicSourceLocation,message?:string):void {
+  #publish(stop:MachineStop,reason:"entry"|"breakpoint"|"step"|"pause"|"unmapped",location?:BasicSourceLocation,message?:string):void {
     if(this.#isClosed())return;
-    this.#lastStop=stop;this.#location=location;this.#state="stopped";this.#userPause=false;
+    this.#lastStop=stop;this.#location=location;this.#state="stopped";this.#userPause=false;this.#stepPending=false;
     this.#emit({kind:"stopped",reason,...(location===undefined?{}:{location}),...(message===undefined?{}:{message})});
   }
   async #autoContinue(stop:MachineStop):Promise<void> {
@@ -89,6 +89,7 @@ export class BasicDebugSession {
     const offset=word(0x5c5d)-base;
     if(this.#userPause)this.#publish(stop,"pause",mapped.location);
     else if([...this.#breakpoints.values()].some(item=>item.encodedOffset===offset))this.#publish(stop,"breakpoint",mapped.location);
+    else if(this.#stepPending)this.#publish(stop,"step",mapped.location);
     else if(first&&this.#stopOnEntry)this.#publish(stop,"entry",mapped.location);
     else await this.#autoContinue(stop);
   }
@@ -109,9 +110,14 @@ export class BasicDebugSession {
     }));
   }
   begin(stopOnEntry=true):Promise<MachineResult<void>> {this.#stopOnEntry=stopOnEntry;return this.continue();}
-  async continue():Promise<MachineResult<void>> {
+  continue():Promise<MachineResult<void>> {return this.#run(false);}
+  stepStatement():Promise<MachineResult<void>> {
+    if(this.#state!=="stopped"||this.#location===undefined)return Promise.resolve(bad("BASIC stepping requires a verified paused source statement."));
+    return this.#run(true);
+  }
+  async #run(step:boolean):Promise<MachineResult<void>> {
     if(this.#isClosed()||this.#state==="running"||this.#disabled!==undefined)return bad(this.#disabled??"The debug machine is not stopped.");
-    this.#location=undefined;this.#state="running";this.#userPause=false;this.#emit({kind:"running"});
+    this.#stepPending=step;this.#location=undefined;this.#state="running";this.#userPause=false;this.#emit({kind:"running"});
     if(!this.#attested&&this.#deadline===undefined)this.#deadline=setTimeout(()=>{if(!this.#isClosed()&&!this.#attested){this.#disabled="The expected BASIC program did not reach a verified dispatch; restart debugging.";void this.pause();}},30000);
     const resumed=await this.#machine.resume(this.#lastStop);
     if(resumed.kind==="error"&&!this.#isClosed())this.#publish(this.#lastStop,"unmapped",undefined,resumed.message);

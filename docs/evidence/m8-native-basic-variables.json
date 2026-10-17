@@ -59,5 +59,21 @@
     0,
     0
   ],
-  "readonlyMemorySnapshot": true
+  "readonlyMemorySnapshot": true,
+  "coldResetNewSession": true,
+  "resetEntry": [
+    {
+      "id": 1,
+      "name": "BASIC 10:1",
+      "source": {
+        "name": "debug-variables.zxbas",
+        "path": "debug-variables.zxbas"
+      },
+      "line": 1,
+      "column": 4,
+      "endLine": 1,
+      "endColumn": 13
+    }
+  ],
+  "resetVariableCount": 0
 }

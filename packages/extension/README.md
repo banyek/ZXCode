@@ -100,7 +100,10 @@ shared source maps; loader/parser hits are filtered. Continue and Pause are
 available. A pause between dispatches can have no source frame; edited or reopened
 source terminates the old association and requires a fresh debug launch.
 
-Conditional/log breakpoints and BASIC stepping are not provided in this stage.
+Conditional/log breakpoints, Step Over and Step Out are unavailable. Step Into
+resumes to the next verified BASIC statement dispatch, including loop iterations
+and GO SUB/RETURN. **ZXCode: Reset BASIC Debug Session** cold-launches a fresh
+machine and stops at entry with runtime variables cleared.
 Exact-image correlation refuses runtime-mutated FN slots or self-modifying BASIC;
 it never guesses a nearby source location. Normal Run Spectrum still uses Fuse.
 See the debug-machine setup guide in the repository for the optional executable
@@ -112,3 +115,10 @@ show the exact stored value. Runtime strings preserve raw bytes as escaped debug
 text. **ZXCode: View Memory** opens a read-only paused snapshot; it remains a
 historical snapshot after resume. Malformed/unsupported variable tables do not
 become guessed semantic values; raw memory inspection remains available.
+
+**ZXCode: Show Spectrum Screen** displays a refreshable paused bitmap/attribute
+snapshot with an explicit static flash phase. Retained pixels are labelled
+historical while running or after termination. Native Watch supports stored
+numeric/string variables, FOR values and numeric arrays with positive decimal
+integer indices, for example `n(2,1)`. Arithmetic, functions and string slicing
+are explicitly unavailable; watches never execute BASIC.

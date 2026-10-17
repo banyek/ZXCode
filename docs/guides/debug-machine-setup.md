@@ -65,8 +65,22 @@ Changing/closing/reopening the source stops that debug association; restart to
 rebuild. Completion is a ROM report, not an invented next-statement source frame.
 
 This exact-image stage does not support runtime-mutated FN slots, self-modifying
-programs, alternate ROMs, conditional/log breakpoints or BASIC stepping. Such
+programs, alternate ROMs, conditional/log breakpoints, Step Over or Step Out. Such
 cases refuse mapping or the unsupported operation. Scope/watch features are
 separate from the raw machine contract. The optional original-ROM native probe
 runs with `ZXCODE_TEST_ZESARUX` pointing to the required executable when invoking
 `npm run test:vsix`; ordinary CI uses no emulator or ROM.
+
+Step Into resumes to the next attested BASIC dispatch, including colon statements,
+executed IF tails, loop iterations and GO SUB/RETURN. It requires a verified
+paused source location. **ZXCode: Reset BASIC Debug Session** closes the owned
+machine and cold-launches the current source in a fresh session, stopping at
+entry with cleared variables. Native breakpoints are rebound normally.
+
+Paused scopes include scalars, arrays and FOR state. Watch supports variable
+names and fully indexed numeric arrays with positive decimal integer literal
+indices; arbitrary expression execution and string slices are unavailable.
+**ZXCode: View Memory** opens a read-only paused hex snapshot.
+**ZXCode: Show Spectrum Screen** reads the 6912 display bytes through DAP, offers
+two static flash phases, and clearly labels historical retained pixels. Refresh
+requires a paused machine. See [run guide](run-spectrum.md) for these controls.
