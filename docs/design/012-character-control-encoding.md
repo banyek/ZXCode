@@ -171,3 +171,7 @@ M3-03 validation: all 16 named control families have independently checked origi
 ROM dispatch/arity and fixed packet fixtures. The full 173-test Node 24 suite
 checks canonical internal round trips, every byte value, malformed packet retention,
 invalid parameters, ownership and source diagnostic regressions.
+
+M3-04 freezes portable graphics/UDG forms and all 37 byte round-trip examples in
+[027-graphics-source-notation.md](027-graphics-source-notation.md). BASIC source
+activation and literal-brace rules remain M3-05.
