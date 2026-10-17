@@ -1,0 +1,66 @@
+{
+  "provenance": "Original 48K LOAD control 089B..08AD, with sentinel NEWPPC/NSPPC; no ZXCode imports",
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "cases": [
+    {
+      "word": 0,
+      "enabled": true,
+      "newPpc": 0,
+      "nextStatement": 0
+    },
+    {
+      "word": 1,
+      "enabled": true,
+      "newPpc": 1,
+      "nextStatement": 0
+    },
+    {
+      "word": 9999,
+      "enabled": true,
+      "newPpc": 9999,
+      "nextStatement": 0
+    },
+    {
+      "word": 16383,
+      "enabled": true,
+      "newPpc": 16383,
+      "nextStatement": 0
+    },
+    {
+      "word": 16384,
+      "enabled": false,
+      "newPpc": 65535,
+      "nextStatement": 170
+    },
+    {
+      "word": 16385,
+      "enabled": false,
+      "newPpc": 65535,
+      "nextStatement": 170
+    },
+    {
+      "word": 32767,
+      "enabled": false,
+      "newPpc": 65535,
+      "nextStatement": 170
+    },
+    {
+      "word": 32768,
+      "enabled": false,
+      "newPpc": 65535,
+      "nextStatement": 170
+    },
+    {
+      "word": 49152,
+      "enabled": false,
+      "newPpc": 65535,
+      "nextStatement": 170
+    },
+    {
+      "word": 65535,
+      "enabled": false,
+      "newPpc": 65535,
+      "nextStatement": 170
+    }
+  ]
+}

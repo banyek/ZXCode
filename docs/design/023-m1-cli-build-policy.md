@@ -17,8 +17,10 @@ The following previously open M1 build defaults are explicit decisions:
   input leaves existing artifacts untouched. Source-file destinations, including
   existing symlink/hardlink aliases, are refused.
 - The Spectrum header name defaults to the source basename without its extension.
-  `--name <name>` overrides it. Names require 1..10 directly representable M1
-  characters (ASCII 32..126 except backtick/code 96) and are padded with spaces.
+  `--name <name>` overrides it. Names require 1..10 directly representable Spectrum
+  characters (ASCII 32..126 except backtick, plus £, © and ↑) and are padded
+  with spaces. M3-07 shares the literal character map, retaining ^ as a 5Eh alias.
+  Source escapes are not interpreted in CLI names.
   Overlong/unrepresentable names fail; they are not truncated or transliterated.
 - Builds default to no autostart, represented explicitly by header word 8000h.
   `--autostart <line>` accepts decimal 1..9999. It selects metadata, not language

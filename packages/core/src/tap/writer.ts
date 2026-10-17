@@ -1,13 +1,7 @@
 import type { TapArtifact } from "./artifact.js";
-
-export interface BasicTapMetadata {
-  /** Exactly ten already encoded Spectrum bytes; no implicit padding/transliteration. */
-  readonly filenameBytes: Uint8Array;
-  /** Raw header word; values with bit 15 set disable autostart (e.g. 0x8000). */
-  readonly autostart: number;
-  /** Start of variables, measured from the beginning of program/data bytes. */
-  readonly variablesOffset: number;
-}
+import { BASIC_TAP_HEADER_LENGTH, MAX_TAP_PAYLOAD_LENGTH } from "./format.js";
+import type { BasicTapMetadata } from "./format.js";
+export type { BasicTapMetadata } from "./format.js";
 
 function checkInteger(value: number, max: number, name: string): void {
   if (!Number.isSafeInteger(value) || value < 0 || value > max) {
@@ -17,7 +11,7 @@ function checkInteger(value: number, max: number, name: string): void {
 
 function checkPayload(payload: Uint8Array): void {
   if (!(payload instanceof Uint8Array)) throw new TypeError("TAP payload must be a Uint8Array.");
-  checkInteger(payload.length, 0xffff - 2, "TAP payload length");
+  checkInteger(payload.length, MAX_TAP_PAYLOAD_LENGTH, "TAP payload length");
 }
 
 function writeWord(bytes: Uint8Array, offset: number, value: number): void {
@@ -47,7 +41,7 @@ export function writeBasicTap(programData: Uint8Array, metadata: BasicTapMetadat
   }
   checkInteger(metadata.autostart, 0xffff, "Autostart parameter");
   checkInteger(metadata.variablesOffset, programData.length, "Variables offset");
-  const header = new Uint8Array(17);
+  const header = new Uint8Array(BASIC_TAP_HEADER_LENGTH);
   header[0] = 0; // BASIC program, distinct from the header block's flag byte.
   header.set(metadata.filenameBytes, 1);
   writeWord(header, 11, programData.length);

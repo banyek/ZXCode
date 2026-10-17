@@ -1,0 +1,125 @@
+{
+  "provenance": "Independent Python struct little-endian field packing and flag-inclusive XOR, following original ROM header fields / TAP block framing; payloads are intentionally opaque",
+  "cases": [
+    {
+      "name": "word-0000",
+      "filenameHex": "58202020202020202020",
+      "payloadHex": "000d0e2280a5ff",
+      "autostart": 0,
+      "variablesOffset": 7,
+      "tapHex": "1300000058202020202020202020070000000700780900ff000d0e2280a5ff04"
+    },
+    {
+      "name": "word-0001",
+      "filenameHex": "000d22607f8090a5ff20",
+      "payloadHex": "000d0e2280a5ff",
+      "autostart": 1,
+      "variablesOffset": 0,
+      "tapHex": "13000000000d22607f8090a5ff200700010000005c0900ff000d0e2280a5ff04"
+    },
+    {
+      "name": "word-270f",
+      "filenameHex": "607f5e20202020202020",
+      "payloadHex": "000d0e2280a5ff",
+      "autostart": 9999,
+      "variablesOffset": 7,
+      "tapHex": "13000000607f5e2020202020202007000f270700490900ff000d0e2280a5ff04"
+    },
+    {
+      "name": "word-3fff",
+      "filenameHex": "58202020202020202020",
+      "payloadHex": "000d0e2280a5ff",
+      "autostart": 16383,
+      "variablesOffset": 0,
+      "tapHex": "13000000582020202020202020200700ff3f0000bf0900ff000d0e2280a5ff04"
+    },
+    {
+      "name": "word-4000",
+      "filenameHex": "000d22607f8090a5ff20",
+      "payloadHex": "000d0e2280a5ff",
+      "autostart": 16384,
+      "variablesOffset": 7,
+      "tapHex": "13000000000d22607f8090a5ff200700004007001a0900ff000d0e2280a5ff04"
+    },
+    {
+      "name": "word-4001",
+      "filenameHex": "607f5e20202020202020",
+      "payloadHex": "000d0e2280a5ff",
+      "autostart": 16385,
+      "variablesOffset": 0,
+      "tapHex": "13000000607f5e20202020202020070001400000270900ff000d0e2280a5ff04"
+    },
+    {
+      "name": "word-7fff",
+      "filenameHex": "58202020202020202020",
+      "payloadHex": "000d0e2280a5ff",
+      "autostart": 32767,
+      "variablesOffset": 7,
+      "tapHex": "13000000582020202020202020200700ff7f0700f80900ff000d0e2280a5ff04"
+    },
+    {
+      "name": "word-8000",
+      "filenameHex": "000d22607f8090a5ff20",
+      "payloadHex": "000d0e2280a5ff",
+      "autostart": 32768,
+      "variablesOffset": 0,
+      "tapHex": "13000000000d22607f8090a5ff20070000800000dd0900ff000d0e2280a5ff04"
+    },
+    {
+      "name": "word-c000",
+      "filenameHex": "607f5e20202020202020",
+      "payloadHex": "000d0e2280a5ff",
+      "autostart": 49152,
+      "variablesOffset": 7,
+      "tapHex": "13000000607f5e20202020202020070000c00700a10900ff000d0e2280a5ff04"
+    },
+    {
+      "name": "word-ffff",
+      "filenameHex": "58202020202020202020",
+      "payloadHex": "000d0e2280a5ff",
+      "autostart": 65535,
+      "variablesOffset": 0,
+      "tapHex": "13000000582020202020202020200700ffff00007f0900ff000d0e2280a5ff04"
+    },
+    {
+      "name": "empty",
+      "filenameHex": "000d22607f8090a5ff20",
+      "payloadHex": "",
+      "autostart": 32768,
+      "variablesOffset": 0,
+      "tapHex": "13000000000d22607f8090a5ff20000000800000da0200ffff"
+    }
+  ],
+  "blocks": [
+    {
+      "flag": 0,
+      "payloadHex": "",
+      "blockHex": "02000000"
+    },
+    {
+      "flag": 255,
+      "payloadHex": "",
+      "blockHex": "0200ffff"
+    },
+    {
+      "flag": 90,
+      "payloadHex": "000102030405060708090a0b0c0d0e0f",
+      "blockHex": "12005a000102030405060708090a0b0c0d0e0f5a"
+    },
+    {
+      "flag": 128,
+      "payloadHex": "ff000d",
+      "blockHex": "050080ff000d72"
+    }
+  ],
+  "maximum": {
+    "filenameHex": "58202020202020202020",
+    "payloadLength": 65533,
+    "pattern": "ascending-mod-256",
+    "autostart": 65535,
+    "variablesOffset": 65533,
+    "tapLength": 65558,
+    "headerHex": "1300000058202020202020202020fdfffffffdff78",
+    "tapSha256": "f9d684ec63ddebfaf2d8be3e319ed9710d23611d61ebbbde2c9d6f638e88bb27"
+  }
+}

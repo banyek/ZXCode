@@ -81,3 +81,7 @@ export type { SpectrumGraphicIdentity, SpectrumGraphicNotation } from "./source/
 export type { SourceTextContext, SourceTextPart } from "./source/spectrum-text.js";
 export { formatSpectrumTextContent } from "./encoding/source-text.js";
 export type { FormattedSpectrumText } from "./encoding/source-text.js";
+
+export { MAX_TAP_PAYLOAD_LENGTH } from "./tap/format.js";
+export { readTapBlocks, readBasicTap } from "./tap/reader.js";
+export type { TapReadIssue, TapReadFailure, TapBlock, ReadTapBlocks, ReadBasicTap } from "./tap/reader.js";

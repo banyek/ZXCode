@@ -96,3 +96,28 @@ test("core check/build share encoding-limit diagnostics and do no host I/O", () 
   assert.deepEqual(checked.diagnostics, built.diagnostics);
   assert.equal(checked.diagnostics[0].code, "ZX2004");
 });
+
+test("CLI filename metadata uses exact printable Spectrum glyph bytes", (t) => {
+  const dir = workspace(t);
+  writeFileSync(join(dir, "£©↑.bas"), hello);
+  const built = run(dir, "build", "£©↑.bas");
+  assert.equal(built.status, 0, built.stderr);
+  assert.equal(readFileSync(join(dir, "£©↑.tap")).subarray(4, 14).toString("hex"), "607f5e20202020202020");
+  const explicit = run(dir, "build", "£©↑.bas", "-o", "named.tap", "--name", "£".repeat(10));
+  assert.equal(explicit.status, 0, explicit.stderr);
+  assert.equal(readFileSync(join(dir, "named.tap")).subarray(4, 14).toString("hex"), "60".repeat(10));
+  const literal = run(dir, "build", "£©↑.bas", "-o", "literal.tap", "--name", "{UDG A}");
+  assert.equal(literal.status, 0, literal.stderr);
+  assert.equal(readFileSync(join(dir, "literal.tap")).subarray(4, 11).toString("ascii"), "{UDG A}");
+});
+
+test("unrepresentable or overlong glyph filenames preserve prior artifacts", (t) => {
+  const dir = workspace(t);
+  writeFileSync(join(dir, "hello.bas"), hello);
+  writeFileSync(join(dir, "chosen.tap"), "keep");
+  for (const name of ["£".repeat(11), "😀", "é", "`", "\t"]) {
+    const result = run(dir, "build", "hello.bas", "-o", "chosen.tap", "--name", name);
+    assert.equal(result.status, 2, name);
+    assert.equal(readFileSync(join(dir, "chosen.tap"), "utf8"), "keep");
+  }
+});

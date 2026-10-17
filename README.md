@@ -39,6 +39,10 @@ Decimal conversion reproduces original-ROM storage and rounding; see the
 whitespace rules. The shared 256-byte Spectrum character map is implemented; controls, graphics/UDG
 notation and named/raw text escapes are active in quoted strings and REM tails. Control packets now have checked internal
 encoding and lossless text-byte decoding, including truncated-packet diagnostics.
+The core also exposes `readTapBlocks` and `readBasicTap`, with strict length,
+checksum and BASIC metadata validation and structured byte-offset failures.
+Container names and payloads remain opaque bytes; see the
+[TAP contract](docs/design/019-tap-container.md).
 Printable literals include Spectrum £, © and ↑ alongside the existing ASCII
 coverage (backtick is excluded); strings support doubled quotes and REM tails
 retain literal source bytes. Production and normal CI require
