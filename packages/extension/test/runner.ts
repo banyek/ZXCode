@@ -92,5 +92,42 @@ export async function run(): Promise<void> {
   assert.equal(vscode.languages.getDiagnostics(problemsUri).find((diagnostic) => diagnostic.code === "ZX3001")!.severity, vscode.DiagnosticSeverity.Warning);
   await vscode.languages.setTextDocumentLanguage(problems, "plaintext");
   await waitFor(() => vscode.languages.getDiagnostics(problemsUri).length === 0, "Changing language closes owned Problems");
-  console.log("ZXCode real-host smoke passed: language registration/activation, sessions, live Problems, diagnostics, navigation, UTF-16/CRLF ranges and stale-result rejection");
+  const completionUri = vscode.Uri.file(join(testFiles, "completion.zxbas"));
+  await vscode.workspace.fs.writeFile(completionUri, Buffer.from("10 PR"));
+  const completionDocument = await vscode.workspace.openTextDocument(completionUri);
+  const completionEditor = await vscode.window.showTextDocument(completionDocument);
+  completionEditor.selection = new vscode.Selection(0, 5, 0, 5);
+  const suggestions = await vscode.commands.executeCommand<vscode.CompletionList>("vscode.executeCompletionItemProvider", completionUri, new vscode.Position(0, 5));
+  const print = suggestions?.items.find((item) => item.label === "PRINT");
+  assert.ok(print, "Shared command completion is registered");
+  assert.equal(print.insertText, "PRINT");
+  assert.ok(print.documentation instanceof vscode.MarkdownString);
+  assert.equal(print.documentation.isTrusted, false);
+  assert.ok(print.range instanceof vscode.Range);
+  assert.equal(completionDocument.getText(print.range), "PR");
+  await vscode.commands.executeCommand("workbench.action.focusActiveEditorGroup");
+  await vscode.commands.executeCommand("editor.action.triggerSuggest");
+  await vscode.commands.executeCommand("workbench.action.closeAuxiliaryBar");
+  await vscode.commands.executeCommand("workbench.action.closeSidebar");
+  await vscode.commands.executeCommand("workbench.action.focusFirstEditorGroup");
+  await vscode.commands.executeCommand("type", {text: "I"});
+  await waitFor(() => completionDocument.getText() === "10 PRI", "Typing targets the completion editor");
+  const acceptanceDeadline = Date.now() + 10000;
+  while (completionDocument.getText() === "10 PRI" && Date.now() < acceptanceDeadline) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    await vscode.commands.executeCommand("editor.action.triggerSuggest");
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    await vscode.commands.executeCommand("selectNextSuggestion");
+    await vscode.commands.executeCommand("acceptSelectedSuggestion");
+  }
+  assert.equal(completionDocument.getText(), "10 PRINT", "Normal suggestion acceptance replaces the shared prefix");
+  for (const [text, included, excluded] of [["10 LET a$=", "CHR$", "SIN"], ["10 REM PR", undefined, "PRINT"], ['10 PRINT "PR', undefined, "PRINT"]] as const) {
+    const change = new vscode.WorkspaceEdit();
+    change.replace(completionUri, new vscode.Range(completionDocument.positionAt(0), completionDocument.positionAt(completionDocument.getText().length)), text);
+    assert.equal(await vscode.workspace.applyEdit(change), true);
+    const list = await vscode.commands.executeCommand<vscode.CompletionList>("vscode.executeCompletionItemProvider", completionUri, completionDocument.positionAt(text.length));
+    if (included !== undefined) assert.ok(list?.items.some((item) => item.label === included), included);
+    assert.ok(!list?.items.some((item) => item.label === excluded), excluded);
+  }
+  console.log("ZXCode real-host smoke passed: language registration/activation, sessions, completion acceptance, live Problems, diagnostics, navigation, UTF-16/CRLF ranges and stale-result rejection");
 }
