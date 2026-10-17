@@ -1,7 +1,7 @@
 import { builtinModules } from "node:module";
 import tseslint from "typescript-eslint";
 
-const hostImports = [...builtinModules, "node:*", "vscode", "vscode/**", "@types/vscode", "@zxcode/cli", "@zxcode/cli/**", "**/cli/**", "@zxcode/core"];
+const hostImports = [...builtinModules, "node:*", "vscode", "vscode/**", "@types/vscode", "@zxcode/cli", "@zxcode/cli/**", "**/cli/**", "zxcode-vscode", "zxcode-vscode/**", "**/extension/**", "@zxcode/core"];
 
 function coreBoundary(files, forbiddenLayers = []) {
   return {

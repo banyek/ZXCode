@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "noEmit": true,
+    "types": ["node", "vscode"],
+    "paths": { "@zxcode/core": ["../core/src/index.ts"] }
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts"]
+}

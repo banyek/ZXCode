@@ -118,23 +118,26 @@ npm run zxcode -- --help
 | Command | Purpose |
 | --- | --- |
 | `npm run build` | Compile core and CLI with TypeScript project references |
-| `npm run typecheck` | Check both workspaces and compile-time contract tests without emitting code |
+| `npm run typecheck` | Check all workspaces and compile-time contract tests without emitting code |
 | `npm run lint` | Run ESLint with zero warnings allowed |
 | `npm test` | Build and run Node's test runner |
 | `npm run check` | Run type checking, lint, build, and tests |
 | `npm run test:compatibility` | Check the pinned independent M3 corpus |
 | `npm run test:service` | Sweep all headless query positions and report behavior |
-| `npm run clean` | Remove TypeScript build outputs |
+| `npm run test:extension` | Run an isolated real VS Code development-host smoke |
+| `npm run clean` | Remove generated build outputs |
 | `npm run zxcode -- --help` | Run the compiled CLI (build first) |
 
 CI uses the same install/check commands on Node.js 24 on Linux, macOS and Windows,
 then compares and retains the deterministic M3 compatibility report. See the
 [M3 acceptance gate](docs/design/031-m3-fidelity-acceptance.md). Dependency versions are
-locked in `package-lock.json`; generated output is ignored by Git.
+locked in `package-lock.json`; generated output is ignored by Git. CI also compares
+headless M4 reports across platforms and boots an isolated Linux extension host.
 
 ## Implementation layout
 
-The repository uses two private npm workspaces with native ES modules:
+The repository has three private workspaces. Core and CLI use native ES modules;
+the extension bundles CommonJS for the desktop editor host:
 
 - `packages/core/src/source`: source identity/ranges and diagnostics.
 - `packages/core/src/syntax`: physical lines, lexer, recoverable CST, and parser.
@@ -142,6 +145,7 @@ The repository uses two private npm workspaces with native ES modules:
 - `packages/core/src/encoding`: Spectrum numeric/program bytes and source maps.
 - `packages/core/src/decoding`: independent text-byte packet decoding.
 - `packages/core/src/tap`: container writing from bytes and explicit metadata.
+- `packages/extension`: VS Code document/lifecycle/range adapter and isolated host tests.
 - `packages/cli`: host I/O and orchestration through core APIs.
 - `tests`: integration and core tests using Node's built-in test runner.
 
@@ -156,3 +160,7 @@ adapters sit outside the parser/encoder pipeline.
 
 TypeScript 6.0.3 is pinned within the supported range of TypeScript ESLint 8.71.2.
 The toolchain uses no runtime framework dependencies.
+
+The extension development scaffold targets VS Code 1.140.0; see its
+[development notes](packages/extension/README.md). Language registration and editor
+providers follow in the remaining M5 tickets.
