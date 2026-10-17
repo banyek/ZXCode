@@ -1,3 +1,5 @@
+import { parseSimpleCommand } from "./simple-commands.js";
+import type { SimpleCommandStatement } from "../source/simple-commands.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument, SourceRange } from "../source/document.js";
@@ -15,7 +17,7 @@ export type PrintItem =
   | { readonly kind: "print-expression"; readonly range: SourceRange; readonly expression: Expression }
   | { readonly kind: "print-separator"; readonly range: SourceRange; readonly separator: ";" | "," };
 
-export type Statement =
+export type Statement = SimpleCommandStatement<Expression>
   | { readonly kind: "print"; readonly range: SourceRange; readonly items: readonly PrintItem[] }
   | { readonly kind: "cls" | "stop"; readonly range: SourceRange }
   | { readonly kind: "error-statement"; readonly range: SourceRange; readonly tokens: readonly BodyToken[] };
@@ -43,7 +45,9 @@ function parseStatement(source: SourceDocument, tokens: readonly BodyToken[], ra
     if (tokens.length !== 1) return fail(`${keyword} does not accept operands.`, true);
     return Object.freeze({ kind: keyword === "CLS" ? "cls" : "stop", range });
   }
-  if (keyword !== "PRINT") return fail("M1 currently supports PRINT, CLS and STOP; this statement is not buildable yet.");
+  const simple = parseSimpleCommand(source, tokens, range, diagnostics);
+  if (simple !== undefined) return simple;
+  if (keyword !== "PRINT") return fail("This statement grammar is not implemented yet.");
   const items: PrintItem[] = [];
   let cursor = 1;
   while (cursor < tokens.length) {

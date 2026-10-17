@@ -1,3 +1,5 @@
+import { analyzeSimpleCommand } from "./simple-commands.js";
+import type { SimpleCommandStatement } from "../source/simple-commands.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument, SourceRange } from "../source/document.js";
@@ -26,7 +28,7 @@ export type BasicPrintItem =
   | { readonly kind: "print-expression"; readonly range: SourceRange; readonly expression: BasicExpression }
   | { readonly kind: "print-separator"; readonly range: SourceRange; readonly separator: ";" | "," };
 
-export type BasicStatement =
+export type BasicStatement = SimpleCommandStatement<TypedExpression>
   | { readonly kind: "print"; readonly range: SourceRange; readonly items: readonly BasicPrintItem[] }
   | { readonly kind: "cls" | "stop"; readonly range: SourceRange };
 
@@ -61,6 +63,7 @@ export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>): BasicA
       report(node.range, "Malformed/unsupported statements cannot be built.", DiagnosticCodes.unsupportedSyntax, "compatibility");
       return undefined;
     }
+    if (node.kind === "simple-command") return analyzeSimpleCommand(source, node, diagnostics);
     if (node.kind !== "print") return Object.freeze({ kind: node.kind, range: node.range });
     const items: BasicPrintItem[] = [];
     let valid = true;

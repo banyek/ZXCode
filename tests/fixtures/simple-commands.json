@@ -1,0 +1,157 @@
+{
+  "reference": "zmakebas 1.3.3, commit 667090faf392e0083bbcf238084dcdd996957285",
+  "cases": [
+    {
+      "source": "10 STOP\n",
+      "programHex": "000a0200e20d"
+    },
+    {
+      "source": "10 RETURN\n",
+      "programHex": "000a0200fe0d"
+    },
+    {
+      "source": "10 NEW\n",
+      "programHex": "000a0200e60d"
+    },
+    {
+      "source": "10 CONTINUE\n",
+      "programHex": "000a0200e80d"
+    },
+    {
+      "source": "10 CLS\n",
+      "programHex": "000a0200fb0d"
+    },
+    {
+      "source": "10 COPY\n",
+      "programHex": "000a0200ff0d"
+    },
+    {
+      "source": "10 CAT\n",
+      "programHex": "000a0200cf0d"
+    },
+    {
+      "source": "10 RUN\n",
+      "programHex": "000a0200f70d"
+    },
+    {
+      "source": "10 RUN 10\n",
+      "programHex": "000a0a00f731300e00000a00000d"
+    },
+    {
+      "source": "10 RANDOMIZE\n",
+      "programHex": "000a0200f90d"
+    },
+    {
+      "source": "10 RANDOMIZE 1\n",
+      "programHex": "000a0900f9310e00000100000d"
+    },
+    {
+      "source": "10 CLEAR\n",
+      "programHex": "000a0200fd0d"
+    },
+    {
+      "source": "10 CLEAR 32767\n",
+      "programHex": "000a0d00fd33323736370e0000ff7f000d"
+    },
+    {
+      "source": "10 RESTORE\n",
+      "programHex": "000a0200e50d"
+    },
+    {
+      "source": "10 RESTORE 10\n",
+      "programHex": "000a0a00e531300e00000a00000d"
+    },
+    {
+      "source": "10 BORDER 1\n",
+      "programHex": "000a0900e7310e00000100000d"
+    },
+    {
+      "source": "10 PAUSE 1\n",
+      "programHex": "000a0900f2310e00000100000d"
+    },
+    {
+      "source": "10 CLOSE # 4\n",
+      "programHex": "000a0900d4340e00000400000d"
+    },
+    {
+      "source": "10 INK 1\n",
+      "programHex": "000a0900d9310e00000100000d"
+    },
+    {
+      "source": "10 PAPER 2\n",
+      "programHex": "000a0900da320e00000200000d"
+    },
+    {
+      "source": "10 FLASH 1\n",
+      "programHex": "000a0900db310e00000100000d"
+    },
+    {
+      "source": "10 BRIGHT 1\n",
+      "programHex": "000a0900dc310e00000100000d"
+    },
+    {
+      "source": "10 INVERSE 1\n",
+      "programHex": "000a0900dd310e00000100000d"
+    },
+    {
+      "source": "10 OVER 1\n",
+      "programHex": "000a0900de310e00000100000d"
+    },
+    {
+      "source": "10 POKE 32768,1\n",
+      "programHex": "000a1500f433323736380e00000080002c310e00000100000d"
+    },
+    {
+      "source": "10 OUT 254,1\n",
+      "programHex": "000a1300df3235340e0000fe00002c310e00000100000d"
+    },
+    {
+      "source": "10 BEEP 1,2\n",
+      "programHex": "000a1100d7310e00000100002c320e00000200000d"
+    },
+    {
+      "source": "10 PLOT 1,2\n",
+      "programHex": "000a1100f6310e00000100002c320e00000200000d"
+    },
+    {
+      "source": "10 PLOT INK 1;PAPER 2,3,4\n",
+      "programHex": "000a2300f6d9310e00000100003bda320e00000200002c330e00000300002c340e00000400000d"
+    },
+    {
+      "source": "10 DRAW 1,2\n",
+      "programHex": "000a1100fc310e00000100002c320e00000200000d"
+    },
+    {
+      "source": "10 DRAW 1,2,PI\n",
+      "programHex": "000a1300fc310e00000100002c320e00000200002ca70d"
+    },
+    {
+      "source": "10 DRAW OVER 1;1,2\n",
+      "programHex": "000a1a00fcde310e00000100003b310e00000100002c320e00000200000d"
+    },
+    {
+      "source": "10 CIRCLE 10,20,3\n",
+      "programHex": "000a1b00d831300e00000a00002c32300e00001400002c330e00000300000d"
+    },
+    {
+      "source": "10 CIRCLE INK 1;10,20,3\n",
+      "programHex": "000a2400d8d9310e00000100003b31300e00000a00002c32300e00001400002c330e00000300000d"
+    },
+    {
+      "source": "10 FORMAT \"m\"\n",
+      "programHex": "000a0500d0226d220d"
+    },
+    {
+      "source": "10 ERASE \"file\"\n",
+      "programHex": "000a0800d22266696c65220d"
+    },
+    {
+      "source": "10 MOVE \"a\",\"b\"\n",
+      "programHex": "000a0900d12261222c2262220d"
+    },
+    {
+      "source": "10 OPEN # 4,\"s\"\n",
+      "programHex": "000a0d00d3340e00000400002c2273220d"
+    }
+  ]
+}

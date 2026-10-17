@@ -30,3 +30,5 @@ export { identifyVariable } from "./source/variable-identity.js";
 export type { VariableCategory, VariableIdentity, VariableIdentityResult } from "./source/variable-identity.js";
 export { analyzeExpression, BUILTIN_SIGNATURES } from "./semantic/expression.js";
 export type { BuiltinSignature, ExpectedExpressionType, ExpressionAnalysis, ExpressionType, TypedExpression } from "./semantic/expression.js";
+export { SIMPLE_COMMANDS } from "./source/simple-commands.js";
+export type { ColourControl, SimpleCommandDefinition, SimpleCommandShape, SimpleCommandStatement } from "./source/simple-commands.js";

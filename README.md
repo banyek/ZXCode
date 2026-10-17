@@ -40,7 +40,9 @@ M2 implementation includes the shared 91-token ROM catalogue, authentic variable
 identities, and a recoverable [expression parser](docs/design/006-expression-grammar.md)
 with [semantic typing](docs/design/007-expression-semantics.md) and encoding.
 PRINT can now build arithmetic, string, comparison, logical and built-in function
-expressions. Further statement, array/slice and FN grammars remain in progress.
+expressions. Simple numeric, colour, graphics and no-operand commands also build. Array/slice,
+assignment, control-flow and FN grammars remain in progress. The six commands
+awaiting capability policy are recognized but currently blocked from builds.
 
 See [docs/design](docs/design/).
 

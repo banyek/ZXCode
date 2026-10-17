@@ -1,3 +1,4 @@
+import { emitSimpleCommand } from "./simple-commands.js";
 import { romTokenBySpelling } from "../source/rom-tokens.js";
 import { assertBuildableProgram } from "../semantic/program.js";
 import type { BasicProgram, BuildableProgram } from "../semantic/program.js";
@@ -38,7 +39,8 @@ export function encodeBasicProgram(program: BuildableProgram<BasicProgram>): Enc
       if (index !== 0) emit(0x3a);
       const statement = line.statements[index]!;
       const start = body.length;
-      if (statement.kind !== "print") emit(romTokenBySpelling(statement.kind)!.byte);
+      if (statement.kind === "simple-command") emitSimpleCommand(statement, emit);
+      else if (statement.kind !== "print") emit(romTokenBySpelling(statement.kind)!.byte);
       else {
         emit(romTokenBySpelling("PRINT")!.byte);
         for (const item of statement.items) {
