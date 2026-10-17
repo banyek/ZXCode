@@ -55,3 +55,5 @@ export { startExternalProcess } from "./process.js";
 export type { ExternalProcessInvocation } from "./process.js";
 export { createFuseBackend, fuseArguments, prepareFuseConfiguration } from "./fuse.js";
 export type { FuseConfiguration } from "./fuse.js";
+export { RunCoordinator } from "./run.js";
+export type { RunSource, ManagedRun, BuildRunResult } from "./run.js";
