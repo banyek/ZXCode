@@ -1,0 +1,285 @@
+{
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "cases": [
+    {
+      "source": "10 PRINT",
+      "encoded": "f5",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT ;",
+      "encoded": "f53b",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT ,",
+      "encoded": "f52c",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT '",
+      "encoded": "f527",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT ;,;",
+      "encoded": "f53b2c3b",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a;b$",
+      "encoded": "f5613b6224",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a,",
+      "encoded": "f5612c",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a'",
+      "encoded": "f56127",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT a;",
+      "encoded": "f5613b",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT AT a,b;c$",
+      "encoded": "f5ac612c623b6324",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT TAB a;b$",
+      "encoded": "f5ad613b6224",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT #a;b$",
+      "encoded": "f523613b6224",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT #a",
+      "encoded": "f52361",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT INK a;b$",
+      "encoded": "f5d9613b6224",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT PAPER a;b$",
+      "encoded": "f5da613b6224",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT FLASH a;b$",
+      "encoded": "f5db613b6224",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT BRIGHT a;b$",
+      "encoded": "f5dc613b6224",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT INVERSE a;b$",
+      "encoded": "f5dd613b6224",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT OVER a;b$",
+      "encoded": "f5de613b6224",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT",
+      "encoded": "e0",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT ;",
+      "encoded": "e03b",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT ,",
+      "encoded": "e02c",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT '",
+      "encoded": "e027",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT ;,;",
+      "encoded": "e03b2c3b",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT a;b$",
+      "encoded": "e0613b6224",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT a,",
+      "encoded": "e0612c",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT a'",
+      "encoded": "e06127",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT a;",
+      "encoded": "e0613b",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT AT a,b;c$",
+      "encoded": "e0ac612c623b6324",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT TAB a;b$",
+      "encoded": "e0ad613b6224",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT #a;b$",
+      "encoded": "e023613b6224",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT #a",
+      "encoded": "e02361",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT INK a;b$",
+      "encoded": "e0d9613b6224",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT PAPER a;b$",
+      "encoded": "e0da613b6224",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT FLASH a;b$",
+      "encoded": "e0db613b6224",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT BRIGHT a;b$",
+      "encoded": "e0dc613b6224",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT INVERSE a;b$",
+      "encoded": "e0dd613b6224",
+      "statements": 1
+    },
+    {
+      "source": "10 LPRINT OVER a;b$",
+      "encoded": "e0de613b6224",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT AT a,b,c$",
+      "encoded": "f5ac612c622c6324",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT AT a$,b",
+      "encoded": "f5ac61242c62",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT AT a,b$",
+      "encoded": "f5ac612c6224",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT TAB a$",
+      "encoded": "f5ad6124",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT #a$",
+      "encoded": "f5236124",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT INK a$",
+      "encoded": "f5d96124",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT AT a,b\"c\"",
+      "encoded": "f5ac612c62226322",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT TAB a\"c\"",
+      "encoded": "f5ad61226322",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT INK a\"c\"",
+      "encoded": "f5d961226322",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT #a\"c\"",
+      "encoded": "f52361226322",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT \"a\" \"b\"",
+      "encoded": "f522612220226222",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT \"a\"\"b\"",
+      "encoded": "f5226122226222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"\"\"\"",
+      "encoded": "f522222222",
+      "statements": 1
+    },
+    {
+      "source": "10 PRINT \"\"\"",
+      "encoded": "f5222222",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT AT a,",
+      "encoded": "f5ac612c",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT TAB",
+      "encoded": "f5ad",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT #",
+      "encoded": "f523",
+      "romError": 11
+    },
+    {
+      "source": "10 PRINT INK",
+      "encoded": "f5d9",
+      "romError": 11
+    }
+  ]
+}

@@ -102,14 +102,16 @@ export function analyzeExpressionNode(source: SourceDocument, root: Expression, 
       let valid = node.closed;
       if (!valid) report(node, "String literal is incomplete.", DiagnosticCodes.unterminatedString, "syntax");
       const bytes: number[] = [];
-      let offset = node.contentRange.start;
-      for (const character of node.value) {
-        const byte = character.codePointAt(0)!;
-        if (byte < 32 || byte > 126 || byte === 96) {
-          diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unsupportedCharacter, severity: "error", category: "compatibility", message: "Character is outside the directly representable Spectrum string subset.", range: source.range(offset, offset + character.length) }));
-          valid = false;
-        } else bytes.push(byte);
-        offset += character.length;
+      for (const part of node.parts) {
+        let offset = part.range.start;
+        for (const character of part.value) {
+          const byte = character.codePointAt(0)!;
+          if (byte < 32 || byte > 126 || byte === 96) {
+            diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unsupportedCharacter, severity: "error", category: "compatibility", message: "Character is outside the directly representable Spectrum string subset.", range: source.range(offset, offset + character.length) }));
+            valid = false;
+          } else bytes.push(byte);
+          offset += character.length;
+        }
       }
       result = valid ? Object.freeze({ kind: "string", type: "string", range: node.range, value: node.value, bytes: Object.freeze(bytes) }) : fail();
     } else if (node.kind === "name-expression") {

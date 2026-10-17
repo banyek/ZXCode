@@ -160,3 +160,11 @@ The second goal is stricter and may require preserving otherwise redundant sourc
 - arbitrary byte escape availability outside strings/REM;
 - non-ASCII Unicode diagnostic policy;
 - canonical exported spelling for tokens and special characters.
+
+## M2-09 string-quote refinement
+
+Original Sinclair chapter 7 and the original S-QUOTE scanner establish doubled
+quotes for an interior quote. This authentic form is now in coverage. Syntax
+retains original content plus decoded source parts; semantic string bytes contain
+a single quote, and the BASIC encoder doubles it for storage. Other character,
+control and escape decisions above remain provisional.

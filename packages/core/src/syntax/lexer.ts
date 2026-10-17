@@ -9,9 +9,15 @@ interface TokenBase {
   readonly range: SourceRange;
 }
 
+export interface StringPart {
+  readonly value: string;
+  readonly range: SourceRange;
+}
 export interface StringToken extends TokenBase {
   readonly kind: "string";
   readonly contentRange: SourceRange;
+  readonly value: string;
+  readonly parts: readonly StringPart[];
   readonly closed: boolean;
 }
 
@@ -58,11 +64,22 @@ export function lexBody(source: SourceDocument, bodyRange: SourceRange): LexedBo
     if (char === '"') {
       cursor++;
       const contentStart = cursor;
-      while (cursor < text.length && text[cursor] !== '"') cursor++;
+      const parts: StringPart[] = [];
+      while (cursor < text.length) {
+        if (text[cursor] === '"') {
+          if (text[cursor + 1] !== '"') break;
+          parts.push(Object.freeze({ value: '"', range: range(cursor, cursor + 2) }));
+          cursor += 2;
+        } else {
+          const partStart = cursor;
+          while (cursor < text.length && text[cursor] !== '"') cursor++;
+          parts.push(Object.freeze({ value: text.slice(partStart, cursor), range: range(partStart, cursor) }));
+        }
+      }
       const contentEnd = cursor;
       const closed = cursor < text.length;
       if (closed) cursor++;
-      const token: StringToken = Object.freeze({ kind: "string", text: text.slice(start, cursor), range: range(start, cursor), contentRange: range(contentStart, contentEnd), closed });
+      const token: StringToken = Object.freeze({ kind: "string", text: text.slice(start, cursor), range: range(start, cursor), contentRange: range(contentStart, contentEnd), closed, value: parts.map((part) => part.value).join(""), parts: Object.freeze(parts) });
       tokens.push(token);
       if (!closed) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unterminatedString, severity: "error", category: "syntax", message: "Expected a closing quote before the physical line ends.", range: token.range }));
     } else {

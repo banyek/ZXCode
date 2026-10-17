@@ -39,10 +39,12 @@ CI do not require an emulator or ROM.
 M2 implementation includes the shared 91-token ROM catalogue, authentic variable
 identities, and a recoverable [expression parser](docs/design/006-expression-grammar.md)
 with [semantic typing](docs/design/007-expression-semantics.md) and encoding.
-M2 now builds typed PRINT expressions, scalar LET assignments, FOR/NEXT loops,
+M2 now builds typed PRINT/LPRINT item streams (AT/TAB, colour, channels and
+separators), scalar LET assignments, FOR/NEXT loops,
 GO TO/GO SUB/RETURN and IF/THEN sequences, plus simple numeric, colour, graphics
 and no-operand commands. Literal jumps retain line relations and nonfatal missing-
-line warnings. Array/slice, FN and remaining item/cassette grammars are in progress.
+line warnings. Strings support authentic doubled quotes with source ranges.
+INPUT, arrays/slices, FN, DATA and cassette grammars are in progress.
 The six commands awaiting capability policy are recognized but currently blocked
 from builds.
 

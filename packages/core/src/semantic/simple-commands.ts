@@ -28,9 +28,10 @@ export function analyzeSimpleCommand(source: SourceDocument, node: SimpleCommand
   });
   const controls = node.controls.map((control) => {
     const typed = analyzeExpressionNode(source, control.expression, diagnostics);
-    if (simpleCommandByName(control.token.spelling)?.shape !== "colour" || (control.separator !== ";" && control.separator !== ",")) { report("Malformed graphics colour control."); valid = false; }
+    const definition = simpleCommandByName(control.token.spelling);
+    if (definition?.shape !== "colour" || (control.separator !== ";" && control.separator !== ",")) { report("Malformed graphics colour control."); valid = false; }
     if (!requireExpressionType(typed, "numeric", diagnostics)) valid = false;
-    return Object.freeze({ ...control, expression: typed });
+    return Object.freeze({ ...control, token: definition?.token ?? control.token, expression: typed });
   });
   if (definition.pendingCapabilityPolicy) report("Build support for this ROM command is pending runtime capability checking.", false);
   return valid ? Object.freeze({ kind: "simple-command", range: node.range, definition, operands: Object.freeze(operands), controls: Object.freeze(controls), complete: true }) : undefined;

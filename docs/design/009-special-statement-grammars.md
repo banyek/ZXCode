@@ -211,3 +211,38 @@ exists. No modern loop syntax or block-matching rule is introduced.
 Both commands remain ordinary statements inside colon/IF sequences. Independent
 program bytes and original-ROM syntax/type observations cover omitted/explicit
 STEP, numeric/string bounds, invalid names and NEXT's mandatory single variable.
+
+## M2-09 PRINT/LPRINT research contract
+
+Sources: original Sinclair manual Appendix C (PRINT items/separators and printer
+behaviour), chapter 7 (doubled string quotes), and ROM routines
+[PR-ITEM-1](https://skoolkit.ca/disassemblies/rom/hex/asm/1FFC.html) and
+[S-QUOTE](https://skoolkit.ca/disassemblies/rom/hex/asm/25B3.html).
+Fixed original-ROM statement probes verify accepted/rejected item boundaries.
+
+PRINT/LPRINT are ordered item streams. Both accept numeric/string expressions,
+AT row,column, TAB column, the six colour controls, # numeric stream changes,
+and empty items. Items are separated by semicolon, comma or apostrophe; leading,
+repeated and trailing separators are authentic. Adjacent formatting/expression
+items without a separator are rejected, as confirmed by the ROM. AT's coordinate
+comma belongs to the AT item; a following comma is a PRINT separator. Arguments
+inside expression function parentheses retain their own expression grammar.
+
+Each item has a distinct semantic kind and range; empty item insertion points and
+all separators remain explicit. AT/TAB/control/channel arguments must be numeric;
+ordinary expressions may be numeric or string. No synthetic control-code bytes or
+separators are inserted by the encoder: it emits source item tokens, expressions
+and separators. PRINT and LPRINT differ in their initial opcode/default output
+path, not accepted item syntax. LPRINT permits AT/colour/channel items as the ROM
+does; the printer ignores AT's row, supports INVERSE/OVER but not screen colours,
+and loses output if no printer is present. No new static hardware error is added.
+
+Authentic doubled quotes are enabled in this ticket (previously outside M1
+coverage): `"a""b"` is one string whose value contains one interior quote. The
+lexer preserves raw content/ranges and records decoded source parts. Diagnostics
+inside a later part therefore still point to the original UTF-16 source, even
+after an escaped quote. The encoder doubles interior quote bytes again for ROM
+storage. Backslashes remain literal; no modern escape language or provisional
+braced Spectrum-byte escapes are introduced. All original M1 golden bytes remain
+unchanged. Incomplete quoting and malformed item delimiters retain error state
+so removing diagnostics alone cannot enable a build.

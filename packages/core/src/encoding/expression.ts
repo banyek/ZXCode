@@ -17,7 +17,7 @@ export function emitExpression(expression: TypedExpression, emit: (byte: number)
     switch (next.kind) {
       case "number": schedule([...text(next.value.lexeme), ...encodeNumericLiteral(next.value)]); break;
       case "binary-literal": schedule([romTokenBySpelling("BIN")!.byte, ...text(next.digits), ...encodeNumericLiteral(next.value)]); break;
-      case "string": schedule([0x22, ...next.bytes, 0x22]); break;
+      case "string": schedule([0x22, ...next.bytes.flatMap((byte) => byte === 0x22 ? [byte, byte] : [byte]), 0x22]); break;
       case "name": schedule(text(next.identity.canonicalName)); break;
       case "builtin-value": emit(next.token.byte); break;
       case "builtin-call": {

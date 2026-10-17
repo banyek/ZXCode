@@ -1,3 +1,5 @@
+import { parsePrintStatement } from "./print.js";
+import type { PrintItem as SourcePrintItem, PrintStatement as SourcePrintStatement } from "../source/print-items.js";
 import { parseForStatement, parseNextStatement } from "./loops.js";
 import type { ForStatement, NextStatement } from "./loops.js";
 import { parseLetStatement } from "./assignment.js";
@@ -17,9 +19,8 @@ import { readExpression } from "./expression.js";
 import type { Expression } from "./expression.js";
 export type { LiteralExpression } from "./expression.js";
 
-export type PrintItem =
-  | { readonly kind: "print-expression"; readonly range: SourceRange; readonly expression: Expression }
-  | { readonly kind: "print-separator"; readonly range: SourceRange; readonly separator: ";" | "," };
+export type PrintItem = SourcePrintItem<Expression>;
+export type PrintStatement = SourcePrintStatement<Expression>;
 
 export interface IfStatement {
   readonly kind: "if";
@@ -37,7 +38,7 @@ export interface JumpStatement {
 }
 export type Statement = ForStatement | NextStatement | IfStatement | JumpStatement | LetStatement | SimpleCommandStatement<Expression>
   | { readonly kind: "empty"; readonly range: SourceRange }
-  | { readonly kind: "print"; readonly range: SourceRange; readonly items: readonly PrintItem[] }
+  | PrintStatement
   | { readonly kind: "cls" | "stop"; readonly range: SourceRange }
   | { readonly kind: "error-statement"; readonly range: SourceRange; readonly tokens: readonly BodyToken[] };
 
@@ -77,25 +78,8 @@ function parseStatement(source: SourceDocument, tokens: readonly BodyToken[], ra
   if (keyword === "LET") return parseLetStatement(source, tokens, range, diagnostics);
   const simple = parseSimpleCommand(source, tokens, range, diagnostics);
   if (simple !== undefined) return simple;
-  if (keyword !== "PRINT") return fail("This statement grammar is not implemented yet.");
-  const items: PrintItem[] = [];
-  let cursor = 1;
-  while (cursor < tokens.length) {
-    const parsed = readExpression(source, tokens, cursor, range.end, diagnostics);
-    const expression = parsed.expression;
-    items.push(Object.freeze({ kind: "print-expression", range: expression.range, expression }));
-    cursor = parsed.next;
-    tokens = parsed.tokens;
-    if (cursor < tokens.length) {
-      const separator = tokens[cursor]!;
-      if (separator.kind !== "punctuation" || (separator.text !== ";" && separator.text !== ",")) {
-        return fail("Expected a PRINT separator after expression.");
-      }
-      items.push(Object.freeze({ kind: "print-separator", range: separator.range, separator: separator.text }));
-      cursor++;
-    }
-  }
-  return Object.freeze({ kind: "print", range, items: Object.freeze(items) });
+  if (keyword === "PRINT" || keyword === "LPRINT") return parsePrintStatement(source, tokens, range, diagnostics, keyword === "PRINT" ? "print" : "lprint");
+  return fail("This statement grammar is not implemented yet.");
 }
 
 /** IF owns the entire remainder; colons remain statement slots inside that scope. */
