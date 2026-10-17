@@ -24,3 +24,9 @@ CI retains VSIX/manifest and runs this acceptance as well as development-host te
 Packaging uses the official documented vsce workflow:
 https://code.visualstudio.com/api/working-with-extensions/publishing-extension
 https://github.com/microsoft/vscode-vsce
+
+Local acceptance: Node 24 full check passes 250 tests. Two isolated vsce builds
+produce byte-identical archives after normalization. The installed package passes
+all editor workflows in both the local installation and a freshly downloaded VS
+Code 1.140.0; the bundled sample is opened and compiled from the installed package.
+CI additionally compares payload/hash manifests from Linux, macOS and Windows.

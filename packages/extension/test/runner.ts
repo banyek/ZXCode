@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { join } from "node:path";
+import { join, relative, isAbsolute } from "node:path";
 import * as vscode from "vscode";
 import { readBasicTap, inspectBasicTap } from "@zxcode/core";
 import { link } from "node:fs/promises";
@@ -14,7 +14,11 @@ async function waitFor(predicate: () => boolean, message: string): Promise<void>
 /** Invoked by the real Extension Development Host; rejection fails the smoke run. */
 export async function run(): Promise<void> {
   const extension = vscode.extensions.getExtension<ZXCodeExtensionApi>("banyek.zxcode-vscode");
-  assert.ok(extension, "Development extension is installed in the isolated host");
+  assert.ok(extension, "ZXCode is installed in the isolated host");
+  if (process.env.ZXCODE_INSTALLED_ROOT) {
+    const installedPath = relative(process.env.ZXCODE_INSTALLED_ROOT, extension.extensionPath);
+    assert.ok(installedPath !== "" && !installedPath.startsWith("..") && !isAbsolute(installedPath), "Actual installed VSIX is loaded, not the checkout");
+  }
   const testFiles = process.env.ZXCODE_TEST_FILES;
   assert.ok(testFiles, "Smoke files belong to the isolated test directory");
   const automaticUri = vscode.Uri.file(join(testFiles, "automatic.zxbas"));
@@ -24,6 +28,14 @@ export async function run(): Promise<void> {
   await vscode.window.showTextDocument(automatic);
   await waitFor(() => extension.isActive, "Language selection automatically activates ZXCode");
   const api = await extension.activate();
+  if (process.env.ZXCODE_INSTALLED_ROOT) {
+    const sample = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(extension.extensionUri, "examples/getting-started.zxbas"));
+    const sampleDocument = await vscode.workspace.openTextDocument({language:"zx-spectrum-basic",content:new TextDecoder().decode(sample)});
+    assert.equal(api.queries.diagnostics(api.documents.snapshot(sampleDocument)).value.length, 0);
+    const sampleTap = vscode.Uri.file(join(testFiles, "packaged-sample.tap"));
+    assert.equal((await vscode.commands.executeCommand<EditorCommandResult>("zxcode.build", sampleDocument.uri, sampleTap))?.kind, "success");
+    assert.equal(inspectBasicTap(await vscode.workspace.fs.readFile(sampleTap)).kind, "decoded");
+  }
   const genericUri = vscode.Uri.file(join(testFiles, "generic.bas"));
   await vscode.workspace.fs.writeFile(genericUri, Buffer.from("10 STOP\n"));
   const generic = await vscode.workspace.openTextDocument(genericUri);
