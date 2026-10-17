@@ -1,3 +1,5 @@
+import { identifyVariable } from "../source/variable-identity.js";
+import type { VariableIdentity } from "../source/variable-identity.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument, SourceRange } from "../source/document.js";
@@ -12,7 +14,7 @@ export type LiteralExpression =
 
 export type Expression = LiteralExpression
   | { readonly kind: "binary-literal"; readonly range: SourceRange; readonly digitsRange: SourceRange; readonly lexeme: string }
-  | { readonly kind: "name-expression"; readonly range: SourceRange; readonly spelling: string }
+  | { readonly kind: "name-expression"; readonly range: SourceRange; readonly spelling: string; readonly identity: VariableIdentity }
   | { readonly kind: "builtin-value"; readonly range: SourceRange; readonly token: RomToken }
   | { readonly kind: "builtin-call"; readonly range: SourceRange; readonly token: RomToken; readonly arguments: readonly Expression[]; readonly closed: boolean }
   | { readonly kind: "unary-expression"; readonly range: SourceRange; readonly operatorRange: SourceRange; readonly operator: "+" | "-" | "NOT"; readonly operand: Expression }
@@ -27,7 +29,8 @@ const priorities: ReadonlyMap<string, number> = new Map([
 const boundaries = new Set([",", ";", ")", ":", "THEN", "TO", "STEP"]);
 
 /** Consume one expression, leaving the caller's item/statement delimiter untouched. */
-export function readExpression(source: SourceDocument, tokens: readonly BodyToken[], start: number, end: number, diagnostics: Diagnostic[]): { readonly expression: Expression; readonly next: number } {
+export function readExpression(source: SourceDocument, inputTokens: readonly BodyToken[], start: number, end: number, diagnostics: Diagnostic[]): { readonly expression: Expression; readonly next: number; readonly tokens: readonly BodyToken[] } {
+  const tokens = [...inputTokens];
   let cursor = start;
   const peek = (): BodyToken | undefined => tokens[cursor];
   const spelling = (): string => peek()?.text.toUpperCase() ?? "";
@@ -56,7 +59,10 @@ export function readExpression(source: SourceDocument, tokens: readonly BodyToke
     if (depth >= 256) return error("Expression exceeds the supported 256-level nesting budget.", true, true);
     cursor++;
     if (token.kind === "string") return Object.freeze({ kind: "string-literal", range: token.range, contentRange: token.contentRange, value: source.textInRange(token.contentRange), closed: token.closed });
-    if (token.kind === "number") return Object.freeze({ kind: "numeric-literal", range: token.range, lexeme: token.text });
+    if (token.kind === "number") {
+      if (/[Ee][+-]?$/.test(token.text)) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.invalidNumericLiteral, severity: "error", category: "syntax", message: "Expected decimal exponent digits.", range: token.range }));
+      return Object.freeze({ kind: "numeric-literal", range: token.range, lexeme: token.text });
+    }
     if (text === "(") {
       const expression = binary(0, depth + 1);
       const closed = expect(")");
@@ -90,7 +96,37 @@ export function readExpression(source: SourceDocument, tokens: readonly BodyToke
       } else args.push(binary(16, depth + 1));
       return Object.freeze({ kind: "builtin-call", range: span(token.range.start, Math.max(...args.map((arg) => arg.range.end), closed ? token.range.end : position())), token: romToken, arguments: Object.freeze(args), closed });
     }
-    if (token.kind === "word" && romToken === undefined) return Object.freeze({ kind: "name-expression", range: token.range, spelling: token.text });
+    if (token.kind === "word" && romToken?.category !== "print-control" && text !== "FN" && text !== "AND" && text !== "OR") {
+      let offset = token.range.start;
+      let nameEnd = offset;
+      let index = cursor - 1;
+      const delimiters = new Set(["AND", "OR", "THEN", "TO", "STEP"]);
+      while (offset < end) {
+        while (tokens[index] !== undefined && tokens[index]!.range.end <= offset) index++;
+        const candidate = tokens[index];
+        if (offset > token.range.start && candidate?.range.start === offset && delimiters.has(candidate.text.toUpperCase())) break;
+        const character = source.text[offset]!;
+        if (/[A-Za-z0-9]/.test(character)) { nameEnd = ++offset; continue; }
+        if (character === " " || character === "\t") { offset++; continue; }
+        if (character === "$") nameEnd = offset + 1;
+        break;
+      }
+      cursor--; // Consume the raw name boundary, not a provisional decimal token.
+      while (tokens[cursor] !== undefined && tokens[cursor]!.range.end <= nameEnd) cursor++;
+      const partial = tokens[cursor];
+      if (partial !== undefined && partial.range.start < nameEnd) {
+        const remainder = lexBody(source, source.range(nameEnd, partial.range.end)).tokens.filter((item) => item.kind !== "eof" && item.kind !== "whitespace");
+        tokens.splice(cursor, 1, ...remainder);
+      }
+      const range = source.range(token.range.start, nameEnd);
+      const name = source.textInRange(range);
+      const result = identifyVariable(name, name.endsWith("$") ? "string-scalar" : "numeric-scalar");
+      if (result.kind === "error") {
+        diagnostics.push(createDiagnostic({ code: DiagnosticCodes.invalidVariableName, severity: "error", category: "syntax", message: "String variable names must be one letter followed by '$'.", range }));
+        return Object.freeze({ kind: "error-expression", range, tokens: Object.freeze(inputTokens.filter((item) => item.range.start >= range.start && item.range.end <= range.end)) });
+      }
+      return Object.freeze({ kind: "name-expression", range, spelling: name, identity: result.identity });
+    }
     cursor--; // Keep the unexpected token in an error node.
     return error("Expected a supported expression primary or prefix.", true);
   };
@@ -105,7 +141,8 @@ export function readExpression(source: SourceDocument, tokens: readonly BodyToke
       left = Object.freeze({ kind: "binary-expression", range: source.range(left.range.start, right.range.end), operatorRange, operator, left, right });
     }
   };
-  return Object.freeze({ expression: binary(0, 0), next: cursor });
+  const expression = binary(0, 0);
+  return Object.freeze({ expression, next: cursor, tokens: Object.freeze(tokens) });
 }
 
 /** Standalone expression entry point using exactly the statement parser's lexer/CST. */
@@ -114,6 +151,6 @@ export function parseExpression(source: SourceDocument, range: SourceRange): Par
   const diagnostics = [...lexed.diagnostics];
   const tokens = lexed.tokens.filter((token) => token.kind !== "whitespace" && token.kind !== "eof");
   const parsed = readExpression(source, tokens, 0, range.end, diagnostics);
-  if (parsed.next < tokens.length) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unexpectedToken, severity: "error", category: "syntax", message: "Unexpected token after expression.", range: tokens[parsed.next]!.range }));
+  if (parsed.next < parsed.tokens.length) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unexpectedToken, severity: "error", category: "syntax", message: "Unexpected token after expression.", range: parsed.tokens[parsed.next]!.range }));
   return Object.freeze({ source, syntax: parsed.expression, diagnostics: Object.freeze(diagnostics) });
 }

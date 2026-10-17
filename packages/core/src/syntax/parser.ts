@@ -51,6 +51,7 @@ function parseStatement(source: SourceDocument, tokens: readonly BodyToken[], ra
     const expression = parsed.expression;
     items.push(Object.freeze({ kind: "print-expression", range: expression.range, expression }));
     cursor = parsed.next;
+    tokens = parsed.tokens;
     if (cursor < tokens.length) {
       const separator = tokens[cursor]!;
       if (separator.kind !== "punctuation" || (separator.text !== ";" && separator.text !== ",")) {
