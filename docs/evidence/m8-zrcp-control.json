@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "emulator": "ZEsarUX 13.0",
+  "upstreamCommit": "0bb4277d714128311d78bc0625fb12ae8308899a",
+  "researchModification": "ZRCP listener bind NULL -> 127.0.0.1; no CPU/ROM changes",
+  "platform": "macOS arm64 local build",
+  "activeRomSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "verified": [
+    "pause",
+    "resume",
+    "register-read-write",
+    "memory-read-write",
+    "conditional-machine-breakpoint",
+    "single-instruction-step",
+    "bounded-run",
+    "client-reconnect",
+    "reset",
+    "owned-clean-exit"
+  ],
+  "exitCode": 0,
+  "transcript": [
+    {
+      "greeting": "Welcome to ZEsarUX remote command protocol (ZRCP)\nWrite help for available commands\n\nzxcode-probe> "
+    },
+    {
+      "command": "get-version",
+      "response": "13.0\nzxcode-probe> "
+    },
+    {
+      "command": "enter-cpu-step",
+      "response": "\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "read-memory 0 16384",
+      "response": "[ROM payload omitted]"
+    },
+    {
+      "command": "write-memory 32768 0 0 60 195 0 128",
+      "response": "\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "read-memory 32768 6",
+      "response": "00003CC30080\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "set-register PC=32768",
+      "response": "PC=8000 SP=ffff AF=3faf BC=00ff HL=bbc2 DE=ffff IX=ffff IY=ffff AF'=ffff BC'=ffff HL'=ffff DE'=ffff I=3f R=06  F=S-5-3PNC F'=SZ5H3PNC MEMPTR=11dc IM0 IFF-- VPS: 0 MMU=00000000000000000000000000000000\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "set-register IFF1=0",
+      "response": "PC=8000 SP=ffff AF=3faf BC=00ff HL=bbc2 DE=ffff IX=ffff IY=ffff AF'=ffff BC'=ffff HL'=ffff DE'=ffff I=3f R=06  F=S-5-3PNC F'=SZ5H3PNC MEMPTR=11dc IM0 IFF-- VPS: 0 MMU=00000000000000000000000000000000\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "enable-breakpoints",
+      "response": "\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "set-breakpoint 1 PC=32769",
+      "response": "\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "enable-breakpoint 1",
+      "response": "\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "run 100",
+      "response": "Running until a breakpoint, key press or data sent, menu opening, 100 opcodes run, or other event\nBreakpoint fired: PC=32769\nPC=8001 SP=ffff AF=3faf BC=00ff HL=bbc2 DE=ffff IX=ffff IY=ffff AF'=ffff BC'=ffff HL'=ffff DE'=ffff I=3f R=07  F=S-5-3PNC F'=SZ5H3PNC MEMPTR=11dc IM0 IFF-- VPS: 0 MMU=00000000000000000000000000000000 TSTATES: 6\n  8001 NOP\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "get-registers",
+      "response": "PC=8001 SP=ffff AF=3faf BC=00ff HL=bbc2 DE=ffff IX=ffff IY=ffff AF'=ffff BC'=ffff HL'=ffff DE'=ffff I=3f R=07  F=S-5-3PNC F'=SZ5H3PNC MEMPTR=11dc IM0 IFF-- VPS: 0 MMU=00000000000000000000000000000000\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "cpu-step",
+      "response": "PC=8002 SP=ffff AF=3faf BC=00ff HL=bbc2 DE=ffff IX=ffff IY=ffff AF'=ffff BC'=ffff HL'=ffff DE'=ffff I=3f R=08  F=S-5-3PNC F'=SZ5H3PNC MEMPTR=11dc IM0 IFF-- VPS: 0 MMU=00000000000000000000000000000000 TSTATES: 10\n  8002 INC A\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "get-registers",
+      "response": "PC=8002 SP=ffff AF=3faf BC=00ff HL=bbc2 DE=ffff IX=ffff IY=ffff AF'=ffff BC'=ffff HL'=ffff DE'=ffff I=3f R=08  F=S-5-3PNC F'=SZ5H3PNC MEMPTR=11dc IM0 IFF-- VPS: 0 MMU=00000000000000000000000000000000\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "disable-breakpoints",
+      "response": "\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "run 20",
+      "response": "Running until a breakpoint, key press or data sent, menu opening, 20 opcodes run, or other event\nReturning after 20 opcodes\nPC=8002 SP=ffff AF=4401 BC=00ff HL=bbc2 DE=ffff IX=ffff IY=ffff AF'=ffff BC'=ffff HL'=ffff DE'=ffff I=3f R=1c  F=-------C F'=SZ5H3PNC MEMPTR=8000 IM0 IFF-- VPS: 0 MMU=00000000000000000000000000000000 TSTATES: 120\n  8002 INC A\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "get-registers",
+      "response": "PC=8002 SP=ffff AF=4401 BC=00ff HL=bbc2 DE=ffff IX=ffff IY=ffff AF'=ffff BC'=ffff HL'=ffff DE'=ffff I=3f R=1c  F=-------C F'=SZ5H3PNC MEMPTR=8000 IM0 IFF-- VPS: 0 MMU=00000000000000000000000000000000\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "exit-cpu-step",
+      "response": "\nzxcode-probe> "
+    },
+    {
+      "command": "enter-cpu-step",
+      "response": "\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "get-registers",
+      "response": "PC=8000 SP=ffff AF=e2a1 BC=00ff HL=bbc2 DE=ffff IX=ffff IY=ffff AF'=ffff BC'=ffff HL'=ffff DE'=ffff I=3f R=12  F=S-5----C F'=SZ5H3PNC MEMPTR=8000 IM0 IFF-- VPS: 0 MMU=00000000000000000000000000000000\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "enter-cpu-step",
+      "response": "\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "get-registers",
+      "response": "PC=8000 SP=ffff AF=e2a1 BC=00ff HL=bbc2 DE=ffff IX=ffff IY=ffff AF'=ffff BC'=ffff HL'=ffff DE'=ffff I=3f R=12  F=S-5----C F'=SZ5H3PNC MEMPTR=8000 IM0 IFF-- VPS: 0 MMU=00000000000000000000000000000000\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "reset-cpu",
+      "response": "\nzxcode-probe@cpu-step> "
+    },
+    {
+      "command": "get-registers",
+      "response": "PC=0000 SP=ffff AF=ffff BC=00ff HL=bbc2 DE=ffff IX=ffff IY=ffff AF'=ffff BC'=ffff HL'=ffff DE'=ffff I=00 R=12  F=SZ5H3PNC F'=SZ5H3PNC MEMPTR=8000 IM0 IFF-- VPS: 0 MMU=00000000000000000000000000000000\nzxcode-probe@cpu-step> "
+    }
+  ]
+}
