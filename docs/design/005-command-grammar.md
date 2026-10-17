@@ -123,3 +123,45 @@ The completion engine should consume parser state, not maintain a second hand-wr
 ## Remaining command-level research
 
 Class 05 and class 0B require dedicated subgrammars. The next pass should specify PRINT, INPUT, DATA, READ, DIM, DEF FN, LIST/LLIST, IF-THEN statement tails and cassette command forms in detail.
+
+## M2-05 simple-command implementation contract
+
+The shared simple-command model covers the thirty entries below. Helpers follow
+ROM class 00/03/06/07/08/0A shapes; graphics retain a dedicated ordered colour
+prefix plus coordinate/angle/radius grammar. No class-05 item grammar is replaced
+by an arbitrary comma-list parser. Existing CLS/STOP nodes remain compatible.
+
+- No operand: STOP, RETURN, NEW, CONTINUE, CLS, COPY, CAT.
+- Optional numeric expression: RUN, RANDOMIZE, CLEAR, RESTORE.
+- Required numeric expression: BORDER, PAUSE, CLOSE #.
+- Colour/control expression: INK, PAPER, FLASH, BRIGHT, INVERSE, OVER.
+- Numeric pair: POKE, OUT, BEEP.
+- Graphics: PLOT x,y; DRAW x,y with optional comma/angle; CIRCLE x,y,r.
+  Each permits a leading sequence of colour/control expressions, each followed
+  by comma or semicolon; those separators are retained and encoded. See original
+  Sinclair [chapter 17](https://worldofspectrum.org/ZXBasicManual/zxmanchap17.html).
+- Required string expression: FORMAT, ERASE. MOVE has two string expressions.
+- OPEN # has numeric stream, comma, string channel expression. The hash is part
+  of the ROM token spelling, not an extra byte after the encoded token. CLOSE #
+  likewise emits its combined token. Text permits whitespace around the hash.
+
+Operand types are checked by the shared M2-04 visitor. Omitted optional operands
+remain omitted bytes (the ROM supplies defaults). Runtime value/range errors are
+not invented as new syntax restrictions. Missing commas/required operands and
+extra operands produce recoverable syntax errors; a completeness flag and checked
+operand arity prevent stripped parser diagnostics from making bad nodes buildable.
+
+CAT/FORMAT/MOVE/ERASE/OPEN #/CLOSE # are parsed, typed and have encoder fixtures,
+but public builds retain an explicit *implementation coverage* diagnostic until
+the M2-16 capability policy is resolved. This is not a decision that all six need
+extra hardware: original manual chapter 22 and actual ROM channel behaviour need
+to be reconciled in that research/design ticket. Internal encoder unit fixtures
+exercise their validated semantic nodes; the public encoder still requires a
+BuildableProgram. No runtime-profile severity/default-completion decision is made
+here. All six continue to be known vocabulary, never unknown keywords.
+
+Fixed simple-command program bytes are independently produced with the pinned
+zmakebas reference recorded in M1 research. Source cases and raw bytes are kept
+as fixtures. Graphics controls, both coordinate counts, string arguments and
+omitted optional operands have explicit cases; special item grammars remain
+separate tickets.
