@@ -1,6 +1,6 @@
 # Variables, Arrays and String Slicing v0.1
 
-Status: semantic/parser design baseline.
+Status: M2-03 naming/identity contract below; array/slice grammar remains later work.
 
 ## Spectrum naming is type-bearing
 
@@ -128,3 +128,54 @@ Create fixtures for:
 - nested string-array-element + slice cases;
 - LET assignment to supported string targets;
 - malformed subscripts and slices.
+
+## M2-03 naming and identity contract
+
+Sources: original Sinclair BASIC Programming [chapter 7](https://worldofspectrum.org/ZXBasicManual/zxmanchap7.html)
+(naming/case/spacing), [chapter 12](https://worldofspectrum.org/ZXBasicManual/zxmanchap12.html)
+(array naming and coexistence), and [chapter 9](https://worldofspectrum.org/ZXBasicManual/zxmanchap9.html)
+(FN and formal parameter names). The original ROM LOOK-VARS routine at 0x28B2
+independently confirms the name boundary; fixed observations and a standalone
+verifier record how many source bytes it consumes in syntax mode.
+
+- Numeric scalars begin with an ASCII letter, then contain ASCII letters/digits.
+  ASCII spaces are ignored for identity. Original spelling and source range remain
+  unchanged; canonical names use lowercase ASCII without spaces.
+- String scalars and string arrays have one ASCII letter followed by `$`; spaces
+  between the letter and `$` do not affect identity. Longer `$` names are invalid.
+- Numeric arrays and FOR/NEXT control variables have one ASCII letter. A control
+  variable refers to the same numeric scalar identity; a numeric array has its own
+  family, distinct from the scalar with the same letter.
+- String scalars and arrays have a shared string identity family. The category
+  records the use without creating two different string variables.
+- FN names and formal parameter names have one letter, optionally followed by `$`.
+  Function and formal identities have distinct families; formal keys are local
+  to a definition and must be scoped by the later FN binder (M2-13).
+- No underscores, Unicode case folding, leading digits, `%`, or multi-letter
+  string/array names are introduced. Ordinary long numeric names are not truncated.
+- Tabs in source are formatting, equivalent to source spaces outside literal/raw
+  content; they are not encoded as a tab byte inside a variable name. This extends
+  the existing text-file formatting policy, not ROM character naming rules.
+
+### Text token boundaries
+
+The ROM stores keyword tokens separately from raw name letters. The textual
+parser recognizes AND/OR and statement delimiters THEN/TO/STEP at complete word
+boundaries; these stop a name. Embedded keyword substrings stay letters. Once a
+name has started, other keyword-looking words are name letters rather than prefix
+functions: `some SIN name` is the numeric name `somesinname`. At expression start,
+function/value prefixes retain their established grammar roles. Statement tokens
+in an expression position may instead be raw variable letters (`PRINT PRINT`).
+The identity API itself validates raw spelling independently of keyword context.
+No global replacement of keyword-looking text occurs, and the encoder must use
+semantic name identity rather than annotated lexer keyword tokens.
+
+A name may consume only part of a provisional numeric lexer token: in `a 1e+2`,
+LOOK-VARS consumes the name `a1e`, leaving `+2` as the expression continuation.
+The parser must preserve this boundary rather than interpret the middle of a name
+as a decimal exponent. Numeric-literal diagnostics therefore belong to literal
+parsing, after context is known. Original lexer tokens remain lossless in the line
+CST; the expression cursor may split a provisional token for grammar purposes.
+
+Arrays, slices, assignment targets and FN calls remain the dedicated later issues.
+No declaration-before-use warning or new compile-time storage allocation is added.

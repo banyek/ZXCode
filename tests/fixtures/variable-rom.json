@@ -1,0 +1,105 @@
+{
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "cases": [
+    {
+      "source": "a",
+      "consumed": 1
+    },
+    {
+      "source": "A",
+      "consumed": 1
+    },
+    {
+      "source": "abc",
+      "consumed": 3
+    },
+    {
+      "source": "a b c",
+      "consumed": 5
+    },
+    {
+      "source": "a 1e2",
+      "consumed": 5
+    },
+    {
+      "source": "a 1e+2",
+      "consumed": 4
+    },
+    {
+      "source": "a$",
+      "consumed": 2
+    },
+    {
+      "source": "a $",
+      "consumed": 3
+    },
+    {
+      "source": "ab$",
+      "consumed": 2
+    },
+    {
+      "source": "1a",
+      "romError": 11
+    },
+    {
+      "source": "a_",
+      "consumed": 1
+    },
+    {
+      "source": "a(1)",
+      "consumed": 1
+    },
+    {
+      "source": "ab(1)",
+      "consumed": 2
+    },
+    {
+      "source": "a$(1)",
+      "consumed": 2
+    },
+    {
+      "source": "now we are six",
+      "consumed": 14
+    },
+    {
+      "source": "nOWWeaReSiX",
+      "consumed": 11
+    },
+    {
+      "source": "t42",
+      "consumed": 3
+    },
+    {
+      "source": "a1$",
+      "consumed": 2
+    },
+    {
+      "source": "a$$",
+      "consumed": 2
+    },
+    {
+      "source": "abc%",
+      "consumed": 3
+    },
+    {
+      "source": "a 123",
+      "consumed": 5
+    },
+    {
+      "source": "a SIN b",
+      "consumed": 7
+    },
+    {
+      "source": "print",
+      "consumed": 5
+    },
+    {
+      "source": "a and b",
+      "consumed": 7
+    },
+    {
+      "source": "a AND b",
+      "consumed": 7
+    }
+  ]
+}

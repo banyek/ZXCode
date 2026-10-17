@@ -76,7 +76,6 @@ export function lexBody(source: SourceDocument, bodyRange: SourceRange): LexedBo
       } else if (number !== null) {
         cursor += number[0].length;
         plain("number", start, cursor);
-        if (/[Ee][+-]?$/.test(number[0])) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.invalidNumericLiteral, severity: "error", category: "syntax", message: "Expected decimal exponent digits.", range: range(start, cursor) }));
       } else {
         cursor += /^(?:<=|>=|<>)/.test(text.slice(cursor)) ? 2 : 1;
         plain("punctuation", start, cursor);
