@@ -51,6 +51,13 @@ export async function run(): Promise<void> {
   const editedRenumberText = renumberDocument.getText();
   assert.equal(await vscode.commands.executeCommand("zxcode.applyRenumber"),false,"Source edits invalidate a preview");
   assert.equal(renumberDocument.getText(),editedRenumberText);
+  const formatDocument = await vscode.workspace.openTextDocument({language:"zx-spectrum-basic",content:'  0010  PRINT   "keep  spaces": REM  tail   \r\n'});
+  const formatEdits = await vscode.commands.executeCommand<vscode.TextEdit[]>("vscode.executeFormatDocumentProvider",formatDocument.uri,{tabSize:4,insertSpaces:true});
+  assert.ok(formatEdits && formatEdits.length > 0);
+  const formatWorkspaceEdit = new vscode.WorkspaceEdit();formatWorkspaceEdit.set(formatDocument.uri,formatEdits);
+  assert.equal(await vscode.workspace.applyEdit(formatWorkspaceEdit),true);
+  assert.equal(formatDocument.getText(),'0010 PRINT "keep  spaces": REM  tail   \r\n');
+  assert.deepEqual((await vscode.commands.executeCommand("vscode.executeFormatDocumentProvider",formatDocument.uri,{tabSize:4,insertSpaces:true})) ?? [],[]);
   const genericUri = vscode.Uri.file(join(testFiles, "generic.bas"));
   await vscode.workspace.fs.writeFile(genericUri, Buffer.from("10 STOP\n"));
   const generic = await vscode.workspace.openTextDocument(genericUri);
