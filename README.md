@@ -162,5 +162,6 @@ TypeScript 6.0.3 is pinned within the supported range of TypeScript ESLint 8.71.
 The toolchain uses no runtime framework dependencies.
 
 The extension development scaffold targets VS Code 1.140.0; see its
-[development notes](packages/extension/README.md). Language registration and editor
-providers follow in the remaining M5 tickets.
+[development notes](packages/extension/README.md). The registered ZX Spectrum BASIC language highlights `.zxbas` automatically;
+generic `.bas` uses explicit or workspace language selection. Editor providers
+follow in the remaining M5 tickets.

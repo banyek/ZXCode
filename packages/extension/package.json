@@ -24,9 +24,37 @@
   "main": "./dist/extension.cjs",
   "files": [
     "dist",
+    "syntaxes",
+    "language-configuration.json",
     "README.md"
   ],
   "dependencies": {
     "@zxcode/core": "0.0.0"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "zx-spectrum-basic",
+        "aliases": [
+          "ZX Spectrum BASIC",
+          "Spectrum BASIC"
+        ],
+        "extensions": [
+          ".zxbas"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "zx-spectrum-basic",
+        "scopeName": "source.zx-spectrum-basic",
+        "path": "./syntaxes/zx-spectrum-basic.tmLanguage.json",
+        "unbalancedBracketScopes": [
+          "string.quoted.double.spectrum-basic",
+          "comment.line.rem.spectrum-basic"
+        ]
+      }
+    ]
   }
 }
