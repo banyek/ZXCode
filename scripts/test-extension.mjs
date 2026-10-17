@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import {writeBasicTap} from "../packages/core/dist/index.js";
 import {runTests,downloadAndUnzipVSCode,resolveCliArgsFromVSCodeExecutablePath} from '@vscode/test-electron';
 import {mkdtempSync,mkdirSync,writeFileSync,rmSync,readFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
@@ -8,6 +10,17 @@ const isolated=mkdtempSync(join(tmpdir(),'zxcode-vscode-'));
 const userData=join(isolated,'user-data');
 const testFiles=join(isolated,'files');
 mkdirSync(testFiles);
+const existingCase=JSON.parse(readFileSync(new URL('../tests/fixtures/core-corpus.json',import.meta.url),'utf8')).cases.find(item=>item.name==='arrays-functions');
+assert.ok(existingCase);
+const existingProgram=Buffer.from(existingCase.programHex,'hex');
+const existingTap=join(testFiles,'existing-original.tap'), existingSource=join(testFiles,'existing.zxbas'), existingPreserved=join(testFiles,'existing-preserved.tap');
+writeFileSync(existingTap,writeBasicTap(existingProgram,{filenameBytes:Buffer.from('EXISTING  '),autostart:0x8000,variablesOffset:existingProgram.length}).tapBytes);
+const cli=fileURLToPath(new URL('../packages/cli/bin/zxcode.mjs',import.meta.url));
+for(const args of [['import',existingTap,'--output',existingSource],['rebuild',existingSource,'--reference',existingTap,'--output',existingPreserved]]) {
+ const result=spawnSync(process.execPath,[cli,...args],{encoding:'utf8',timeout:30000});
+ assert.equal(result.status,0,result.stderr);
+}
+assert.deepEqual(readFileSync(existingPreserved),readFileSync(existingTap));
 mkdirSync(join(userData,'User'),{recursive:true});
 writeFileSync(join(userData,'User','settings.json'),JSON.stringify({'chat.disableAIFeatures':true,'workbench.secondarySideBar.defaultVisibility':'hidden','editor.wordBasedSuggestions':'off','telemetry.telemetryLevel':'off','update.mode':'none','extensions.autoCheckUpdates':false,'extensions.autoUpdate':false,'workbench.startupEditor':'none'}));
 try {
@@ -31,7 +44,7 @@ try {
     version:'1.140.0',reuseMachineInstall:false,
     ...(executable?{vscodeExecutablePath:executable}:{}),
     extensionDevelopmentPath:development,
-    extensionTestsEnv:{ZXCODE_TEST_FILES:testFiles,ZXCODE_INSTALLED_ROOT:installed?extensions:"",...Object.fromEntries(["ZXCODE_TEST_FUSE","ZXCODE_TEST_EVIDENCE","ZXCODE_TEST_RUN_HOLD_MS"].flatMap((key)=>process.env[key]===undefined?[]:[[key,process.env[key]]]))},
+    extensionTestsEnv:{ZXCODE_TEST_FILES:testFiles,ZXCODE_INSTALLED_ROOT:installed?extensions:"",...Object.fromEntries(["ZXCODE_TEST_FUSE","ZXCODE_TEST_EVIDENCE","ZXCODE_TEST_RUN_HOLD_MS","ZXCODE_TEST_WORKFLOW_EVIDENCE"].flatMap((key)=>process.env[key]===undefined?[]:[[key,process.env[key]]]))},
     extensionTestsPath:fileURLToPath(new URL('../packages/extension/dist/test-runner.cjs',import.meta.url)),
     launchArgs:[testFiles,`--user-data-dir=${userData}`,`--extensions-dir=${extensions}`,'--skip-welcome','--skip-release-notes','--disable-workspace-trust','--disable-gpu','--new-window']
   });

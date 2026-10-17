@@ -26,7 +26,8 @@
     "package:extension": "npm run build && node scripts/package-extension.mjs",
     "test:vsix": "npm run package:extension && node scripts/verify-extension-package.mjs && node scripts/test-extension.mjs --installed",
     "test:run": "node scripts/acceptance/run-spectrum.mjs",
-    "test:roundtrip": "npm run build && node scripts/compatibility/roundtrip.mjs"
+    "test:roundtrip": "npm run build && node scripts/compatibility/roundtrip.mjs",
+    "test:existing": "node scripts/acceptance/existing-program.mjs"
   },
   "devDependencies": {
     "@types/node": "24.19.2",

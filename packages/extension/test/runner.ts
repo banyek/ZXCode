@@ -96,6 +96,34 @@ export async function run(): Promise<void> {
     return symbols.some(item=>item.location.uri.toString() === workspaceA.toString());
   },"Workspace navigation uses unsaved text after discovery events settle");
   assert.ok(api.queries.diagnostics(api.documents.snapshot(dirtyWorkspace)).value.some(diagnostic=>diagnostic.code === "ZX3001"),"Other files do not resolve missing local lines");
+  const existingUri = vscode.Uri.file(join(testFiles,"existing.zxbas"));
+  const existingDocument = await vscode.workspace.openTextDocument(existingUri);
+  const existingText = existingDocument.getText();
+  const fnCall = existingText.indexOf("FN f",existingText.indexOf("FN f")+1)+3;
+  const existingDefinitions = await vscode.commands.executeCommand<vscode.Location[]>("vscode.executeDefinitionProvider",existingUri,existingDocument.positionAt(fnCall));
+  assert.equal(existingDefinitions?.length,1);assert.equal(existingDefinitions[0]?.range.start.line,4);
+  const existingReferences = await vscode.commands.executeCommand<vscode.Location[]>("vscode.executeReferenceProvider",existingUri,existingDocument.positionAt(fnCall));
+  assert.ok(existingReferences && existingReferences.length >= 2);
+  const existingOutline = await vscode.commands.executeCommand<vscode.DocumentSymbol[]>("vscode.executeDocumentSymbolProvider",existingUri);
+  assert.equal(existingOutline?.length,10);
+  await vscode.window.showTextDocument(existingDocument);
+  const existingPreview = await vscode.commands.executeCommand<{value:{kind:string;lines:readonly unknown[];references:readonly unknown[]}}>("zxcode.previewRenumber",{start:100,step:100});
+  assert.equal(existingPreview?.value.kind,"preview");assert.equal(existingDocument.getText(),existingText);
+  assert.equal(await vscode.commands.executeCommand("zxcode.applyRenumber"),true);
+  assert.ok(existingDocument.getText().includes("RESTORE 200"));
+  const existingFormatEdits = (await vscode.commands.executeCommand<vscode.TextEdit[]>("vscode.executeFormatDocumentProvider",existingUri,{tabSize:4,insertSpaces:true})) ?? [];
+  const existingFormat = new vscode.WorkspaceEdit();existingFormat.set(existingUri,existingFormatEdits);
+  assert.equal(await vscode.workspace.applyEdit(existingFormat),true);
+  assert.deepEqual((await vscode.commands.executeCommand("vscode.executeFormatDocumentProvider",existingUri,{tabSize:4,insertSpaces:true})) ?? [],[]);
+  const existingRebuilt = vscode.Uri.file(join(testFiles,"existing-transformed.tap"));
+  assert.equal((await vscode.commands.executeCommand<EditorCommandResult>("zxcode.build",existingUri,existingRebuilt))?.kind,"success");
+  assert.equal(api.queries.diagnostics(api.documents.snapshot(existingDocument)).value.length,0);
+  if(process.env.ZXCODE_TEST_WORKFLOW_EVIDENCE) {
+    const destination = vscode.Uri.file(process.env.ZXCODE_TEST_WORKFLOW_EVIDENCE);
+    for(const name of ["existing-original.tap","existing-preserved.tap","existing.zxbas","existing.zxbas.import.json","existing-transformed.tap"]) await vscode.workspace.fs.writeFile(vscode.Uri.joinPath(destination,name),await vscode.workspace.fs.readFile(vscode.Uri.file(join(testFiles,name))));
+    await vscode.workspace.fs.writeFile(vscode.Uri.joinPath(destination,"existing-transformed.zxbas"),Buffer.from(existingDocument.getText()));
+    await vscode.workspace.fs.writeFile(vscode.Uri.joinPath(destination,"native-workflow.json"),Buffer.from(JSON.stringify({schemaVersion:1,installedExtension:extension.extensionPath,definitions:existingDefinitions?.length,references:existingReferences.length,outlineLines:existingOutline?.length,renumber:existingPreview?.value,formatEditCount:existingFormatEdits.length,remainingDiagnostics:0},null,2)+"\n"));
+  }
   const genericUri = vscode.Uri.file(join(testFiles, "generic.bas"));
   await vscode.workspace.fs.writeFile(genericUri, Buffer.from("10 STOP\n"));
   const generic = await vscode.workspace.openTextDocument(genericUri);

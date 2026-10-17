@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "nativeCommandsVerified": true,
+  "changedReferenceRejected": true,
+  "preservedTapBytes": 382,
+  "originalTapSha256": "a6004237924857885d1fec55c99edd5b31944d40a99bcd9a31ee11729f022046",
+  "preservedTapSha256": "a6004237924857885d1fec55c99edd5b31944d40a99bcd9a31ee11729f022046",
+  "transformedTapSha256": "ce9fef597fc09bc8e430048bbbf151b73d14c8fab29c21a05c9943772443c277",
+  "originalRomExecution": {
+    "schemaVersion": 1,
+    "status": "passed",
+    "emulator": "SkoolKit 10.1",
+    "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+    "fastLoad": false,
+    "loaderAccelerators": false,
+    "preservedTapIdentical": true,
+    "semanticNormalization": "renumbered ROM completion line 100 to 1000; program assertions and visible results unchanged",
+    "cases": [
+      {
+        "case": "original",
+        "screenRows": [
+          "36wo",
+          "CORE OK",
+          "0 OK, 100:1"
+        ],
+        "tapSha256": "a6004237924857885d1fec55c99edd5b31944d40a99bcd9a31ee11729f022046",
+        "screenSha256": "8bb5ee1266cf925dcc9b92934b637e36545f8852f688cfcf4e7abb58a7fd87ac"
+      },
+      {
+        "case": "transformed",
+        "screenRows": [
+          "36wo",
+          "CORE OK",
+          "0 OK, 1000:1"
+        ],
+        "tapSha256": "ce9fef597fc09bc8e430048bbbf151b73d14c8fab29c21a05c9943772443c277",
+        "screenSha256": "aa6c023519108f3621dd2700a599633cb229fa4afe6b006f2f06540abac623b8"
+      }
+    ]
+  }
+}
