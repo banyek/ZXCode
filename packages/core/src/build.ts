@@ -1,3 +1,4 @@
+import type { BasicAnalysisOptions } from "./semantic/program.js";
 import { encodeBasicProgram, EncodingError } from "./encoding/basic.js";
 import type { EncodedProgram } from "./encoding/program.js";
 import { analyzeBasic } from "./semantic/program.js";
@@ -18,7 +19,7 @@ export interface CheckedProgram {
   readonly diagnostics: readonly Diagnostic[];
 }
 
-export interface TapBuildOptions {
+export interface TapBuildOptions extends BasicAnalysisOptions {
   readonly filenameBytes: Uint8Array;
   readonly autostart: number;
 }
@@ -28,8 +29,8 @@ export interface BuiltTap extends CheckedProgram {
 }
 
 /** Full shared compatibility check, including binary limits, with no TAP output. */
-export function checkProgram(source: SourceDocument): CheckedProgram | PipelineFailure {
-  const result = analyzeBasic(parseBasic(source));
+export function checkProgram(source: SourceDocument, options: BasicAnalysisOptions = {}): CheckedProgram | PipelineFailure {
+  const result = analyzeBasic(parseBasic(source), options);
   if (result.kind === "invalid") return Object.freeze({ kind: "error", diagnostics: result.analysis.diagnostics });
   try {
     return Object.freeze({ kind: "success", encodedProgram: encodeBasicProgram(result.analysis), diagnostics: result.analysis.diagnostics });
@@ -40,7 +41,7 @@ export function checkProgram(source: SourceDocument): CheckedProgram | PipelineF
 }
 
 export function buildTap(source: SourceDocument, options: TapBuildOptions): BuiltTap | PipelineFailure {
-  const result = checkProgram(source);
+  const result = checkProgram(source, options);
   if (result.kind === "error") return result;
   const bytes = result.encodedProgram.programBytes;
   const tap = writeBasicTap(bytes, { ...options, variablesOffset: bytes.length });

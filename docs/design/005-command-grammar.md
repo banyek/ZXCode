@@ -165,3 +165,11 @@ zmakebas reference recorded in M1 research. Source cases and raw bytes are kept
 as fixtures. Graphics controls, both coordinate counts, string arguments and
 omitted optional operands have explicit cases; special item grammars remain
 separate tickets.
+
+## M2-16 capability policy resolution
+
+The earlier temporary capability coverage gate is retired. All six original ROM
+command forms encode through the public pipeline. CAT/FORMAT/MOVE/ERASE receive
+nonfatal missing-capability warnings on the base target; OPEN/CLOSE are base-ROM
+commands. Profile, severity and completion rules are defined in
+[025-runtime-capability-policy.md](025-runtime-capability-policy.md).

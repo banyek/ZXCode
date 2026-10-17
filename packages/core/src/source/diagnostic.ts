@@ -22,7 +22,8 @@ export const DiagnosticCodes = Object.freeze({
   missingLineTarget: "ZX3001",
   typeMismatch: "ZX3002",
   missingFunctionDefinition: "ZX3003",
-  parameterMismatch: "ZX3004"
+  parameterMismatch: "ZX3004",
+  missingRuntimeCapability: "ZX4001"
 } as const);
 
 export interface DiagnosticRelatedInformation {
