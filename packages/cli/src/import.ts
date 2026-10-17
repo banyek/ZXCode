@@ -1,5 +1,6 @@
+import { writeNewOutputs } from "./files.js";
 import { createHash } from "node:crypto";
-import { readFileSync, openSync, writeFileSync, closeSync, unlinkSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { importTapSource, readBasicTap } from "@zxcode/core";
 export class ImportUsageError extends Error {}
@@ -26,16 +27,7 @@ export function runImport(args:readonly string[]):void {
   const outputPath=resolve(output ?? join(dirname(inputPath),basename(inputPath,extname(inputPath))+".zxbas"));
   const reportPath=outputPath+".import.json";
   const report=JSON.stringify({schemaVersion:1,inputFile:basename(inputPath),tapSha256:hash(bytes),programSha256:hash(parsed.programData.slice(0,imported.metadata.variablesOffset)),sourceSha256:hash(imported.source),guarantee:imported.guarantee,variablesPolicy:sourceOnly ? "source-only" : "reject",...imported.metadata},null,2)+"\n";
-  const created:string[]=[];
-  try {
-    for(const [path,content] of [[outputPath,imported.source],[reportPath,report]]) {
-      const fd=openSync(path!,"wx");created.push(path!);
-      try {writeFileSync(fd,content!,"utf8");} finally {closeSync(fd);}
-    }
-  } catch(error) {
-    for(const path of created.toReversed()) unlinkSync(path);
-    throw error;
-  }
+  writeNewOutputs([[outputPath,imported.source],[reportPath,report]]);
   if(imported.metadata.omittedVariableBytes > 0) process.stderr.write(`Source-only import omitted ${imported.metadata.omittedVariableBytes} saved-variable bytes; original TAP is unchanged.\n`);
   process.stdout.write(`Wrote ${outputPath}\nWrote ${reportPath}\n`);
 }

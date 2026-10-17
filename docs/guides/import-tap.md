@@ -26,3 +26,17 @@ editor spelling is not present in a tokenized tape. Ordinary Build TAP uses its
 normal filename/autostart options; it does not silently consume import metadata.
 This workflow guarantees the BASIC image, not an identical complete cassette or
 runtime snapshot. No normalization mode or new BASIC syntax is introduced.
+
+For an explicit binary-preserving rebuild, run:
+
+```sh
+zxcode rebuild imported.zxbas --reference original.tap --output preserved.tap
+```
+
+This requires the original tape and refuses any compiled BASIC-byte change.
+It copies original filename/autostart metadata and opaque saved-variable bytes,
+then checks the complete rebuilt TAP against the reference. The output must be
+new. Source whitespace/case changes can pass when compiled bytes stay identical;
+changing a numeric spelling may change stored bytes even if its value is equal.
+Use ordinary Build TAP for an edited program. Provenance JSON alone is not a
+binary reference or saved-state cache.

@@ -1,3 +1,4 @@
+import { runRebuild, RebuildUsageError } from "./rebuild.js";
 import { runImport, ImportUsageError } from "./import.js";
 import { readFileSync, statSync, writeFileSync } from "node:fs";
 import { basename, dirname, extname, join, resolve } from "node:path";
@@ -9,6 +10,7 @@ const help = `ZXCode — 1982 BASIC. 2026 developer experience.
 Usage: zxcode check <file>
        zxcode build <file> [options]
        zxcode import <file.tap> [--output path.zxbas] [--source-only]
+       zxcode rebuild <source> --reference original.tap [--output new.tap]
        zxcode --help
 
 Build options:
@@ -95,6 +97,7 @@ function run(args: readonly string[]): void {
     process.stdout.write(help);
     return;
   }
+  if (command === "rebuild") {runRebuild(args.slice(1));return;}
   if (command === "import") {runImport(args.slice(1));return;}
   const options = parseOptions(args);
   const input = resolve(options.file);
@@ -120,5 +123,5 @@ function run(args: readonly string[]): void {
 try { run(process.argv.slice(2)); }
 catch (error) {
   process.stderr.write(`zxcode: ${error instanceof Error ? error.message : String(error)}\n`);
-  process.exitCode = error instanceof UsageError || error instanceof ImportUsageError ? 2 : 1;
+  process.exitCode = error instanceof UsageError || error instanceof ImportUsageError || error instanceof RebuildUsageError ? 2 : 1;
 }
