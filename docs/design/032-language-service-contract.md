@@ -64,3 +64,23 @@ is introduced; the session invokes the existing recoverable parser and analyzer.
 old snapshots, strict versions/document ids, atomic rejection, independent session
 identities and capability ownership. Buildable snapshots retain the real semantic
 validation brand and encode identically to direct parser/analyzer use.
+
+## M4-03 diagnostics query
+
+`documentDiagnostics(snapshot)` returns a cached, frozen query result carrying the
+exact snapshot identity and the shared categorized diagnostics. For buildable
+analysis it additionally invokes the real encoder validation once, retaining an
+EncodingError diagnostic such as the image-size limit. Invalid/incomplete analysis
+never enters the encoder. This matches check/build diagnostic coverage without
+reparsing, inventing acceptance rules or leaking CLI diagnostic rendering.
+
+A WeakMap keyed by snapshot owns the query cache; it does not keep closed document
+snapshots alive. Querying old snapshots after updates returns their own cached
+result. Existing code/category/severity/range/related/capability fields pass through
+unchanged, including future information/hint diagnostics in the tooling category.
+
+Validation passes all 216 Node 24 tests. Diagnostics match direct check/build on
+valid and incomplete input, Unicode/type/numeric errors, missing line/function
+warnings, capability warnings, duplicate lines and image-budget failures. Tests
+also retain related ranges and tooling information/hint metadata and verify old
+cached diagnostics after a document replacement.
