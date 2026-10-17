@@ -73,3 +73,46 @@ The verifier reads expectations and never rewrites them. Normal CI uses the fixe
 observations and needs neither Python, SkoolKit, nor a ROM. Future numeric/binary
 mismatches require a compatibility investigation; fixtures are not regenerated to
 match ZXCode. This corpus proves numeric conversion, not M1 emulator acceptance.
+
+## M3-01 full source lexical surface
+
+Original ROM INT-TO-FP uses CH-ADD+1 for integer and exponent digit runs, while
+DEC-TO-FP uses NEXT-CHAR after a decimal point, fractional digits, E/e and an
+explicit exponent sign. Independent ROM probes establish that whitespace is
+contextual, not globally removable:
+
+- `1 2`, `1 .2`, `1 E2` and `1E2 3` are not single numbers and are invalid in a
+  single expression. Integer and exponent digit runs remain contiguous.
+- `. 5`, `1. 2`, `1.2 3`, `1.2 E 2`, `1.E 2`, `1E + 2` and `1E- 2` are authentic
+  single numeric literals. Spaces/tabs are skipped at NEXT-CHAR positions.
+- After E/e and optional sign, at least one exponent digit is mandatory. Its
+  magnitude remains limited by ROM conversion, with all overflow/underflow and
+  per-operation rounding preserved. Leading exponent zeros are not a new limit.
+- Unary signs remain operator nodes; names beginning before provisional numeric
+  tokens retain the raw variable-name boundary rules. No host expression evaluation,
+  Unicode digit syntax, hexadecimal or modern numeric separators are added.
+
+The lexer retains one raw number token/range spanning authentic internal trivia.
+The expression node's numeric lexeme removes source-format spaces/tabs, keeping
+all other spelling (case, decimal point, leading zeros and exponent sign). This
+matches existing normalization of formatting outside literals/REM and gives one
+unambiguous textual number followed by its checked hidden storage. The converter
+continues to accept one compact unsigned lexeme; it is not turned into a statement
+or trivia parser. Source maps/diagnostics retain the original physical range.
+
+Fixed DEC-TO-FP observations cover accepted lexical forms and boundaries. Separate
+syntax-mode expression observations cover rejected whitespace positions and unary
+sign combinations. Program byte fixtures compose the canonical numeric spelling,
+independently observed storage, known ROM PRINT token and standard line framing;
+they are not captured from ZXCode output. This avoids treating a comparison tool's
+host number parser as authority for original ROM whitespace or rounding.
+
+A provisional exponent token can overlap a raw variable name (for example
+`a1e + 2.3`). After finding the name boundary, the parser relexes the remaining
+expression text so a newly exposed numeric start can consume its fraction or
+exponent. Existing REM raw-tail tokens are retained instead of reconstructing
+their statement context. ROM statement probes cover this boundary independently.
+
+M3-01 validation: 33 independent conversion observations, 32 original-ROM syntax
+observations and the full 162-test Node 24 check pass. Existing numeric, statement
+and M2 program golden bytes remain unchanged.

@@ -33,6 +33,38 @@ export interface LexedBody {
   readonly diagnostics: readonly Diagnostic[];
 }
 
+/** ROM integer digit runs are contiguous; fractional NEXT-CHAR steps skip trivia. */
+function numericEnd(text: string, start: number): number | undefined {
+  const digit = (at: number): boolean => at < text.length && text[at]! >= "0" && text[at]! <= "9";
+  const trivia = (at: number): number => { while (text[at] === " " || text[at] === "\t") at++; return at; };
+  let cursor = start;
+  let fractional = false;
+  if (text[cursor] === ".") {
+    const first = trivia(cursor + 1);
+    if (!digit(first)) return undefined;
+    cursor++;
+    fractional = true;
+  } else {
+    if (!digit(cursor)) return undefined;
+    while (digit(cursor)) cursor++;
+    if (text[cursor] === ".") { cursor++; fractional = true; }
+  }
+  if (fractional) {
+    let next = trivia(cursor);
+    while (digit(next)) { cursor = next + 1; next = trivia(cursor); }
+    if (text[next] === "E" || text[next] === "e") cursor = next;
+  }
+  if (text[cursor] === "E" || text[cursor] === "e") {
+    let end = cursor + 1;
+    let next = trivia(end);
+    if (text[next] === "+" || text[next] === "-") { end = next + 1; next = trivia(end); }
+    if (!digit(next)) return end; // Retain a malformed exponent as one numeric token.
+    cursor = next;
+    while (digit(cursor)) cursor++;
+  }
+  return cursor;
+}
+
 /** Lex one physical body, preserving trivia and context-sensitive raw content. */
 export function lexBody(source: SourceDocument, bodyRange: SourceRange): LexedBody {
   const text = source.textInRange(bodyRange);
@@ -84,7 +116,7 @@ export function lexBody(source: SourceDocument, bodyRange: SourceRange): LexedBo
       if (!closed) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unterminatedString, severity: "error", category: "syntax", message: "Expected a closing quote before the physical line ends.", range: token.range }));
     } else {
       const word = /^[A-Za-z][A-Za-z0-9$]*/.exec(text.slice(cursor));
-      const number = /^(?:\d+(?:\.\d*)?|\.\d+)(?:[Ee][+-]?\d*)?/.exec(text.slice(cursor));
+      const number = numericEnd(text, cursor);
       if (word !== null) {
         cursor += word[0].length;
         plain("word", start, cursor);
@@ -99,8 +131,8 @@ export function lexBody(source: SourceDocument, bodyRange: SourceRange): LexedBo
           if (cursor < text.length) plain("raw-tail", cursor, text.length);
           cursor = text.length;
         }
-      } else if (number !== null) {
-        cursor += number[0].length;
+      } else if (number !== undefined) {
+        cursor = number;
         plain("number", start, cursor);
       } else {
         cursor += /^(?:<=|>=|<>)/.test(text.slice(cursor)) ? 2 : 1;

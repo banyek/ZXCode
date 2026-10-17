@@ -74,8 +74,9 @@ export function readExpression(source: SourceDocument, inputTokens: readonly Bod
     cursor++;
     if (token.kind === "string") return postfix(Object.freeze({ kind: "string-literal", range: token.range, contentRange: token.contentRange, value: token.value, parts: token.parts, closed: token.closed }), depth);
     if (token.kind === "number") {
-      if (/[Ee][+-]?$/.test(token.text)) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.invalidNumericLiteral, severity: "error", category: "syntax", message: "Expected decimal exponent digits.", range: token.range }));
-      return postfix(Object.freeze({ kind: "numeric-literal", range: token.range, lexeme: token.text }), depth);
+      const lexeme = token.text.replace(/[ \t]/g, "");
+      if (/[Ee][+-]?$/.test(lexeme)) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.invalidNumericLiteral, severity: "error", category: "syntax", message: "Expected decimal exponent digits.", range: token.range }));
+      return postfix(Object.freeze({ kind: "numeric-literal", range: token.range, lexeme }), depth);
     }
     if (text === "(") {
       const expression = binary(0, depth + 1);
@@ -145,8 +146,14 @@ export function readExpression(source: SourceDocument, inputTokens: readonly Bod
       while (tokens[cursor] !== undefined && tokens[cursor]!.range.end <= nameEnd) cursor++;
       const partial = tokens[cursor];
       if (partial !== undefined && partial.range.start < nameEnd) {
-        const remainder = lexBody(source, source.range(nameEnd, partial.range.end)).tokens.filter((item) => item.kind !== "eof" && item.kind !== "whitespace");
-        tokens.splice(cursor, 1, ...remainder);
+        // A name may end inside a provisional exponent token. Relex the rest
+        // so its new numeric start can consume a following fraction/exponent.
+        // Preserve an existing REM raw tail instead of guessing statement state.
+        const rawTail = tokens.findIndex((item, index) => index >= cursor && item.kind === "raw-tail");
+        const retained = rawTail < 0 ? [] : tokens.slice(rawTail);
+        const remainderEnd = rawTail < 0 ? tokens[tokens.length - 1]!.range.end : tokens[rawTail]!.range.start;
+        const remainder = lexBody(source, source.range(nameEnd, remainderEnd)).tokens.filter((item) => item.kind !== "eof" && item.kind !== "whitespace");
+        tokens.splice(cursor, tokens.length - cursor, ...remainder, ...retained);
       }
       const range = source.range(token.range.start, nameEnd);
       const name = source.textInRange(range);
