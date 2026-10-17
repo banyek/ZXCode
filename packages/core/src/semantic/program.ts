@@ -1,3 +1,5 @@
+import { analyzeLoop } from "./loops.js";
+import type { BasicForStatement, BasicNextStatement } from "./loops.js";
 import { analyzeLetStatement } from "./assignment.js";
 import type { BasicLetStatement } from "./assignment.js";
 import { analyzeSimpleCommand } from "./simple-commands.js";
@@ -48,7 +50,7 @@ export interface BasicIfStatement {
   readonly condition: TypedExpression;
   readonly thenStatements: readonly BasicStatement[];
 }
-export type BasicStatement = BasicIfStatement | BasicJumpStatement
+export type BasicStatement = BasicForStatement | BasicNextStatement | BasicIfStatement | BasicJumpStatement
   | { readonly kind: "empty"; readonly range: SourceRange }
   | BasicLetStatement | SimpleCommandStatement<TypedExpression>
   | { readonly kind: "print"; readonly range: SourceRange; readonly items: readonly BasicPrintItem[] }
@@ -120,6 +122,7 @@ export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>): BasicA
       if (tail.length === 0) tail.push(Object.freeze({ kind: "empty", range: source.range(node.range.end) }));
       return valid ? Object.freeze({ kind: "if", range: node.range, headerRange: node.headerRange, condition, thenStatements: Object.freeze(tail) }) : undefined;
     }
+    if (node.kind === "for" || node.kind === "next") return analyzeLoop(source, node, diagnostics);
     if (node.kind === "let") return analyzeLetStatement(source, node, diagnostics);
     if (node.kind === "simple-command") return analyzeSimpleCommand(source, node, diagnostics);
     if (node.kind !== "print") return Object.freeze({ kind: node.kind, range: node.range });

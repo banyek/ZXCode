@@ -1,3 +1,5 @@
+import { parseForStatement, parseNextStatement } from "./loops.js";
+import type { ForStatement, NextStatement } from "./loops.js";
 import { parseLetStatement } from "./assignment.js";
 import type { LetStatement } from "./assignment.js";
 import { parseSimpleCommand } from "./simple-commands.js";
@@ -33,7 +35,7 @@ export interface JumpStatement {
   readonly target: Expression;
   readonly complete: boolean;
 }
-export type Statement = IfStatement | JumpStatement | LetStatement | SimpleCommandStatement<Expression>
+export type Statement = ForStatement | NextStatement | IfStatement | JumpStatement | LetStatement | SimpleCommandStatement<Expression>
   | { readonly kind: "empty"; readonly range: SourceRange }
   | { readonly kind: "print"; readonly range: SourceRange; readonly items: readonly PrintItem[] }
   | { readonly kind: "cls" | "stop"; readonly range: SourceRange }
@@ -70,6 +72,8 @@ function parseStatement(source: SourceDocument, tokens: readonly BodyToken[], ra
     if (!complete) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unexpectedToken, severity: "error", category: "syntax", message: "Unexpected token after jump target expression.", range: parsed.tokens[parsed.next]!.range }));
     return Object.freeze({ kind: direction === "TO" ? "goto" : "gosub", range, target: parsed.expression, complete });
   }
+  if (keyword === "FOR") return parseForStatement(source, tokens, range, diagnostics);
+  if (keyword === "NEXT") return parseNextStatement(source, tokens, range, diagnostics);
   if (keyword === "LET") return parseLetStatement(source, tokens, range, diagnostics);
   const simple = parseSimpleCommand(source, tokens, range, diagnostics);
   if (simple !== undefined) return simple;

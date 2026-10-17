@@ -49,6 +49,16 @@ export function encodeBasicProgram(program: BuildableProgram<BasicProgram>): Enc
         } else if (statement.kind === "goto" || statement.kind === "gosub") {
           emit(romTokenBySpelling(statement.kind === "goto" ? "GO TO" : "GO SUB")!.byte);
           emitExpression(statement.target, emit);
+        } else if (statement.kind === "for" || statement.kind === "next") {
+          emit(romTokenBySpelling(statement.kind === "for" ? "FOR" : "NEXT")!.byte);
+          for (const character of statement.variable.identity.canonicalName) emit(character.charCodeAt(0));
+          if (statement.kind === "for") {
+            emit(0x3d);
+            emitExpression(statement.start, emit);
+            emit(romTokenBySpelling("TO")!.byte);
+            emitExpression(statement.limit, emit);
+            if (statement.step !== undefined) { emit(romTokenBySpelling("STEP")!.byte); emitExpression(statement.step, emit); }
+          }
         } else if (statement.kind === "let") {
           emit(romTokenBySpelling("LET")!.byte);
           for (const character of statement.target.identity.canonicalName) emit(character.charCodeAt(0));

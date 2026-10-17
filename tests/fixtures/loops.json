@@ -1,0 +1,37 @@
+{
+  "reference": "zmakebas 1.3.3, commit 667090faf392e0083bbcf238084dcdd996957285",
+  "cases": [
+    {
+      "source": "10 FOR a=1 TO 5\n",
+      "programHex": "000a1300eb613d310e0000010000cc350e00000500000d"
+    },
+    {
+      "source": "10 FOR a=5 TO 1 STEP -1\n",
+      "programHex": "000a1c00eb613d350e0000050000cc310e0000010000cd2d310e00000100000d"
+    },
+    {
+      "source": "10 FOR a=0 TO 1 STEP 0\n",
+      "programHex": "000a1b00eb613d300e0000000000cc310e0000010000cd300e00000000000d"
+    },
+    {
+      "source": "10 FOR a=1 TO 5 STEP 3/2\n",
+      "programHex": "000a2300eb613d310e0000010000cc350e0000050000cd330e00000300002f320e00000200000d"
+    },
+    {
+      "source": "10 FOR a=b+1 TO c*2 STEP d/2\n",
+      "programHex": "000a2100eb613d622b310e0000010000cc632a320e0000020000cd642f320e00000200000d"
+    },
+    {
+      "source": "10 FOR a=1 TO 2: PRINT a: NEXT a\n",
+      "programHex": "000a1900eb613d310e0000010000cc320e00000200003af5613af3610d"
+    },
+    {
+      "source": "10 NEXT a\n",
+      "programHex": "000a0300f3610d"
+    },
+    {
+      "source": "10 IF 1 THEN FOR a=1 TO 2: NEXT a\n",
+      "programHex": "000a1f00fa310e0000010000cbeb613d310e0000010000cc320e00000200003af3610d"
+    }
+  ]
+}

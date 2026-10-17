@@ -3,6 +3,7 @@
 STMT-L-1 (0x1B29), FLAGS syntax mode. Fixed inputs use variables instead of decimal
 literals to avoid editor numeric-storage insertion. No fixture rewriting.
 """
+import argparse
 import hashlib
 import json
 from importlib.metadata import version
@@ -51,9 +52,12 @@ def probe(encoded):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--fixture", type=Path)
+    args = parser.parse_args()
     if version("skoolkit") != "10.1":
         raise RuntimeError("Use SkoolKit 10.1")
-    path = Path(__file__).resolve().parents[2] / "tests/fixtures/statements-rom.json"
+    path = args.fixture or Path(__file__).resolve().parents[2] / "tests/fixtures/statements-rom.json"
     fixture = json.loads(path.read_text())
     if fixture["romSha256"] != ROM_SHA256:
         raise RuntimeError("Unexpected fixture ROM")

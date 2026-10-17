@@ -37,3 +37,5 @@ export type { AssignmentTarget, LetStatement } from "./syntax/assignment.js";
 export type { BasicLetStatement } from "./semantic/assignment.js";
 export type { IfStatement, JumpStatement } from "./syntax/parser.js";
 export type { BasicIfStatement, BasicJumpStatement, StaticLineReference } from "./semantic/program.js";
+export type { ForStatement, NextStatement } from "./syntax/loops.js";
+export type { BasicForStatement, BasicNextStatement } from "./semantic/loops.js";
