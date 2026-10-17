@@ -79,7 +79,7 @@ test("omitted optional operands stay omitted and capability-policy coverage stay
 });
 
 test("special command families still require their own parsers", () => {
-  for (const body of ['INPUT a', 'DIM a(1)', 'READ a', 'DATA 1', 'DEF FN f(x)=x', 'LIST 1,2', 'SAVE "x"']) {
+  for (const body of ['DIM a(1)', 'READ a', 'DATA 1', 'DEF FN f(x)=x', 'LIST 1,2', 'SAVE "x"']) {
     assert.ok(parsed(`10 ${body}`).diagnostics.some((diagnostic) => diagnostic.code === DiagnosticCodes.unsupportedSyntax), body);
   }
 });

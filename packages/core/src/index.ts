@@ -42,3 +42,5 @@ export type { BasicForStatement, BasicNextStatement } from "./semantic/loops.js"
 export type { StringPart } from "./syntax/lexer.js";
 export type { PrintStatement } from "./syntax/parser.js";
 export type { BasicPrintStatement } from "./semantic/program.js";
+export type { InputItem, InputStatement } from "./syntax/input.js";
+export type { BasicInputItem, BasicInputStatement } from "./semantic/input.js";

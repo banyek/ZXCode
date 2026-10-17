@@ -1,0 +1,180 @@
+{
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "cases": [
+    {
+      "source": "10 INPUT",
+      "encoded": "ee",
+      "romError": 11
+    },
+    {
+      "source": "10 INPUT a",
+      "encoded": "ee61",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT a,b$",
+      "encoded": "ee612c6224",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT LINE a$",
+      "encoded": "eeca6124",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT LINE a",
+      "encoded": "eeca61",
+      "romError": 11
+    },
+    {
+      "source": "10 INPUT LINE a$;b",
+      "encoded": "eeca61243b62",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT a;LINE b$",
+      "encoded": "ee613bca6224",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT LINE a$;LINE b$",
+      "encoded": "eeca61243bca6224",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT \"x\";a",
+      "encoded": "ee2278223b61",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT \"x\"a",
+      "encoded": "ee22782261",
+      "romError": 11
+    },
+    {
+      "source": "10 INPUT a+b",
+      "encoded": "ee612b62",
+      "romError": 11
+    },
+    {
+      "source": "10 INPUT (a;b$);c",
+      "encoded": "ee28613b6224293b63",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT ()",
+      "encoded": "ee2829",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT (a)b",
+      "encoded": "ee28612962",
+      "romError": 11
+    },
+    {
+      "source": "10 INPUT (a+ b)",
+      "encoded": "ee28612b6229",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT (AT a,b;c$);d",
+      "encoded": "ee28ac612c623b6324293b64",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT (\"x\";a);b",
+      "encoded": "ee282278223b61293b62",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT SIN a",
+      "encoded": "eeb261",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT RND",
+      "encoded": "eea5",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT +a",
+      "encoded": "ee2b61",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT #a;b",
+      "encoded": "ee23613b62",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT ;",
+      "encoded": "ee3b",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT ,",
+      "encoded": "ee2c",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT '",
+      "encoded": "ee27",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT a;",
+      "encoded": "ee613b",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT AT a,b;c",
+      "encoded": "eeac612c623b63",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT TAB a;b",
+      "encoded": "eead613b62",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT INK a;b",
+      "encoded": "eed9613b62",
+      "statements": 1
+    },
+    {
+      "source": "10 INPUT AT a$,b;c",
+      "encoded": "eeac61242c623b63",
+      "romError": 11
+    },
+    {
+      "source": "10 INPUT TAB a$;b",
+      "encoded": "eead61243b62",
+      "romError": 11
+    },
+    {
+      "source": "10 INPUT #a$;b",
+      "encoded": "ee2361243b62",
+      "romError": 11
+    },
+    {
+      "source": "10 INPUT LINE",
+      "encoded": "eeca",
+      "romError": 11
+    },
+    {
+      "source": "10 INPUT (a;b$",
+      "encoded": "ee28613b6224",
+      "romError": 11
+    },
+    {
+      "source": "10 INPUT LINE (a$)",
+      "encoded": "eeca28612429",
+      "romError": 11
+    },
+    {
+      "source": "10 INPUT \"a\"\"b\";c",
+      "encoded": "ee2261222262223b63",
+      "statements": 1
+    }
+  ]
+}

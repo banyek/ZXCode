@@ -9,6 +9,7 @@ export type PrintItem<TExpression> =
   | { readonly kind: "print-tab"; readonly range: SourceRange; readonly column: TExpression }
   | { readonly kind: "print-control"; readonly range: SourceRange; readonly token: RomToken; readonly expression: TExpression }
   | { readonly kind: "print-channel"; readonly range: SourceRange; readonly stream: TExpression };
+export type PrintContentItem<TExpression> = Exclude<PrintItem<TExpression>, { readonly kind: "print-separator" | "print-empty" }>;
 export interface PrintStatement<TExpression> {
   readonly kind: "print" | "lprint";
   readonly range: SourceRange;

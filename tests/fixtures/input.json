@@ -1,0 +1,97 @@
+{
+  "reference": "zmakebas 1.3.3, commit 667090faf392e0083bbcf238084dcdd996957285",
+  "cases": [
+    {
+      "source": "10 INPUT a\n",
+      "programHex": "000a0300ee610d"
+    },
+    {
+      "source": "10 INPUT a,b$\n",
+      "programHex": "000a0600ee612c62240d"
+    },
+    {
+      "source": "10 INPUT LINE a$\n",
+      "programHex": "000a0500eeca61240d"
+    },
+    {
+      "source": "10 INPUT LINE a$;b\n",
+      "programHex": "000a0700eeca61243b620d"
+    },
+    {
+      "source": "10 INPUT a;LINE b$\n",
+      "programHex": "000a0700ee613bca62240d"
+    },
+    {
+      "source": "10 INPUT LINE a$;LINE b$\n",
+      "programHex": "000a0900eeca61243bca62240d"
+    },
+    {
+      "source": "10 INPUT \"x\";a\n",
+      "programHex": "000a0700ee2278223b610d"
+    },
+    {
+      "source": "10 INPUT (a;b$);c\n",
+      "programHex": "000a0a00ee28613b6224293b630d"
+    },
+    {
+      "source": "10 INPUT ()\n",
+      "programHex": "000a0400ee28290d"
+    },
+    {
+      "source": "10 INPUT (a+b)\n",
+      "programHex": "000a0700ee28612b62290d"
+    },
+    {
+      "source": "10 INPUT (AT 1,2;\"x\");a\n",
+      "programHex": "000a1a00ee28ac310e00000100002c320e00000200003b227822293b610d"
+    },
+    {
+      "source": "10 INPUT SIN a\n",
+      "programHex": "000a0400eeb2610d"
+    },
+    {
+      "source": "10 INPUT RND\n",
+      "programHex": "000a0300eea50d"
+    },
+    {
+      "source": "10 INPUT +a\n",
+      "programHex": "000a0400ee2b610d"
+    },
+    {
+      "source": "10 INPUT #1;a\n",
+      "programHex": "000a0c00ee23310e00000100003b610d"
+    },
+    {
+      "source": "10 INPUT ;\n",
+      "programHex": "000a0300ee3b0d"
+    },
+    {
+      "source": "10 INPUT ,\n",
+      "programHex": "000a0300ee2c0d"
+    },
+    {
+      "source": "10 INPUT '\n",
+      "programHex": "000a0300ee270d"
+    },
+    {
+      "source": "10 INPUT a;\n",
+      "programHex": "000a0400ee613b0d"
+    },
+    {
+      "source": "10 INPUT AT 1,2;a\n",
+      "programHex": "000a1400eeac310e00000100002c320e00000200003b610d"
+    },
+    {
+      "source": "10 INPUT TAB 4;a\n",
+      "programHex": "000a0c00eead340e00000400003b610d"
+    },
+    {
+      "source": "10 INPUT INK 1;a\n",
+      "programHex": "000a0c00eed9310e00000100003b610d"
+    },
+    {
+      "source": "10 INPUT \"a\"\"b\";c\n",
+      "programHex": "000a0a00ee2261222262223b630d"
+    }
+  ]
+}
