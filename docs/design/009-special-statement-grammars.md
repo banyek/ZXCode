@@ -343,3 +343,34 @@ the compiler writes deterministic zeros because FN execution fills them before
 use. zmakebas agrees for nonempty lists but inserts an extraneous storage slot for
 `DEF FN f()=...`; empty-list fixtures therefore use the original-ROM observation
 (no insertion), not that comparison tool's output.
+
+## M2-15 LIST/LLIST and cassette research contract
+
+The ROM [LIST entry](https://skoolkit.ca/disassemblies/rom/hex/asm/17F9.html)
+accepts an optional numeric starting line or an explicit # numeric stream with an
+optional comma/semicolon followed by a mandatory numeric starting line. LIST and
+LLIST share this grammar and differ in their default channel. No ending line,
+TO range, bare comma-list or implicit channel separator is introduced. Omitted
+operands remain omitted; no exact-line warning is emitted for listing start lines.
+
+Original Sinclair chapter 20 and the ROM
+[SAVE-ETC routine](https://skoolkit.ca/disassemblies/rom/hex/asm/0605.html) establish
+four commands with a string filename expression and one explicit suffix form:
+program (no suffix), SAVE-only LINE numeric expression, DATA one-letter numeric
+or string array name followed by empty parentheses, SCREEN$, or CODE operands.
+MERGE accepts only the program form. SAVE CODE requires both numeric start and
+length; LOAD/VERIFY CODE permit neither, start alone, or start and length. Empty
+operands after an explicit comma are errors. No alternate DATA a()$ spelling,
+subscripted DATA selection or combined suffixes are accepted. Independent original
+ROM syntax probes confirm these boundaries, including documentation typos.
+
+Source and typed nodes keep the command, filename, suffix kind and ranges,
+optional numeric operands and array identity, not a generic argument list.
+Filename expression parsing treats cassette suffix keywords as contextual name
+boundaries (like existing TO/STEP boundaries); builtin prefix expressions such as
+STR$ CODE "x" remain expressions. Numeric/string checks and FN context use the
+common expression visitor. Native suffix tokens are emitted without expansion:
+SCREEN$ does not become CODE constants, and omitted CODE operands stay omitted.
+Runtime filename lengths, memory addresses, existing array contents and cassette
+availability are not new static errors or host file operations. These statements
+encode the program's ROM commands; they do not change build artifact metadata.

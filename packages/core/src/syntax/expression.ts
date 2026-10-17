@@ -34,7 +34,7 @@ const priorities: ReadonlyMap<string, number> = new Map([
 const boundaries = new Set([",", ";", ")", ":", "THEN", "TO", "STEP"]);
 
 /** Consume one expression, leaving the caller's item/statement delimiter untouched. */
-export function readExpression(source: SourceDocument, inputTokens: readonly BodyToken[], start: number, end: number, diagnostics: Diagnostic[], initialDepth = 0): { readonly expression: Expression; readonly next: number; readonly tokens: readonly BodyToken[] } {
+export function readExpression(source: SourceDocument, inputTokens: readonly BodyToken[], start: number, end: number, diagnostics: Diagnostic[], initialDepth = 0, nameBoundaries?: ReadonlySet<string>): { readonly expression: Expression; readonly next: number; readonly tokens: readonly BodyToken[] } {
   let tokens = [...inputTokens];
   let cursor = start;
   const peek = (): BodyToken | undefined => tokens[cursor];
@@ -130,7 +130,7 @@ export function readExpression(source: SourceDocument, inputTokens: readonly Bod
       let offset = token.range.start;
       let nameEnd = offset;
       let index = cursor - 1;
-      const delimiters = new Set(["AND", "OR", "THEN", "TO", "STEP"]);
+      const delimiters = new Set(["AND", "OR", "THEN", "TO", "STEP", ...(nameBoundaries ?? [])]);
       while (offset < end) {
         while (tokens[index] !== undefined && tokens[index]!.range.end <= offset) index++;
         const candidate = tokens[index];
