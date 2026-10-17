@@ -120,3 +120,15 @@ test('a newer valid request cancels in-flight startup and cleans its unpublished
     assert.equal(fake.launches.length,1);
   } finally {await coordinator.dispose();}
 });
+test('configuration selects a captured backend per valid request without replacing the coordinator',async()=>{
+  const first=backend();const second=backend();const coordinator=new RunCoordinator(first);
+  try {
+    const original=await coordinator.run(source());assert.equal(original.kind,'success');
+    const invalid=await coordinator.run({...source('10 PRINT AT 10,',2),backend:second});
+    assert.equal(invalid.kind,'build-error');assert.equal(second.launches.length,0);
+    assert.strictEqual(coordinator.active,original.run);
+    const replacement=await coordinator.run({...source('20 STOP',3),backend:second});
+    assert.equal(replacement.kind,'success');assert.equal(second.launches.length,1);
+    assert.deepEqual(first.events,['launch-0','stop-0']);
+  } finally {await coordinator.dispose();}
+});

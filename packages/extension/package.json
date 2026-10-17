@@ -29,7 +29,8 @@
     "README.md"
   ],
   "dependencies": {
-    "@zxcode/core": "0.0.0"
+    "@zxcode/core": "0.0.0",
+    "@zxcode/runner": "0.0.0"
   },
   "contributes": {
     "languages": [
@@ -64,6 +65,16 @@
       {
         "command": "zxcode.build",
         "title": "ZXCode: Build TAP"
+      },
+      {
+        "command": "zxcode.run",
+        "title": "ZXCode: Run Spectrum",
+        "icon": "$(play)"
+      },
+      {
+        "command": "zxcode.stop",
+        "title": "ZXCode: Stop Spectrum",
+        "icon": "$(debug-stop)"
       }
     ],
     "menus": {
@@ -77,6 +88,23 @@
           "command": "zxcode.build",
           "when": "editorLangId == zx-spectrum-basic",
           "group": "zxcode"
+        },
+        {
+          "command": "zxcode.run",
+          "when": "editorLangId == zx-spectrum-basic",
+          "group": "zxcode"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "zxcode.run",
+          "when": "editorLangId == zx-spectrum-basic",
+          "group": "navigation@9"
+        },
+        {
+          "command": "zxcode.stop",
+          "when": "zxcode.running || zxcode.starting",
+          "group": "navigation@10"
         }
       ]
     },
@@ -97,6 +125,34 @@
           "default": "spectrum-48k",
           "scope": "resource",
           "description": "Original ZX Spectrum 48K ROM BASIC. Other machines and dialects are not supported."
+        },
+        "zxcode.emulator.backend": {
+          "type": "string",
+          "enum": [
+            "fuse"
+          ],
+          "default": "fuse",
+          "scope": "resource",
+          "description": "External emulator backend used by Run Spectrum."
+        },
+        "zxcode.emulator.executable": {
+          "type": "string",
+          "default": "",
+          "scope": "machine-overridable",
+          "restricted": true,
+          "description": "Absolute Fuse executable path on the extension host. Empty discovers Spectrum Fuse on PATH. Run requires workspace trust."
+        },
+        "zxcode.emulator.configurationFormat": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "xml",
+            "ini"
+          ],
+          "default": "auto",
+          "scope": "machine-overridable",
+          "restricted": true,
+          "description": "Private Fuse configuration format. Auto uses the backend platform default; choose the format required by your Fuse build."
         }
       }
     }

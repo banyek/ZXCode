@@ -18,7 +18,7 @@ export interface EmulatorCapabilities {
   readonly targets: readonly "spectrum-48k"[];
   readonly features: readonly EmulatorFeature[];
 }
-export type EmulatorFailureCode = "not-found" | "not-executable" | "unsupported-platform" | "unsupported-artifact" | "invalid-request" | "launch-failed" | "runtime-failed" | "cancelled" | "unsupported-operation";
+export type EmulatorFailureCode = "not-found" | "not-executable" | "unsupported-version" | "unsupported-platform" | "unsupported-artifact" | "invalid-request" | "launch-failed" | "runtime-failed" | "cancelled" | "unsupported-operation";
 export interface EmulatorFailure {
   readonly kind: "error";
   readonly code: EmulatorFailureCode;

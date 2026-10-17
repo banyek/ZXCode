@@ -46,10 +46,20 @@ Native resource settings: `zxcode.build.outputDirectory` defaults to `""` (besid
 source), or a relative subdirectory such as `artifacts/tapes`. Absolute paths and
 dot segments are rejected; an explicit command destination overrides it.
 `zxcode.target.profile` defaults to the sole supported `spectrum-48k` profile.
-No project DSL or alternate BASIC syntax is introduced. Emulator launching follows
-in M6; use the reported TAP URI as the current handoff artifact.
+No project DSL or alternate BASIC syntax is introduced. Use **ZXCode: Run Spectrum** to build an autostarting private TAP and launch
+a separately installed Fuse CLI. **ZXCode: Stop Spectrum** stops it and removes
+that private TAP. The editor title also offers Run/Stop actions.
 
 From source, `npm run package:extension` creates the installable VSIX and payload
 hash manifest under `artifacts/`. `npm run test:vsix` checks reproducible bytes and
 installs it in a temporary profile to verify the full editor workflow. This does
 not publish the extension to Marketplace.
+
+Run settings: `zxcode.emulator.executable` defaults to PATH discovery; use an
+absolute Fuse executable path when needed. `zxcode.emulator.backend` is `fuse`.
+`zxcode.emulator.configurationFormat` is `auto`, or explicitly `xml`/`ini` for the
+installed build. Run requires workspace trust and Fuse 1.8 or later (1.10.0 is the
+reproduced reference). Failed source keeps an existing run alive; a valid repeat
+stops/replaces it. Run uses current unsaved text and a private TAP with autostart;
+normal Build TAP output/settings are independent. See the repository's
+[Run Spectrum guide](https://github.com/banyek/ZXCode/blob/main/docs/guides/run-spectrum.md).
