@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "backend": "real loopback ZRCP/original 48K ROM",
+  "verified": [
+    "cold-boot native TAP smartload",
+    "loader/parser hits not shown as source",
+    "entry stop",
+    "line and IF-tail statement breakpoints",
+    "GO SUB/RETURN continuation",
+    "two loop iterations",
+    "unexecuted false IF-tail breakpoint not hit",
+    "report completion cleanup",
+    "source invalidation terminates and cleans"
+  ],
+  "stops": [
+    {
+      "line": 10,
+      "statement": 1,
+      "sourceRange": {
+        "sourceId": "runtime-dispatch.zxbas",
+        "start": 3,
+        "end": 14
+      },
+      "position": {
+        "line": 0,
+        "column": 3
+      },
+      "text": "LET total=0"
+    },
+    {
+      "line": 20,
+      "statement": 1,
+      "sourceRange": {
+        "sourceId": "runtime-dispatch.zxbas",
+        "start": 32,
+        "end": 43
+      },
+      "position": {
+        "line": 1,
+        "column": 3
+      },
+      "text": "IF i=1 THEN"
+    },
+    {
+      "line": 20,
+      "statement": 2,
+      "sourceRange": {
+        "sourceId": "runtime-dispatch.zxbas",
+        "start": 44,
+        "end": 54
+      },
+      "position": {
+        "line": 1,
+        "column": 15
+      },
+      "text": "GO SUB 100"
+    },
+    {
+      "line": 100,
+      "statement": 2,
+      "sourceRange": {
+        "sourceId": "runtime-dispatch.zxbas",
+        "start": 156,
+        "end": 162
+      },
+      "position": {
+        "line": 5,
+        "column": 23
+      },
+      "text": "RETURN"
+    },
+    {
+      "line": 20,
+      "statement": 3,
+      "sourceRange": {
+        "sourceId": "runtime-dispatch.zxbas",
+        "start": 56,
+        "end": 74
+      },
+      "position": {
+        "line": 1,
+        "column": 27
+      },
+      "text": "LET total=total+10"
+    },
+    {
+      "line": 20,
+      "statement": 1,
+      "sourceRange": {
+        "sourceId": "runtime-dispatch.zxbas",
+        "start": 32,
+        "end": 43
+      },
+      "position": {
+        "line": 1,
+        "column": 3
+      },
+      "text": "IF i=1 THEN"
+    },
+    {
+      "line": 30,
+      "statement": 2,
+      "sourceRange": {
+        "sourceId": "runtime-dispatch.zxbas",
+        "start": 90,
+        "end": 109
+      },
+      "position": {
+        "line": 2,
+        "column": 15
+      },
+      "text": "LET total=total+100"
+    },
+    {
+      "line": 50,
+      "statement": 1,
+      "sourceRange": {
+        "sourceId": "runtime-dispatch.zxbas",
+        "start": 123,
+        "end": 132
+      },
+      "position": {
+        "line": 4,
+        "column": 3
+      },
+      "text": "GO TO 200"
+    }
+  ]
+}

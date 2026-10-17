@@ -1,3 +1,4 @@
+import { EditorDebugger } from "./debug.js";
 import { registerWorkspaceNavigation } from "./workspace.js";
 import { registerCodeActions } from "./code-actions.js";
 import { registerFormatting } from "./format.js";
@@ -18,6 +19,7 @@ export interface ZXCodeExtensionApi {
   readonly runner: EditorRunner;
   toEditorRange(document: vscode.TextDocument, snapshot: DocumentAnalysisSnapshot, range: SourceRange): vscode.Range;
 }
+let debuggerForShutdown:EditorDebugger | undefined;
 let runnerForShutdown: EditorRunner | undefined;
 export function activate(context: vscode.ExtensionContext): ZXCodeExtensionApi {
   const documents = new EditorDocuments();
@@ -25,8 +27,9 @@ export function activate(context: vscode.ExtensionContext): ZXCodeExtensionApi {
   const output = vscode.window.createOutputChannel("ZXCode");
   const runner = new EditorRunner(documents,diagnostics,output);
   runnerForShutdown = runner;
-  context.subscriptions.push(registerWorkspaceNavigation(documents), registerCodeActions(documents), registerFormatting(documents), registerRenumber(documents), registerCommands(documents, diagnostics, output), runner, registerCompletion(documents), registerNavigation(documents), diagnostics, documents, output);
+  const debuggerAdapter = new EditorDebugger(documents);debuggerForShutdown=debuggerAdapter;
+  context.subscriptions.push(debuggerAdapter, registerWorkspaceNavigation(documents), registerCodeActions(documents), registerFormatting(documents), registerRenumber(documents), registerCommands(documents, diagnostics, output), runner, registerCompletion(documents), registerNavigation(documents), diagnostics, documents, output);
   return Object.freeze({ documents, queries: languageService, toEditorRange, runner });
 }
 
-export async function deactivate(): Promise<void> {await runnerForShutdown?.shutdown();runnerForShutdown = undefined;}
+export async function deactivate(): Promise<void> {await debuggerForShutdown?.shutdown();debuggerForShutdown=undefined;await runnerForShutdown?.shutdown();runnerForShutdown = undefined;}

@@ -124,6 +124,33 @@ export async function run(): Promise<void> {
     await vscode.workspace.fs.writeFile(vscode.Uri.joinPath(destination,"existing-transformed.zxbas"),Buffer.from(existingDocument.getText()));
     await vscode.workspace.fs.writeFile(vscode.Uri.joinPath(destination,"native-workflow.json"),Buffer.from(JSON.stringify({schemaVersion:1,installedExtension:extension.extensionPath,definitions:existingDefinitions?.length,references:existingReferences.length,outlineLines:existingOutline?.length,renumber:existingPreview?.value,formatEditCount:existingFormatEdits.length,remainingDiagnostics:0},null,2)+"\n"));
   }
+  if(process.env.ZXCODE_TEST_ZESARUX) {
+    type DebugMessage={type:string;event?:string;command?:string;success?:boolean;body?:{breakpoints?:{verified:boolean;line:number;column?:number}[]}};
+    const messages:DebugMessage[]=[];
+    const tracker=vscode.debug.registerDebugAdapterTrackerFactory("zxcode-basic",{createDebugAdapterTracker:()=>({onDidSendMessage:message=>messages.push(message as DebugMessage)})});
+    const debugUri=vscode.Uri.file(join(testFiles,"debug-runtime.zxbas"));
+    let started:vscode.DebugSession | undefined;
+    const breakpoint=new vscode.SourceBreakpoint(new vscode.Location(debugUri,new vscode.Position(1,15)));
+    try {
+      await vscode.workspace.openTextDocument(debugUri);
+      assert.equal(await vscode.debug.startDebugging(vscode.workspace.getWorkspaceFolder(debugUri),{type:"zxcode-basic",request:"launch",name:"ZXCode actual BASIC breakpoint smoke",program:debugUri.fsPath,zesaruxExecutable:process.env.ZXCODE_TEST_ZESARUX,stopOnEntry:true}),true);
+      await waitFor(()=>messages.some(message=>message.event==="stopped"),"Actual debugger reaches verified BASIC entry");
+      started=vscode.debug.activeDebugSession;assert.ok(started);
+      const entry=await started.customRequest("stackTrace",{threadId:1}) as {stackFrames:{name:string;line:number;column:number}[]};
+      assert.equal(entry.stackFrames[0]?.name,"BASIC 10:1");assert.equal(entry.stackFrames[0]?.line,1);
+      vscode.debug.addBreakpoints([breakpoint]);
+      await waitFor(()=>messages.some(message=>message.command==="setBreakpoints"&&message.success&&message.body?.breakpoints?.some(item=>item.verified&&item.line===2&&item.column===16)),"Native statement breakpoint is verified");
+      const before=messages.filter(message=>message.event==="stopped").length;
+      await started.customRequest("continue",{threadId:1});
+      await waitFor(()=>messages.filter(message=>message.event==="stopped").length>before,"Actual debugger hits IF-tail GO SUB source breakpoint");
+      const statement=await started.customRequest("stackTrace",{threadId:1}) as {stackFrames:{name:string;line:number;column:number}[]};
+      assert.equal(statement.stackFrames[0]?.name,"BASIC 20:2");assert.equal(statement.stackFrames[0]?.line,2);assert.equal(statement.stackFrames[0]?.column,16);
+      const document=await vscode.workspace.openTextDocument(debugUri),editor=await vscode.window.showTextDocument(document);
+      await editor.edit(builder=>builder.insert(new vscode.Position(0,0)," "));
+      await waitFor(()=>messages.some(message=>message.event==="terminated"),"Source edits terminate the stale debug binding");
+      if(process.env.ZXCODE_TEST_DEBUG_EVIDENCE) await vscode.workspace.fs.writeFile(vscode.Uri.joinPath(vscode.Uri.file(process.env.ZXCODE_TEST_DEBUG_EVIDENCE),"native-basic-debug.json"),Buffer.from(JSON.stringify({schemaVersion:1,entry:entry.stackFrames,statement:statement.stackFrames,nativeStatementBreakpointVerified:true,sourceEditTerminated:true},null,2)+"\n"));
+    } finally {vscode.debug.removeBreakpoints([breakpoint]);if(started)await vscode.debug.stopDebugging(started);tracker.dispose();}
+  }
   const genericUri = vscode.Uri.file(join(testFiles, "generic.bas"));
   await vscode.workspace.fs.writeFile(genericUri, Buffer.from("10 STOP\n"));
   const generic = await vscode.workspace.openTextDocument(genericUri);

@@ -91,3 +91,17 @@ take precedence over disk. Unopened generic `.bas` files are excluded. Use
 **ZXCode: Open BASIC Program** to pick a discovered file. Each file keeps its own
 line numbers, variables, references and build/run behavior; navigation never links
 programs together. Generated/dependency directories are excluded from discovery.
+
+With the separately installed loopback-capable ZEsarUX 13.0 build configured in
+`zxcode.debug.executable`, use **ZXCode: Debug Spectrum BASIC** or a `zxcode-basic`
+launch configuration. Debugging compiles the current dirty document and starts
+at a verified original-ROM BASIC statement. Native line/column breakpoints use
+shared source maps; loader/parser hits are filtered. Continue and Pause are
+available. A pause between dispatches can have no source frame; edited or reopened
+source terminates the old association and requires a fresh debug launch.
+
+Conditional/log breakpoints and BASIC stepping are not provided in this stage.
+Exact-image correlation refuses runtime-mutated FN slots or self-modifying BASIC;
+it never guesses a nearby source location. Normal Run Spectrum still uses Fuse.
+See the debug-machine setup guide in the repository for the optional executable
+and its explicit loopback capability prerequisite.

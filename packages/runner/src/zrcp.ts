@@ -22,7 +22,7 @@ function registers(reply:string):Partial<Record<Z80Register,number>> {
   if(!address(values.PC??-1))throw new MachineFault("protocol-error","ZRCP omitted a valid PC register.");
   return values;
 }
-class ZrcpSession implements DebugMachineSession {
+export class ZrcpSession implements DebugMachineSession {
   readonly id=randomUUID();readonly backendId="zesarux-zrcp";
   readonly ownership:"owned" | "attached";
   readonly capabilities:MachineCapabilities;
@@ -30,12 +30,12 @@ class ZrcpSession implements DebugMachineSession {
   readonly #connection:ZrcpTransport;readonly #owned:OwnedZrcp | undefined;
   readonly #listeners=new Set<(event:MachineEvent)=>void>();readonly #breakpoints=new Map<string,{slot:number;value:MachineBreakpoint}>();
   #phase:MachinePhase="paused";#epoch=0;#sequence=0;#current:MachineStop | undefined;
-  #tail:Promise<void>=Promise.resolve();#timer:ReturnType<typeof setTimeout> | undefined;#pauseRequested=false;#closing=false;
+  #tail:Promise<void>=Promise.resolve();#timer:ReturnType<typeof setTimeout> | undefined;#pauseRequested=false;#pauseSerial=0;#closing=false;
   #finish!:(exit:MachineExit)=>void;#settled=false;#closingPromise:Promise<MachineResult<void>> | undefined;
   constructor(connection:ZrcpTransport,owned:OwnedZrcp | undefined) {
     this.#connection=connection;this.#owned=owned;this.ownership=owned===undefined?"attached":"owned";
     const features:MachineFeature[]=["pause","resume","step","register-read","memory-read"];
-    if(owned!==undefined)features.push("register-write","memory-write","breakpoints","reset","load-z80");
+    if(owned!==undefined)features.push("register-write","memory-write","breakpoints","reset","load-z80","load-tap");
     this.capabilities=Object.freeze({architecture:"z80",features:Object.freeze(features),readableRegisters:readable,writableRegisters:owned===undefined?Object.freeze([]):writable,maxReadBytes:65536,maxBreakpoints:owned===undefined?0:16,conditionKinds:Object.freeze([])});
     this.finished=new Promise(resolve=>{this.#finish=resolve;});
     connection.onFailure(error=>{if(!this.#closing)this.#terminal(error.failure);});
@@ -102,11 +102,12 @@ class ZrcpSession implements DebugMachineSession {
     }).then(()=>{if(this.#phase==="running"&&!this.#closing&&!this.#settled)this.#timer=setTimeout(()=>this.#pump(),0);});
   }
   pause(options?:MachineOperationOptions):Promise<MachineResult<MachineStop>> {
-    if(!options?.signal?.aborted)this.#pauseRequested=true;
+    if(!options?.signal?.aborted) {this.#pauseRequested=true;this.#pauseSerial++;}
     return this.#perform("pause",undefined,options,async()=>this.#phase==="paused"&&this.#current!==undefined?this.#current:await this.#stop("pause"),false);
   }
   resume(stop:MachineStop,options?:MachineOperationOptions):Promise<MachineResult<void>> {
-    return this.#perform("resume",stop,options,async()=>{this.#current=undefined;this.#phase="running";this.#pauseRequested=false;this.#emit({kind:"running",sessionId:this.id,epoch:this.#epoch});this.#timer=setTimeout(()=>this.#pump(),0);});
+    const pauseSerial=this.#pauseSerial;
+    return this.#perform("resume",stop,options,async()=>{if(pauseSerial!==this.#pauseSerial)throw new MachineFault("invalid-state","A newer pause request superseded resume.");this.#current=undefined;this.#phase="running";this.#pauseRequested=false;this.#emit({kind:"running",sessionId:this.id,epoch:this.#epoch});this.#timer=setTimeout(()=>this.#pump(),0);});
   }
   step(stop:MachineStop,options?:MachineOperationOptions):Promise<MachineResult<MachineStop>> {return this.#perform("step",stop,options,async()=>this.#stop("step",[],await this.#connection.command("cpu-step",options?.signal)));}
   inspect(stop:MachineStop,request:MachineInspectionRequest,options?:MachineOperationOptions):Promise<MachineResult<MachineInspection>> {
@@ -156,7 +157,9 @@ class ZrcpSession implements DebugMachineSession {
       if(request.conditions?.length)throw new MachineFault("unsupported-operation","Portable conditional predicates are not yet negotiated.");
       const used=new Set([...this.#breakpoints.values()].map(item=>item.slot));let slot=1;while(used.has(slot))slot++;
       if(slot>this.capabilities.maxBreakpoints)throw new MachineFault("invalid-request","Owned breakpoint capacity is exhausted.");
-      await this.#connection.command("enable-breakpoints",options?.signal);
+      const globalState=await this.#connection.command("get-breakpoints 1 1",options?.signal);
+      if(/^Breakpoints: Off\b/m.test(globalState))await this.#connection.command("enable-breakpoints",options?.signal);
+      else if(!/^Breakpoints: On\b/m.test(globalState))throw new MachineFault("protocol-error","Unknown global breakpoint state.");
       await this.#connection.command(`set-breakpoint ${slot} PC=${request.address}`,options?.signal);
       await this.#connection.command(`enable-breakpoint ${slot}`,options?.signal);
       const value=Object.freeze({id:randomUUID(),request:Object.freeze({address:request.address})});this.#breakpoints.set(value.id,{slot,value});return value;
@@ -168,9 +171,9 @@ class ZrcpSession implements DebugMachineSession {
   reset(stop:MachineStop,options?:MachineOperationOptions):Promise<MachineResult<MachineStop>> {return this.#perform("reset",stop,options,async()=>{await this.#connection.command("reset-cpu",options?.signal);return this.#invalidate("reset");});}
   load(stop:MachineStop,image:MachineImage,options?:MachineOperationOptions):Promise<MachineResult<MachineStop>> {
     return this.#perform(image.format==="z80"?"load-z80":"load-tap",stop,options,async()=>{
-      if(!isAbsolute(image.path)||/[\r\n\0]/.test(image.path)||extname(image.path).toLowerCase()!==".z80")throw new MachineFault("invalid-request","Snapshot load requires an absolute .z80 path without control characters.");
-      try {await access(image.path,constants.R_OK);}catch {throw new MachineFault("invalid-request","Snapshot file is not readable.");}
-      await this.#connection.command(`snapshot-load ${image.path}`,options?.signal);return this.#invalidate("load");
+      if(!isAbsolute(image.path)||/[\r\n\0]/.test(image.path)||extname(image.path).toLowerCase()!=="."+image.format)throw new MachineFault("invalid-request","Image load requires an absolute matching .z80/.tap path without control characters.");
+      try {await access(image.path,constants.R_OK);}catch {throw new MachineFault("invalid-request","Machine image file is not readable.");}
+      await this.#connection.command(`${image.format==="tap"?"smartload":"snapshot-load"} ${image.path}`,options?.signal);return this.#invalidate("load");
     });
   }
   close():Promise<MachineResult<void>> {

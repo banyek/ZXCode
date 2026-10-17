@@ -2,9 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createServer} from 'node:net';
 import {createZrcpBackend} from '../packages/runner/dist/index.js';
+import {ZrcpSession} from '../packages/runner/dist/zrcp.js';
 import {ZrcpTransport} from '../packages/runner/dist/zrcp-transport.js';
 async function fakeServer({badMemory=false,hangMemory=false,version='13.0'}={}) {
- const sockets=new Set(),commands=[];let pc=0x8000,paused=false;
+ const sockets=new Set(),commands=[];let pc=0x8000,paused=false,globalBreakpoints=false;const conditions=new Map();
  const registers=()=>`PC=${pc.toString(16).padStart(4,'0')} SP=ffff AF=0000 BC=0000 DE=0000 HL=0000 IX=0000 IY=5c3a AF'=0000 BC'=0000 DE'=0000 HL'=0000 I=00 R=00 IM1`;
  const server=createServer(socket=>{
   sockets.add(socket);socket.on('error',()=>{});socket.on('close',()=>sockets.delete(socket));
@@ -20,6 +21,10 @@ async function fakeServer({badMemory=false,hangMemory=false,version='13.0'}={}) 
     else if(command==='get-registers')reply(registers());
     else if(command==='cpu-step'){pc=(pc+1)&65535;reply(registers());}
     else if(command==='run 10000'){pc=(pc+10)&65535;reply('Returning after 10000 opcodes\n'+registers());}
+    else if(command.startsWith('get-breakpoints ')){const [,start,count]=command.split(' ').map(Number);reply(`Breakpoints: ${globalBreakpoints?'On':'Off'}\n`+Array.from({length:count},(_,i)=>`Disabled ${start+i}: ${conditions.get(start+i)??'None'}`).join('\n'));}
+    else if(command==='enable-breakpoints'){if(globalBreakpoints)reply('Error. Already enabled');else{globalBreakpoints=true;reply('');}}
+    else if(command.startsWith('set-breakpoint ')){const [,slot,...condition]=command.split(' ');conditions.set(Number(slot),condition.join(' ')||'None');reply('');}
+    else if(command.startsWith('enable-breakpoint '))reply('');
     else if(command.startsWith('read-memory ')) {
      if(hangMemory)continue;
      const [,address,length]=command.split(' ').map(Number);reply(badMemory?'00':Buffer.from(Array.from({length},(_,i)=>(address+i)&255)).toString('hex'));
@@ -42,6 +47,8 @@ test('ZRCP attach handles fragmented prompts, negotiates weak capabilities and e
   assert.equal((await machine.inspect(stop,{memory:[{address:65535,length:2}]})).code,'invalid-request');
   assert.equal((await machine.writeMemory(stop,{address:32768,bytes:[1]})).code,'unsupported-operation');
   assert.equal((await machine.addBreakpoint(stop,{address:0x1b3d})).code,'unsupported-operation');
+  const superseded=machine.resume(stop), newerPause=machine.pause();
+  assert.equal((await superseded).code,'invalid-state');assert.strictEqual((await newerPause).value,stop);
   const stepped=(await machine.step(stop)).value;assert.equal(stepped.pc,0x8001);assert.equal((await machine.inspect(stop,{})).code,'stale-stop');
   await machine.resume(stepped);assert.equal((await machine.inspect(stepped,{})).code,'stale-stop');
   const paused=(await machine.pause()).value;assert.ok(paused.sequence>stepped.sequence);
@@ -95,5 +102,17 @@ test('ZRCP idle disconnect invalidates the session and reconnect creates a fresh
   machine=(await backend.open({mode:'attach'})).value;assert.notEqual(machine.id,original.id);
   assert.equal((await machine.inspect(stop,{})).code,'stale-stop');
   assert.equal((await machine.pause()).kind,'success');
+ } finally {await machine?.close();await server.close();}
+});
+
+test('owned ZRCP session installs two observer breakpoints without re-enabling the global table',async()=>{
+ const server=await fakeServer();let machine;
+ try {
+  const transport=await ZrcpTransport.connect(server.port,'command',1000);let finished;
+  const owned={child:{kill(){finished();return true;}},closed:new Promise(resolve=>{finished=resolve;}),stderr:()=>''};
+  machine=new ZrcpSession(transport,owned);await machine.initialize();const stop=(await machine.pause()).value;
+  const first=await machine.addBreakpoint(stop,{address:0x1b3d}),second=await machine.addBreakpoint(stop,{address:0x12ac});
+  assert.equal(first.kind,'success');assert.equal(second.kind,'success');assert.notEqual(first.value.id,second.value.id);
+  assert.equal(server.commands.filter(command=>command==='enable-breakpoints').length,1);
  } finally {await machine?.close();await server.close();}
 });
