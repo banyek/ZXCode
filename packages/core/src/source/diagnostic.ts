@@ -13,6 +13,7 @@ export const DiagnosticCodes = Object.freeze({
   unterminatedString: "ZX1103",
   invalidNumericLiteral: "ZX1104",
   invalidVariableName: "ZX1105",
+  invalidAssignmentTarget: "ZX1106",
   unsupportedCharacter: "ZX2001",
   unsupportedSyntax: "ZX2002",
   numericOverflow: "ZX2003",

@@ -32,3 +32,6 @@ export { analyzeExpression, BUILTIN_SIGNATURES } from "./semantic/expression.js"
 export type { BuiltinSignature, ExpectedExpressionType, ExpressionAnalysis, ExpressionType, TypedExpression } from "./semantic/expression.js";
 export { SIMPLE_COMMANDS } from "./source/simple-commands.js";
 export type { ColourControl, SimpleCommandDefinition, SimpleCommandShape, SimpleCommandStatement } from "./source/simple-commands.js";
+export type { ScalarAssignmentTarget } from "./source/assignment-target.js";
+export type { AssignmentTarget, LetStatement } from "./syntax/assignment.js";
+export type { BasicLetStatement } from "./semantic/assignment.js";
