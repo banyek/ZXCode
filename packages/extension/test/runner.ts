@@ -129,5 +129,42 @@ export async function run(): Promise<void> {
     if (included !== undefined) assert.ok(list?.items.some((item) => item.label === included), included);
     assert.ok(!list?.items.some((item) => item.label === excluded), excluded);
   }
-  console.log("ZXCode real-host smoke passed: language registration/activation, sessions, completion acceptance, live Problems, diagnostics, navigation, UTF-16/CRLF ranges and stale-result rejection");
+  const navigationUri = vscode.Uri.file(join(testFiles, "navigation.zxbas"));
+  const navigationText = "10 LET a=1\r\n20 DEF FN f(x)=x+a\r\n30 PRINT FN f(a)\r\n40 GO TO 10\r\n50 DIM b(2)";
+  await vscode.workspace.fs.writeFile(navigationUri, Buffer.from(navigationText));
+  const navigationDocument = await vscode.workspace.openTextDocument(navigationUri);
+  const navigationSnapshot = api.documents.snapshot(navigationDocument);
+  for (const offset of [navigationText.lastIndexOf("10"), navigationText.indexOf("f(a)"), navigationText.indexOf("a)")]) {
+    const native = await vscode.commands.executeCommand<vscode.Location[]>("vscode.executeDefinitionProvider", navigationUri, navigationDocument.positionAt(offset));
+    const expected = api.queries.definitions(navigationSnapshot, offset).value;
+    assert.ok(expected.length > 0);
+    assert.equal(native?.length, expected.length);
+    for (const range of expected) assert.ok(native?.some((location) => location.uri.toString() === navigationUri.toString() && location.range.isEqual(api.toEditorRange(navigationDocument, navigationSnapshot, range))));
+    const references = await vscode.commands.executeCommand<vscode.Location[]>("vscode.executeReferenceProvider", navigationUri, navigationDocument.positionAt(offset));
+    const expectedReferences = api.queries.references(navigationSnapshot, offset, {includeDeclaration: true}).value;
+    assert.equal(references?.length, expectedReferences.length);
+    for (const range of expectedReferences) assert.ok(references?.some((location) => location.range.isEqual(api.toEditorRange(navigationDocument, navigationSnapshot, range))));
+  }
+  const helpOffset = navigationText.indexOf("PRINT");
+  const hovers = await vscode.commands.executeCommand<vscode.Hover[]>("vscode.executeHoverProvider", navigationUri, navigationDocument.positionAt(helpOffset));
+  const expectedHover = api.queries.hover(navigationSnapshot, helpOffset).value;
+  assert.ok(expectedHover);
+  assert.ok(hovers?.some((hover) => hover.range?.isEqual(api.toEditorRange(navigationDocument, navigationSnapshot, expectedHover.range)) && hover.contents.some((content) => typeof content === "object" && "value" in content && content.value.includes(new vscode.MarkdownString().appendText(expectedHover.documentation.summary).value))));
+  const outline = await vscode.commands.executeCommand<vscode.DocumentSymbol[]>("vscode.executeDocumentSymbolProvider", navigationUri);
+  const expectedOutline = api.queries.symbols(navigationSnapshot).value;
+  assert.equal(outline?.length, expectedOutline.length);
+  const checkSymbols = (actual: readonly vscode.DocumentSymbol[], expected: typeof expectedOutline): void => {
+    assert.equal(actual.length, expected.length);
+    for (let index = 0; index < expected.length; index++) {
+      const left = actual[index]!;
+      const right = expected[index]!;
+      assert.equal(left.name, right.name);
+      assert.ok(left.range.isEqual(api.toEditorRange(navigationDocument, navigationSnapshot, right.range)));
+      assert.ok(left.selectionRange.isEqual(api.toEditorRange(navigationDocument, navigationSnapshot, right.selectionRange)));
+      checkSymbols(left.children, right.children ?? []);
+    }
+  };
+  checkSymbols(outline!, expectedOutline);
+  assert.ok(outline?.some((symbol) => symbol.children.length > 0));
+  console.log("ZXCode real-host smoke passed: language registration/activation, sessions, completion acceptance, live Problems, diagnostics, native navigation/references/hover/outline, UTF-16/CRLF ranges and stale-result rejection");
 }

@@ -12,8 +12,8 @@ Generic `.bas` is not claimed globally. Highlighting is visual; shared core
 diagnostics remain authoritative. Problems update on open/edit and clear when a
 document closes or leaves this language. Completion uses shared context, typed candidates and authentic BASIC text. Use
 Ctrl+Space to request suggestions and normal VS Code Tab acceptance. No custom
-keybindings or global suggestion settings are installed. Navigation providers
-follow in the next M5 ticket.
+keybindings or global suggestion settings are installed. Hover, Go to Definition (Cmd/Ctrl-click), Find All References and the document
+outline use the same shared model for line numbers, variables and FN symbols.
 
 From the repository root, use Node 24, run `npm ci` and `npm run check`, then use
 F5 with **ZXCode Extension Development Host**. Opening a document in the registered language activates the extension.
