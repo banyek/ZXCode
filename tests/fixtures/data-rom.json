@@ -1,0 +1,155 @@
+{
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "cases": [
+    {
+      "source": "10 DATA",
+      "encoded": "e4",
+      "romError": 11
+    },
+    {
+      "source": "10 DATA a+b,c$",
+      "encoded": "e4612b622c6324",
+      "statements": 1
+    },
+    {
+      "source": "10 DATA RND",
+      "encoded": "e4a5",
+      "statements": 1
+    },
+    {
+      "source": "10 DATA ,a",
+      "encoded": "e42c61",
+      "romError": 11
+    },
+    {
+      "source": "10 DATA a,",
+      "encoded": "e4612c",
+      "romError": 11
+    },
+    {
+      "source": "10 DATA a,,b",
+      "encoded": "e4612c2c62",
+      "romError": 11
+    },
+    {
+      "source": "10 DATA a;b",
+      "encoded": "e4613b62",
+      "romError": 11
+    },
+    {
+      "source": "10 DATA \"a,b:c\"",
+      "encoded": "e422612c623a6322",
+      "statements": 1
+    },
+    {
+      "source": "10 DATA \"a\"\"b\"",
+      "encoded": "e4226122226222",
+      "statements": 1
+    },
+    {
+      "source": "10 DATA SIN a,b$(c TO d)",
+      "encoded": "e4b2612c62242863cc6429",
+      "statements": 1
+    },
+    {
+      "source": "10 DATA a+\"x\"",
+      "encoded": "e4612b227822",
+      "romError": 11
+    },
+    {
+      "source": "10 DATA a: READ b",
+      "encoded": "e4613ae362",
+      "statements": 2
+    },
+    {
+      "source": "10 READ",
+      "encoded": "e3",
+      "romError": 11
+    },
+    {
+      "source": "10 READ a,b$",
+      "encoded": "e3612c6224",
+      "statements": 1
+    },
+    {
+      "source": "10 READ a(b,c)",
+      "encoded": "e36128622c6329",
+      "statements": 1
+    },
+    {
+      "source": "10 READ a$(b TO c)",
+      "encoded": "e361242862cc6329",
+      "statements": 1
+    },
+    {
+      "source": "10 READ a$(b)(c)",
+      "encoded": "e36124286229286329",
+      "statements": 1
+    },
+    {
+      "source": "10 READ a,",
+      "encoded": "e3612c",
+      "romError": 11
+    },
+    {
+      "source": "10 READ ,a",
+      "encoded": "e32c61",
+      "romError": 11
+    },
+    {
+      "source": "10 READ a,,b",
+      "encoded": "e3612c2c62",
+      "romError": 11
+    },
+    {
+      "source": "10 READ a+b",
+      "encoded": "e3612b62",
+      "romError": 11
+    },
+    {
+      "source": "10 READ a;b",
+      "encoded": "e3613b62",
+      "romError": 11
+    },
+    {
+      "source": "10 READ LINE a$",
+      "encoded": "e3ca6124",
+      "romError": 11
+    },
+    {
+      "source": "10 READ (a)",
+      "encoded": "e3286129",
+      "romError": 11
+    },
+    {
+      "source": "10 READ a(\"x\")",
+      "encoded": "e3612822782229",
+      "romError": 11
+    },
+    {
+      "source": "10 READ a$(b,c TO d)",
+      "encoded": "e3612428622c63cc6429",
+      "statements": 1
+    },
+    {
+      "source": "10 RESTORE",
+      "encoded": "e5",
+      "statements": 1
+    },
+    {
+      "source": "10 RESTORE a+b",
+      "encoded": "e5612b62",
+      "statements": 1
+    },
+    {
+      "source": "10 RESTORE a$",
+      "encoded": "e56124",
+      "romError": 11
+    },
+    {
+      "source": "10 RESTORE a,b",
+      "encoded": "e5612c62",
+      "romError": 11
+    }
+  ]
+}

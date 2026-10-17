@@ -49,3 +49,6 @@ export type { AssignableTarget, IndexedAssignmentTarget } from "./source/assignm
 export type { BasicAssignableTarget } from "./semantic/targets.js";
 export type { DimStatement } from "./syntax/dim.js";
 export type { BasicDimStatement } from "./semantic/dim.js";
+
+export type { DataStatement, ReadStatement } from "./syntax/data.js";
+export type { BasicDataStatement, BasicReadStatement } from "./semantic/data.js";
