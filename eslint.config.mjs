@@ -24,9 +24,10 @@ export default [
   { ignores: ["**/dist/**", "**/node_modules/**", "coverage/**"] },
   ...tseslint.configs.recommended,
   coreBoundary(["packages/core/src/**/*.ts"]),
-  coreBoundary(["packages/core/src/source/**/*.ts"], ["syntax", "semantic", "encoding", "tap"]),
-  coreBoundary(["packages/core/src/syntax/**/*.ts"], ["semantic", "encoding", "tap"]),
-  coreBoundary(["packages/core/src/semantic/**/*.ts"], ["encoding", "tap"]),
-  coreBoundary(["packages/core/src/encoding/**/*.ts"], ["syntax", "tap"]),
-  coreBoundary(["packages/core/src/tap/**/*.ts"], ["source", "syntax", "semantic", "encoding"])
+  coreBoundary(["packages/core/src/source/**/*.ts"], ["syntax", "semantic", "encoding", "decoding", "tap"]),
+  coreBoundary(["packages/core/src/syntax/**/*.ts"], ["semantic", "encoding", "decoding", "tap"]),
+  coreBoundary(["packages/core/src/semantic/**/*.ts"], ["encoding", "decoding", "tap"]),
+  coreBoundary(["packages/core/src/encoding/**/*.ts"], ["syntax", "decoding", "tap"]),
+  coreBoundary(["packages/core/src/decoding/**/*.ts"], ["syntax", "semantic", "encoding", "tap"]),
+  coreBoundary(["packages/core/src/tap/**/*.ts"], ["source", "syntax", "semantic", "encoding", "decoding"])
 ];

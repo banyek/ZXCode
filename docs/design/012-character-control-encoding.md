@@ -129,3 +129,45 @@ font glyphs and all sixteen generated blocks are recorded in characters-rom.json
 and rechecked by scripts/research/verify-characters-rom.py. The normal 167-test
 Node 24 suite verifies all byte categories, immutable export identities, shared
 token objects, direct literal emission and preserved context boundaries.
+
+## M3-03 control packets and internal text round trip
+
+Sinclair chapters 15/16 and ROM PO-1-OPER/PO-2-OPER establish byte packets:
+INK/PAPER/FLASH/BRIGHT/INVERSE/OVER (16..21) each consume one following byte;
+AT/TAB (22/23) each consume two. AT uses row then column; TAB uses low then high
+bytes. Parameter bytes are payload, even if they equal quotes, colons, control
+codes or keyword tokens. Standalone editor/display controls use no parameters.
+In text, byte 14 remains a raw byte: its five-byte numeric payload role applies
+to BASIC numeric storage context, not arbitrary string data.
+
+A shared internal text model has literal text, named control packets and raw byte
+atoms. Semantic conversion validates literal mappings, control identity/arity and
+integer byte bounds, returning structured issues with item/UTF-16 offsets. It
+copies/freezes accepted atoms and bytes; the encoder consumes only the checked
+value and returns owned bytes. String/REM checking reuses the literal conversion
+path with source-range adapters. No source escape spelling is enabled here.
+
+A host-independent text-byte decoder groups known complete control packets and
+canonical printable runs using the same character table. Reserved/graphics/UDG/
+token bytes remain explicit raw atoms until source-format export rules apply.
+Truncated controls report byte-offset issues and retain every byte as raw data;
+no parameter padding, dropping or recursive interpretation occurs. Encoding the
+decoded atoms therefore preserves every input byte, including malformed packets.
+Canonical complete text/control atoms also round-trip as internal atoms. This is
+text packet decoding only, not the M3-08 BASIC/TAP import spike.
+
+This layer validates representation, not screen execution: parameters must be
+integers 0..255, with the correct packet count. Runtime colour/coordinate domains
+remain contextual (screen/printer/REM may treat them differently), just as for
+existing BASIC expression operands. Raw atoms are the explicit exact-byte path.
+Named/raw source forms and brace escaping remain the separate M3-05 design gate.
+
+BASIC string framing of control payload bytes that equal a quote, carriage return
+or other delimiter remains an explicit M3-05/M3-06 fixture question. Packet encoding
+returns those bytes verbatim and does not pretend that ordinary doubled-quote
+framing is already sufficient for every raw control payload.
+
+M3-03 validation: all 16 named control families have independently checked original
+ROM dispatch/arity and fixed packet fixtures. The full 173-test Node 24 suite
+checks canonical internal round trips, every byte value, malformed packet retention,
+invalid parameters, ownership and source diagnostic regressions.
