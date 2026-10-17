@@ -93,6 +93,10 @@
         "command": "zxcode.debug",
         "title": "ZXCode: Debug Spectrum BASIC",
         "icon": "$(debug-start)"
+      },
+      {
+        "command": "zxcode.viewMemory",
+        "title": "ZXCode: View Memory"
       }
     ],
     "menus": {

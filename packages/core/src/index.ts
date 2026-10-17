@@ -116,3 +116,7 @@ export { rebuildPreservedTap } from "./preserved-tap.js";
 export type { PreservedTapResult } from "./preserved-tap.js";
 export { workspaceSymbols } from "./service/workspace.js";
 export type { WorkspaceSymbol, WorkspaceSymbolResult } from "./service/workspace.js";
+export { readSpectrumNumber } from "./source/spectrum-number.js";
+export type { SpectrumNumberRead } from "./source/spectrum-number.js";
+export { decodeBasicVariables, displayRuntimeString } from "./runtime/variables.js";
+export type { RuntimeVariable, RuntimeVariableIssue, RuntimeVariableTable } from "./runtime/variables.js";

@@ -4,3 +4,5 @@ tests/fixtures/*.hex text eol=lf
 tests/fixtures/*.bas text eol=lf
 examples/*.bas text eol=lf
 examples/**/*.bas text eol=lf
+examples/*.zxbas text eol=lf
+examples/**/*.zxbas text eol=lf

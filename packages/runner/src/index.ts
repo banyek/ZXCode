@@ -65,3 +65,7 @@ export { startBasicDebugging, BasicDebugSession } from "./basic-debug.js";
 export type { BasicBreakpointRequest, BasicBreakpoint, BasicDebugEvent } from "./basic-debug.js";
 export { correlateBasicDispatch, ORIGINAL_48K_ROM_SHA256 } from "./basic-location.js";
 export type { BasicDebugImage, BasicDispatchObservation, BasicSourceLocation, BasicLocationResult } from "./basic-location.js";
+export { inspectBasicVariables, readPausedMemory } from "./basic-inspection.js";
+export type { PausedMemoryReader, BasicVariableInspection } from "./basic-inspection.js";
+export { runtimeVariableNodes } from "./basic-variable-view.js";
+export type { RuntimeVariableNode } from "./basic-variable-view.js";

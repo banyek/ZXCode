@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {
+      "name": "a",
+      "value": "123",
+      "type": "number"
+    },
+    {
+      "name": "longname",
+      "value": "-456",
+      "type": "number"
+    },
+    {
+      "name": "f",
+      "value": "0.09999999997671694",
+      "type": "number"
+    },
+    {
+      "name": "s$",
+      "value": "\"hi\\x0D\\xFF\"",
+      "type": "string"
+    },
+    {
+      "name": "e$",
+      "value": "\"\"",
+      "type": "string"
+    },
+    {
+      "name": "n",
+      "value": "numeric array (2,2)",
+      "type": "number-array"
+    },
+    {
+      "name": "c$",
+      "value": "character array (2,3)",
+      "type": "character-array"
+    },
+    {
+      "name": "i",
+      "value": "1",
+      "type": "FOR control"
+    }
+  ],
+  "arrayPage": [
+    {
+      "name": "(1,2)",
+      "value": "-2"
+    },
+    {
+      "name": "(2,1)",
+      "value": "0.4999999998835847"
+    }
+  ],
+  "rawNumericBytes": [
+    0,
+    0,
+    123,
+    0,
+    0
+  ],
+  "readonlyMemorySnapshot": true
+}

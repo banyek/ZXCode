@@ -1,0 +1,8 @@
+10 LET a=123: LET longname=-456: LET f=.1: LET s$="hi"+CHR$ 13+CHR$ 255
+20 LET e$="": DIM n(2,2): DIM c$(2,3)
+30 LET n(1,1)=1: LET n(1,2)=-2: LET n(2,1)=.5: LET n(2,2)=65536
+40 LET c$(1)="ab": LET c$(2)="XYZ"
+50 FOR i=1 TO 2
+60 PRINT "VARS READY"
+70 STOP
+80 NEXT i

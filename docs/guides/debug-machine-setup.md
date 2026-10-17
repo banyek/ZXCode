@@ -29,9 +29,9 @@ inspection/step/pause/resume set, and never terminates the external emulator.
 Detach preserves its current logical paused/running state. Global breakpoint,
 reset, image-load and write operations are restricted to owned launch sessions.
 
-Owned machine PC breakpoints, RAM/register writes with readback, reset and `.z80`
-loading are supported. TAP loading, portable predicate conditions and Windows
-owned launch are not advertised. Read the negotiated register lists and limits;
+Owned machine PC breakpoints, RAM/register writes with readback, reset, `.z80`
+snapshots and proven native TAP smartload are supported. Portable predicate
+conditions and Windows owned launch are not advertised. Read the negotiated register lists and limits;
 unknown operations receive `unsupported-operation`. This is a versioned 13.0
 protocol implementation. Source/build correlation must be re-attested after
 reset/load/writes/reconnect and may refuse runtime-mutated program images.
