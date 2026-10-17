@@ -36,9 +36,11 @@ and returns `0 OK, 100:1`. M1's hello bytes and load/run acceptance remain intac
 
 Decimal conversion reproduces original-ROM storage and rounding; see the
 [numeric contract](docs/design/020-numeric-literals.md). M3 numeric lexical hardening now includes the ROM’s contextual fraction/exponent
-whitespace rules. Complete Spectrum characters/control codes and source escapes remain M3.
-Current literal coverage is ASCII 32..126 except backtick; strings support doubled
-quotes and REM tails retain literal source bytes. Production and normal CI require
+whitespace rules. The shared 256-byte Spectrum character map is implemented; controls, graphics/UDG
+notation and source escapes remain M3.
+Printable literals include Spectrum £, © and ↑ alongside the existing ASCII
+coverage (backtick is excluded); strings support doubled quotes and REM tails
+retain literal source bytes. Production and normal CI require
 neither an emulator nor a ROM.
 
 CAT, FORMAT, MOVE and ERASE build with nonfatal runtime-capability warnings on the

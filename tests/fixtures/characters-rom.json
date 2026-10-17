@@ -1,0 +1,239 @@
+{
+  "provenance": "Sinclair Appendix A and pinned original 48K ROM font / PO-GR-1 at 0x0B38; source escape syntax deliberately unspecified",
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "reserved": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    15,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31
+  ],
+  "controls": [
+    {
+      "byte": 6,
+      "name": "COMMA"
+    },
+    {
+      "byte": 7,
+      "name": "EDIT"
+    },
+    {
+      "byte": 8,
+      "name": "LEFT"
+    },
+    {
+      "byte": 9,
+      "name": "RIGHT"
+    },
+    {
+      "byte": 10,
+      "name": "DOWN"
+    },
+    {
+      "byte": 11,
+      "name": "UP"
+    },
+    {
+      "byte": 12,
+      "name": "DELETE"
+    },
+    {
+      "byte": 13,
+      "name": "ENTER"
+    },
+    {
+      "byte": 14,
+      "name": "NUMBER"
+    },
+    {
+      "byte": 16,
+      "name": "INK"
+    },
+    {
+      "byte": 17,
+      "name": "PAPER"
+    },
+    {
+      "byte": 18,
+      "name": "FLASH"
+    },
+    {
+      "byte": 19,
+      "name": "BRIGHT"
+    },
+    {
+      "byte": 20,
+      "name": "INVERSE"
+    },
+    {
+      "byte": 21,
+      "name": "OVER"
+    },
+    {
+      "byte": 22,
+      "name": "AT"
+    },
+    {
+      "byte": 23,
+      "name": "TAB"
+    }
+  ],
+  "printableRange": [
+    32,
+    127
+  ],
+  "specialGlyphs": [
+    {
+      "byte": 94,
+      "text": "↑"
+    },
+    {
+      "byte": 96,
+      "text": "£"
+    },
+    {
+      "byte": 127,
+      "text": "©"
+    }
+  ],
+  "fontEvidence": [
+    {
+      "byte": 39,
+      "bitmap": "0008100000000000"
+    },
+    {
+      "byte": 92,
+      "bitmap": "0000402010080400"
+    },
+    {
+      "byte": 94,
+      "bitmap": "0010385410101000"
+    },
+    {
+      "byte": 96,
+      "bitmap": "001c227820207e00"
+    },
+    {
+      "byte": 126,
+      "bitmap": "0014280000000000"
+    },
+    {
+      "byte": 127,
+      "bitmap": "3c4299a1a199423c"
+    }
+  ],
+  "blocks": [
+    {
+      "byte": 128,
+      "display": " ",
+      "bitmap": "0000000000000000"
+    },
+    {
+      "byte": 129,
+      "display": "▝",
+      "bitmap": "0f0f0f0f00000000"
+    },
+    {
+      "byte": 130,
+      "display": "▘",
+      "bitmap": "f0f0f0f000000000"
+    },
+    {
+      "byte": 131,
+      "display": "▀",
+      "bitmap": "ffffffff00000000"
+    },
+    {
+      "byte": 132,
+      "display": "▗",
+      "bitmap": "000000000f0f0f0f"
+    },
+    {
+      "byte": 133,
+      "display": "▐",
+      "bitmap": "0f0f0f0f0f0f0f0f"
+    },
+    {
+      "byte": 134,
+      "display": "▚",
+      "bitmap": "f0f0f0f00f0f0f0f"
+    },
+    {
+      "byte": 135,
+      "display": "▜",
+      "bitmap": "ffffffff0f0f0f0f"
+    },
+    {
+      "byte": 136,
+      "display": "▖",
+      "bitmap": "00000000f0f0f0f0"
+    },
+    {
+      "byte": 137,
+      "display": "▞",
+      "bitmap": "0f0f0f0ff0f0f0f0"
+    },
+    {
+      "byte": 138,
+      "display": "▌",
+      "bitmap": "f0f0f0f0f0f0f0f0"
+    },
+    {
+      "byte": 139,
+      "display": "▛",
+      "bitmap": "fffffffff0f0f0f0"
+    },
+    {
+      "byte": 140,
+      "display": "▄",
+      "bitmap": "00000000ffffffff"
+    },
+    {
+      "byte": 141,
+      "display": "▟",
+      "bitmap": "0f0f0f0fffffffff"
+    },
+    {
+      "byte": 142,
+      "display": "▙",
+      "bitmap": "f0f0f0f0ffffffff"
+    },
+    {
+      "byte": 143,
+      "display": "█",
+      "bitmap": "ffffffffffffffff"
+    }
+  ],
+  "udgRange": [
+    144,
+    164
+  ],
+  "tokenRange": [
+    165,
+    255
+  ],
+  "literalCases": [
+    {
+      "source": "10 PRINT \"£©↑^\"",
+      "bodyHex": "f522607f5e5e220d"
+    },
+    {
+      "source": "10 REM £©↑^",
+      "bodyHex": "ea20607f5e5e0d"
+    },
+    {
+      "source": "10 PRINT \"a\"\"£\"\"©\"",
+      "bodyHex": "f5226122226022227f220d"
+    }
+  ]
+}

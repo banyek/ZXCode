@@ -1,3 +1,4 @@
+import { spectrumLiteralByte } from "../source/characters.js";
 import { createDiagnostic, DiagnosticCodes } from "../source/diagnostic.js";
 import type { Diagnostic } from "../source/diagnostic.js";
 import type { SourceDocument } from "../source/document.js";
@@ -8,10 +9,10 @@ export function analyzeRemStatement(source: SourceDocument, node: RemStatement, 
   let offset = node.tailRange.start;
   let valid = true;
   for (const character of node.text) {
-    const code = character.codePointAt(0)!;
-    if (code < 32 || code > 126 || code === 96) {
+    const code = spectrumLiteralByte(character);
+    if (code === undefined) {
       valid = false;
-      diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unsupportedCharacter, severity: "error", category: "compatibility", message: "Character is outside the current Spectrum literal character coverage.", range: source.range(offset, offset + character.length) }));
+      diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unsupportedCharacter, severity: "error", category: "compatibility", message: "Character has no direct Spectrum literal mapping.", range: source.range(offset, offset + character.length) }));
     } else bytes.push(code);
     offset += character.length;
   }

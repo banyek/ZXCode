@@ -64,3 +64,6 @@ export type { ListingStatement, CassetteStatement, CassetteForm } from "./source
 export { commandAvailability, SPECTRUM_48K_TARGET } from "./source/target-profile.js";
 export type { CommandAvailability, RuntimeCapability, TargetProfile } from "./source/target-profile.js";
 export type { BasicAnalysisOptions } from "./semantic/program.js";
+
+export { SPECTRUM_CHARACTERS, spectrumCharacter, spectrumLiteralByte } from "./source/characters.js";
+export type { SpectrumCharacter, SpectrumCharacterCategory, SpectrumExportIdentity } from "./source/characters.js";
