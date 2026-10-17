@@ -136,7 +136,7 @@ headless M4 reports across platforms and boots an isolated Linux extension host.
 
 ## Implementation layout
 
-The repository has three private workspaces. Core and CLI use native ES modules;
+The repository has four private workspaces. Core and CLI use native ES modules;
 the extension bundles CommonJS for the desktop editor host:
 
 - `packages/core/src/source`: source identity/ranges and diagnostics.
@@ -147,6 +147,7 @@ the extension bundles CommonJS for the desktop editor host:
 - `packages/core/src/tap`: container writing from bytes and explicit metadata.
 - `packages/extension`: VS Code document/lifecycle/range adapter and isolated host tests.
 - `packages/cli`: host I/O and orchestration through core APIs.
+- `packages/runner`: editor-independent emulator launch/session contract.
 - `tests`: integration and core tests using Node's built-in test runner.
 
 The BASIC core runs through one shared pipeline; later milestones extend fidelity
