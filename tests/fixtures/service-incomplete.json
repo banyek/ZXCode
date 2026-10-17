@@ -1,0 +1,743 @@
+{
+  "provenance": "Reviewed shared CST/semantic and service-contract expectations; ranges use UTF-16, missing-operand insertion precedes trailing trivia; no generated binary authority.",
+  "cases": [
+    {
+      "name": "print-at",
+      "markedSource": "10 PRINT AT 10,|",
+      "version": 7,
+      "expected": {
+        "diagnostics": [
+          [
+            "ZX1101",
+            "error",
+            "syntax",
+            15,
+            15,
+            ""
+          ]
+        ],
+        "completion": {
+          "context": {
+            "kind": "expression",
+            "expectedType": "numeric"
+          },
+          "include": [
+            "PI",
+            "SIN"
+          ],
+          "exclude": [
+            "CHR$",
+            "PRINT"
+          ]
+        },
+        "definitions": [],
+        "references": [],
+        "hover": null,
+        "signature": null,
+        "outline": [
+          "10"
+        ]
+      }
+    },
+    {
+      "name": "goto",
+      "markedSource": "10 GO TO |",
+      "version": 7,
+      "expected": {
+        "diagnostics": [
+          [
+            "ZX1101",
+            "error",
+            "syntax",
+            8,
+            8,
+            ""
+          ]
+        ],
+        "completion": {
+          "context": {
+            "kind": "expression",
+            "expectedType": "numeric",
+            "command": "GO TO"
+          },
+          "include": [
+            "10",
+            "PI"
+          ],
+          "exclude": [
+            "CHR$",
+            "LET"
+          ]
+        },
+        "definitions": [],
+        "references": [],
+        "hover": null,
+        "signature": null,
+        "outline": [
+          "10"
+        ]
+      }
+    },
+    {
+      "name": "for",
+      "markedSource": "10 FOR i=1 TO |",
+      "version": 7,
+      "expected": {
+        "diagnostics": [
+          [
+            "ZX1101",
+            "error",
+            "syntax",
+            13,
+            13,
+            ""
+          ]
+        ],
+        "completion": {
+          "context": {
+            "kind": "expression",
+            "expectedType": "numeric"
+          },
+          "include": [
+            "PI",
+            "SIN"
+          ],
+          "exclude": [
+            "CHR$",
+            "STEP"
+          ]
+        },
+        "definitions": [],
+        "references": [],
+        "hover": null,
+        "signature": null,
+        "outline": [
+          "10"
+        ]
+      }
+    },
+    {
+      "name": "if",
+      "markedSource": "10 IF n |",
+      "version": 7,
+      "expected": {
+        "diagnostics": [
+          [
+            "ZX1101",
+            "error",
+            "syntax",
+            8,
+            8,
+            ""
+          ]
+        ],
+        "completion": {
+          "context": {
+            "kind": "expression",
+            "expectedType": "numeric"
+          },
+          "include": [
+            "THEN",
+            "PI"
+          ],
+          "exclude": [
+            "STEP",
+            "PRINT"
+          ]
+        },
+        "definitions": [],
+        "references": [],
+        "hover": null,
+        "signature": null,
+        "outline": [
+          "10"
+        ]
+      }
+    },
+    {
+      "name": "quote",
+      "markedSource": "10 PRINT \"ab|",
+      "version": 7,
+      "expected": {
+        "diagnostics": [
+          [
+            "ZX1103",
+            "error",
+            "syntax",
+            9,
+            12,
+            "\"ab"
+          ]
+        ],
+        "completion": {
+          "context": {
+            "kind": "string"
+          },
+          "include": [],
+          "exclude": [],
+          "exact": []
+        },
+        "definitions": [],
+        "references": [],
+        "hover": null,
+        "signature": null,
+        "outline": [
+          "10"
+        ]
+      }
+    },
+    {
+      "name": "malformed",
+      "markedSource": "10 ???|",
+      "version": 7,
+      "expected": {
+        "diagnostics": [
+          [
+            "ZX1101",
+            "error",
+            "syntax",
+            3,
+            6,
+            "???"
+          ]
+        ],
+        "completion": {
+          "context": {
+            "kind": "unknown"
+          },
+          "include": [],
+          "exclude": [],
+          "exact": []
+        },
+        "definitions": [],
+        "references": [],
+        "hover": null,
+        "signature": null,
+        "outline": [
+          "10"
+        ]
+      }
+    },
+    {
+      "name": "prefix",
+      "markedSource": "10 PR|",
+      "version": 7,
+      "expected": {
+        "diagnostics": [
+          [
+            "ZX2002",
+            "error",
+            "compatibility",
+            3,
+            5,
+            "PR"
+          ]
+        ],
+        "completion": {
+          "context": {
+            "kind": "statement-start"
+          },
+          "include": [
+            "PRINT"
+          ],
+          "exclude": [
+            "SIN"
+          ],
+          "exact": [
+            "PRINT"
+          ]
+        },
+        "definitions": [],
+        "references": [],
+        "hover": null,
+        "signature": null,
+        "outline": [
+          "10"
+        ]
+      }
+    },
+    {
+      "name": "string",
+      "markedSource": "10 LET a$=|",
+      "version": 7,
+      "expected": {
+        "diagnostics": [
+          [
+            "ZX1101",
+            "error",
+            "syntax",
+            10,
+            10,
+            ""
+          ]
+        ],
+        "completion": {
+          "context": {
+            "kind": "expression",
+            "expectedType": "string"
+          },
+          "include": [
+            "CHR$",
+            "STR$"
+          ],
+          "exclude": [
+            "SIN",
+            "PI"
+          ]
+        },
+        "definitions": [],
+        "references": [],
+        "hover": null,
+        "signature": null,
+        "outline": [
+          "10"
+        ]
+      }
+    },
+    {
+      "name": "forward",
+      "markedSource": "10 GO TO 1|00\n100 STOP\n",
+      "version": 7,
+      "expected": {
+        "diagnostics": [],
+        "completion": {
+          "context": {
+            "kind": "expression",
+            "expectedType": "numeric",
+            "command": "GO TO"
+          },
+          "include": [
+            "10",
+            "100"
+          ],
+          "exclude": [
+            "CHR$"
+          ],
+          "first": [
+            "10",
+            "100"
+          ]
+        },
+        "definitions": [
+          [
+            13,
+            16,
+            "100"
+          ]
+        ],
+        "references": [
+          [
+            9,
+            12,
+            "100"
+          ]
+        ],
+        "hover": [
+          9,
+          12,
+          "BASIC line 100."
+        ],
+        "signature": null,
+        "outline": [
+          "10",
+          "100"
+        ]
+      }
+    },
+    {
+      "name": "missing",
+      "markedSource": "10 GO SUB 9|99\n",
+      "version": 7,
+      "expected": {
+        "diagnostics": [
+          [
+            "ZX3001",
+            "warning",
+            "semantic",
+            10,
+            13,
+            "999"
+          ]
+        ],
+        "completion": {
+          "context": {
+            "kind": "expression",
+            "expectedType": "numeric",
+            "command": "GO SUB"
+          },
+          "include": [],
+          "exclude": [],
+          "exact": []
+        },
+        "definitions": [],
+        "references": [
+          [
+            10,
+            13,
+            "999"
+          ]
+        ],
+        "hover": [
+          10,
+          13,
+          "BASIC line 999 (not present in this document)."
+        ],
+        "signature": null,
+        "outline": [
+          "10"
+        ]
+      }
+    },
+    {
+      "name": "formal",
+      "markedSource": "10 DEF FN f(x)=|x\n20 PRINT FN f(1)\n",
+      "version": 7,
+      "expected": {
+        "diagnostics": [],
+        "completion": {
+          "context": {
+            "kind": "expression",
+            "expectedType": "numeric"
+          },
+          "include": [
+            "x",
+            "PI"
+          ],
+          "exclude": [
+            "CHR$"
+          ]
+        },
+        "definitions": [
+          [
+            12,
+            13,
+            "x"
+          ]
+        ],
+        "references": [
+          [
+            15,
+            16,
+            "x"
+          ]
+        ],
+        "hover": [
+          15,
+          16,
+          "x: numeric formal parameter."
+        ],
+        "signature": null,
+        "outline": [
+          "10",
+          "20"
+        ]
+      }
+    },
+    {
+      "name": "rem",
+      "markedSource": "10 REM PRINT: |FN x\n",
+      "version": 7,
+      "expected": {
+        "diagnostics": [],
+        "completion": {
+          "context": {
+            "kind": "rem"
+          },
+          "include": [],
+          "exclude": [],
+          "exact": []
+        },
+        "definitions": [],
+        "references": [],
+        "hover": null,
+        "signature": null,
+        "outline": [
+          "10"
+        ]
+      }
+    },
+    {
+      "name": "utf16",
+      "markedSource": "10 REM 😀\r\n20 GO TO |100\r\n100 STOP\r\n",
+      "version": 7,
+      "expected": {
+        "diagnostics": [
+          [
+            "ZX2001",
+            "error",
+            "compatibility",
+            7,
+            9,
+            "😀"
+          ]
+        ],
+        "completion": {
+          "context": {
+            "kind": "expression",
+            "expectedType": "numeric",
+            "command": "GO TO"
+          },
+          "include": [
+            "10",
+            "20",
+            "100"
+          ],
+          "exclude": [
+            "CHR$"
+          ],
+          "first": [
+            "10",
+            "20",
+            "100"
+          ]
+        },
+        "definitions": [
+          [
+            25,
+            28,
+            "100"
+          ]
+        ],
+        "references": [
+          [
+            20,
+            23,
+            "100"
+          ]
+        ],
+        "hover": [
+          20,
+          23,
+          "BASIC line 100."
+        ],
+        "signature": null,
+        "outline": [
+          "10",
+          "20",
+          "100"
+        ]
+      }
+    },
+    {
+      "name": "header",
+      "markedSource": "PRINT |1\n",
+      "version": 7,
+      "expected": {
+        "diagnostics": [
+          [
+            "ZX1001",
+            "error",
+            "syntax",
+            0,
+            5,
+            "PRINT"
+          ]
+        ],
+        "completion": {
+          "context": {
+            "kind": "line-number"
+          },
+          "include": [],
+          "exclude": [],
+          "exact": []
+        },
+        "definitions": [],
+        "references": [],
+        "hover": null,
+        "signature": null,
+        "outline": []
+      }
+    },
+    {
+      "name": "tail",
+      "markedSource": "10 IF 1 THEN |",
+      "version": 7,
+      "expected": {
+        "diagnostics": [],
+        "completion": {
+          "context": {
+            "kind": "statement-start"
+          },
+          "include": [
+            "PRINT",
+            "LET"
+          ],
+          "exclude": [
+            "SIN",
+            "CAT"
+          ]
+        },
+        "definitions": [],
+        "references": [],
+        "hover": null,
+        "signature": null,
+        "outline": [
+          "10"
+        ]
+      }
+    },
+    {
+      "name": "step",
+      "markedSource": "10 FOR i=1 TO 3 STEP |",
+      "version": 7,
+      "expected": {
+        "diagnostics": [
+          [
+            "ZX1101",
+            "error",
+            "syntax",
+            20,
+            20,
+            ""
+          ]
+        ],
+        "completion": {
+          "context": {
+            "kind": "expression",
+            "expectedType": "numeric"
+          },
+          "include": [
+            "PI",
+            "SIN"
+          ],
+          "exclude": [
+            "STEP",
+            "CHR$"
+          ]
+        },
+        "definitions": [],
+        "references": [],
+        "hover": null,
+        "signature": null,
+        "outline": [
+          "10"
+        ]
+      }
+    },
+    {
+      "name": "fn-arg",
+      "markedSource": "10 DEF FN f(x,s$)=x\n20 PRINT FN f(1,|)\n",
+      "version": 7,
+      "expected": {
+        "diagnostics": [
+          [
+            "ZX1101",
+            "error",
+            "syntax",
+            36,
+            36,
+            ""
+          ]
+        ],
+        "completion": {
+          "context": {
+            "kind": "expression",
+            "expectedType": "string"
+          },
+          "include": [
+            "CHR$",
+            "STR$"
+          ],
+          "exclude": [
+            "PI",
+            "x",
+            "s$"
+          ]
+        },
+        "definitions": [],
+        "references": [],
+        "hover": null,
+        "signature": {
+          "label": "FN f(x,s$) → numeric",
+          "activeParameter": 1,
+          "parameters": [
+            "x: numeric",
+            "s$: string"
+          ]
+        },
+        "outline": [
+          "10",
+          "20"
+        ]
+      }
+    },
+    {
+      "name": "val",
+      "markedSource": "10 LET s$=\"x\"\n20 PRINT VAL |",
+      "version": 7,
+      "expected": {
+        "diagnostics": [
+          [
+            "ZX1101",
+            "error",
+            "syntax",
+            26,
+            26,
+            ""
+          ]
+        ],
+        "completion": {
+          "context": {
+            "kind": "expression",
+            "expectedType": "string"
+          },
+          "include": [
+            "CHR$",
+            "s$"
+          ],
+          "exclude": [
+            "PI",
+            "AT"
+          ]
+        },
+        "definitions": [],
+        "references": [],
+        "hover": null,
+        "signature": {
+          "label": "VAL expression → numeric",
+          "activeParameter": 0,
+          "parameters": [
+            "expression: string"
+          ]
+        },
+        "outline": [
+          "10",
+          "20"
+        ]
+      }
+    },
+    {
+      "name": "midword",
+      "markedSource": "10 PR|INT AT 1,2",
+      "version": 7,
+      "expected": {
+        "diagnostics": [],
+        "completion": {
+          "context": {
+            "kind": "statement-start"
+          },
+          "include": [
+            "PRINT"
+          ],
+          "exclude": [
+            "SIN"
+          ],
+          "exact": [
+            "PRINT"
+          ]
+        },
+        "definitions": [],
+        "references": [],
+        "hover": [
+          3,
+          8,
+          "Output expressions, separators and positioning or colour controls."
+        ],
+        "signature": null,
+        "outline": [
+          "10"
+        ]
+      }
+    }
+  ]
+}
