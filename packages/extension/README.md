@@ -11,6 +11,10 @@ The package also includes `getting-started.md` and `examples/getting-started.zxb
 For an installed VSIX, save a copy of the sample in your workspace and begin at
 step 3 of the guide; its first two steps describe source development.
 
+The [build, use and test handbook](https://github.com/banyek/ZXCode/blob/main/docs/guides/handbook.md)
+covers source setup, CLI workflows, editor/refactoring commands, debugger setup
+and the complete test matrix.
+
 This workspace adapts VS Code documents to the shared ZX Spectrum BASIC core.
 The registered **ZX Spectrum BASIC** language selects `.zxbas` files automatically.
 For generic `.bas` files, choose the language mode or opt in per workspace:

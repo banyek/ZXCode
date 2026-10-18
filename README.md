@@ -6,9 +6,13 @@ ZXCode is a modern development environment for authentic Sinclair ZX Spectrum 48
 
 The goal is deliberately conservative about the language and ambitious about the tooling: write real line-numbered Sinclair BASIC, while getting the editor experience expected from a modern IDE.
 
+Start with the **[build, use and test handbook](docs/guides/handbook.md)** for
+installation, CLI workflows, editor commands, emulator/debugger setup and testing.
+For a short editor walkthrough, see [your first program](docs/guides/getting-started.md).
+
 ## Direction
 
-ZXCode aims to provide:
+ZXCode provides:
 
 - syntax highlighting and live diagnostics;
 - ZX Spectrum 48K BASIC compatibility checking;
@@ -22,7 +26,13 @@ The language itself is not modernized. IDE features live around Sinclair BASIC r
 
 ## Status
 
-M1–M4 are implemented with independent compatibility and headless service checks. The host-independent core parses,
+M1–M8 are implemented: the shared compiler and CLI, VS Code editing/refactoring,
+TAP import and round trips, Fuse Run, and the supported original-ROM BASIC debugger.
+The debugger includes source breakpoints, paused inspection, screen snapshots,
+read-only watches and statement Step Into; its optional emulator requirements and
+supported boundaries are documented in the [handbook](docs/guides/handbook.md#6-debug-basic).
+
+The host-independent core parses,
 validates and encodes all fifty original 48K ROM command grammars, expressions,
 numeric/string variables and arrays, slicing, control flow, PRINT/INPUT,
 DATA/READ/RESTORE, DEF FN/FN, REM, and listing/cassette forms. The CLI checks source
@@ -31,8 +41,8 @@ diagnostics. The editor-independent language-service contract and versioned
 `createDocumentSession` analysis snapshots are implemented. `documentDiagnostics`
 returns cached, versioned shared diagnostics including encoder limits. Semantic
 symbol indexing, hover, definitions and references use the same canonical model;
-parser-context completion uses checked text edits and typed candidates. IDE
-integration follows. Shared original-manual help covers every ROM token, and
+parser-context completion uses checked text edits and typed candidates. The VS Code
+extension consumes those same snapshots. Shared original-manual help covers every ROM token, and
 `documentSignatureHelp` supplies typed built-in/FN argument information, and
 `documentSymbols` exposes an immutable outline in physical source order.
 See the [service contract](docs/design/032-language-service-contract.md) and
@@ -121,7 +131,7 @@ npm run zxcode -- --help
 
 | Command | Purpose |
 | --- | --- |
-| `npm run build` | Compile core and CLI with TypeScript project references |
+| `npm run build` | Compile core, CLI and runner; bundle the VS Code extension and host-test harness |
 | `npm run typecheck` | Check all workspaces and compile-time contract tests without emitting code |
 | `npm run lint` | Run ESLint with zero warnings allowed |
 | `npm test` | Build and run Node's test runner |
@@ -129,6 +139,11 @@ npm run zxcode -- --help
 | `npm run test:compatibility` | Check the pinned independent M3 corpus |
 | `npm run test:service` | Sweep all headless query positions and report behavior |
 | `npm run test:extension` | Run an isolated real VS Code development-host smoke |
+| `npm run test:roundtrip` | Verify supported semantic TAP/source round trips |
+| `npm run package:extension` | Build an installable VSIX under `artifacts/` |
+| `npm run test:vsix` | Verify reproducibility and test the actual installed VSIX |
+| `npm run test:existing -- --output ABSOLUTE_EMPTY_DIRECTORY` | Capture the installed import/edit/build workflow |
+| `npm run test:run -- --fuse ABSOLUTE_FUSE_EXECUTABLE` | Run optional real Fuse/editor acceptance |
 | `npm run clean` | Remove generated build outputs |
 | `npm run zxcode -- --help` | Run the compiled CLI (build first) |
 
@@ -154,13 +169,12 @@ the extension bundles CommonJS for the desktop editor host:
 - `packages/runner`: editor-independent emulator/process ownership, Fuse Run and optional ZRCP machine control.
 - `tests`: integration and core tests using Node's built-in test runner.
 
-The BASIC core runs through one shared pipeline; later milestones extend fidelity
-and tooling on the same model. Dependency direction is source → syntax →
+The BASIC core runs through one shared pipeline for all frontends. Dependency direction is source → syntax →
 semantic → encoding, where an arrow means the
 right-hand layer may consume the left-hand layer. TAP handles bytes independently
 of grammar. CLI depends on core; core never depends on CLI or VS Code. Core is
 compiled without ambient Node/browser types, and lint rejects editor/CLI, Node
-built-ins, and reverse layer imports there. Future language-service and emulator
+built-ins, and reverse layer imports there. Language-service queries and emulator
 adapters sit outside the parser/encoder pipeline.
 
 TypeScript 6.0.3 is pinned within the supported range of TypeScript ESLint 8.71.2.
