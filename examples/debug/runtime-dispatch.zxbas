@@ -1,0 +1,8 @@
+10 LET total=0: FOR i=1 TO 2
+20 IF i=1 THEN GO SUB 100: LET total=total+10
+30 IF i=2 THEN LET total=total+100
+40 NEXT i
+50 GO TO 200
+100 LET total=total+1: RETURN
+200 IF total<>111 THEN STOP
+210 PRINT "TRACE OK": STOP
