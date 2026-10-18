@@ -1,0 +1,1313 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "sourceSha256": "11ee5118e6a47328186b5f7e6acfd8a5dfa9f460298558916c39a5475951e397",
+  "programSha256": "ae97fcec31ca7addf2a8ff90105bb9d91c957640887e46e2f60bb9009b1dc78f",
+  "runs": [
+    {
+      "backend": "skoolkit-original-rom",
+      "programBase": 23755,
+      "locations": [
+        {
+          "kind": "mapped",
+          "line": 10,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 3,
+            "end": 14
+          },
+          "position": {
+            "line": 0,
+            "column": 3
+          },
+          "sourceText": "LET total=0"
+        },
+        {
+          "kind": "mapped",
+          "line": 10,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 16,
+            "end": 28
+          },
+          "position": {
+            "line": 0,
+            "column": 16
+          },
+          "sourceText": "FOR i=1 TO 2"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 32,
+            "end": 43
+          },
+          "position": {
+            "line": 1,
+            "column": 3
+          },
+          "sourceText": "IF i=1 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 44,
+            "end": 54
+          },
+          "position": {
+            "line": 1,
+            "column": 15
+          },
+          "sourceText": "GO SUB 100"
+        },
+        {
+          "kind": "mapped",
+          "line": 100,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 137,
+            "end": 154
+          },
+          "position": {
+            "line": 5,
+            "column": 4
+          },
+          "sourceText": "LET total=total+1"
+        },
+        {
+          "kind": "mapped",
+          "line": 100,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 156,
+            "end": 162
+          },
+          "position": {
+            "line": 5,
+            "column": 23
+          },
+          "sourceText": "RETURN"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 3,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 56,
+            "end": 74
+          },
+          "position": {
+            "line": 1,
+            "column": 27
+          },
+          "sourceText": "LET total=total+10"
+        },
+        {
+          "kind": "mapped",
+          "line": 30,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 78,
+            "end": 89
+          },
+          "position": {
+            "line": 2,
+            "column": 3
+          },
+          "sourceText": "IF i=2 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 40,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 113,
+            "end": 119
+          },
+          "position": {
+            "line": 3,
+            "column": 3
+          },
+          "sourceText": "NEXT i"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 32,
+            "end": 43
+          },
+          "position": {
+            "line": 1,
+            "column": 3
+          },
+          "sourceText": "IF i=1 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 30,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 78,
+            "end": 89
+          },
+          "position": {
+            "line": 2,
+            "column": 3
+          },
+          "sourceText": "IF i=2 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 30,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 90,
+            "end": 109
+          },
+          "position": {
+            "line": 2,
+            "column": 15
+          },
+          "sourceText": "LET total=total+100"
+        },
+        {
+          "kind": "mapped",
+          "line": 40,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 113,
+            "end": 119
+          },
+          "position": {
+            "line": 3,
+            "column": 3
+          },
+          "sourceText": "NEXT i"
+        },
+        {
+          "kind": "mapped",
+          "line": 50,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 123,
+            "end": 132
+          },
+          "position": {
+            "line": 4,
+            "column": 3
+          },
+          "sourceText": "GO TO 200"
+        },
+        {
+          "kind": "mapped",
+          "line": 200,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 167,
+            "end": 185
+          },
+          "position": {
+            "line": 6,
+            "column": 4
+          },
+          "sourceText": "IF total<>111 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 210,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 195,
+            "end": 211
+          },
+          "position": {
+            "line": 7,
+            "column": 4
+          },
+          "sourceText": "PRINT \"TRACE OK\""
+        },
+        {
+          "kind": "mapped",
+          "line": 210,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 213,
+            "end": 217
+          },
+          "position": {
+            "line": 7,
+            "column": 22
+          },
+          "sourceText": "STOP"
+        }
+      ]
+    },
+    {
+      "backend": "skoolkit-original-rom",
+      "programBase": 23819,
+      "locations": [
+        {
+          "kind": "mapped",
+          "line": 10,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 3,
+            "end": 14
+          },
+          "position": {
+            "line": 0,
+            "column": 3
+          },
+          "sourceText": "LET total=0"
+        },
+        {
+          "kind": "mapped",
+          "line": 10,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 16,
+            "end": 28
+          },
+          "position": {
+            "line": 0,
+            "column": 16
+          },
+          "sourceText": "FOR i=1 TO 2"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 32,
+            "end": 43
+          },
+          "position": {
+            "line": 1,
+            "column": 3
+          },
+          "sourceText": "IF i=1 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 44,
+            "end": 54
+          },
+          "position": {
+            "line": 1,
+            "column": 15
+          },
+          "sourceText": "GO SUB 100"
+        },
+        {
+          "kind": "mapped",
+          "line": 100,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 137,
+            "end": 154
+          },
+          "position": {
+            "line": 5,
+            "column": 4
+          },
+          "sourceText": "LET total=total+1"
+        },
+        {
+          "kind": "mapped",
+          "line": 100,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 156,
+            "end": 162
+          },
+          "position": {
+            "line": 5,
+            "column": 23
+          },
+          "sourceText": "RETURN"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 3,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 56,
+            "end": 74
+          },
+          "position": {
+            "line": 1,
+            "column": 27
+          },
+          "sourceText": "LET total=total+10"
+        },
+        {
+          "kind": "mapped",
+          "line": 30,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 78,
+            "end": 89
+          },
+          "position": {
+            "line": 2,
+            "column": 3
+          },
+          "sourceText": "IF i=2 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 40,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 113,
+            "end": 119
+          },
+          "position": {
+            "line": 3,
+            "column": 3
+          },
+          "sourceText": "NEXT i"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 32,
+            "end": 43
+          },
+          "position": {
+            "line": 1,
+            "column": 3
+          },
+          "sourceText": "IF i=1 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 30,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 78,
+            "end": 89
+          },
+          "position": {
+            "line": 2,
+            "column": 3
+          },
+          "sourceText": "IF i=2 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 30,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 90,
+            "end": 109
+          },
+          "position": {
+            "line": 2,
+            "column": 15
+          },
+          "sourceText": "LET total=total+100"
+        },
+        {
+          "kind": "mapped",
+          "line": 40,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 113,
+            "end": 119
+          },
+          "position": {
+            "line": 3,
+            "column": 3
+          },
+          "sourceText": "NEXT i"
+        },
+        {
+          "kind": "mapped",
+          "line": 50,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 123,
+            "end": 132
+          },
+          "position": {
+            "line": 4,
+            "column": 3
+          },
+          "sourceText": "GO TO 200"
+        },
+        {
+          "kind": "mapped",
+          "line": 200,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 167,
+            "end": 185
+          },
+          "position": {
+            "line": 6,
+            "column": 4
+          },
+          "sourceText": "IF total<>111 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 210,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 195,
+            "end": 211
+          },
+          "position": {
+            "line": 7,
+            "column": 4
+          },
+          "sourceText": "PRINT \"TRACE OK\""
+        },
+        {
+          "kind": "mapped",
+          "line": 210,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 213,
+            "end": 217
+          },
+          "position": {
+            "line": 7,
+            "column": 22
+          },
+          "sourceText": "STOP"
+        }
+      ]
+    },
+    {
+      "backend": "skoolkit-original-rom",
+      "programBase": 24012,
+      "locations": [
+        {
+          "kind": "mapped",
+          "line": 10,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 3,
+            "end": 14
+          },
+          "position": {
+            "line": 0,
+            "column": 3
+          },
+          "sourceText": "LET total=0"
+        },
+        {
+          "kind": "mapped",
+          "line": 10,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 16,
+            "end": 28
+          },
+          "position": {
+            "line": 0,
+            "column": 16
+          },
+          "sourceText": "FOR i=1 TO 2"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 32,
+            "end": 43
+          },
+          "position": {
+            "line": 1,
+            "column": 3
+          },
+          "sourceText": "IF i=1 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 44,
+            "end": 54
+          },
+          "position": {
+            "line": 1,
+            "column": 15
+          },
+          "sourceText": "GO SUB 100"
+        },
+        {
+          "kind": "mapped",
+          "line": 100,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 137,
+            "end": 154
+          },
+          "position": {
+            "line": 5,
+            "column": 4
+          },
+          "sourceText": "LET total=total+1"
+        },
+        {
+          "kind": "mapped",
+          "line": 100,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 156,
+            "end": 162
+          },
+          "position": {
+            "line": 5,
+            "column": 23
+          },
+          "sourceText": "RETURN"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 3,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 56,
+            "end": 74
+          },
+          "position": {
+            "line": 1,
+            "column": 27
+          },
+          "sourceText": "LET total=total+10"
+        },
+        {
+          "kind": "mapped",
+          "line": 30,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 78,
+            "end": 89
+          },
+          "position": {
+            "line": 2,
+            "column": 3
+          },
+          "sourceText": "IF i=2 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 40,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 113,
+            "end": 119
+          },
+          "position": {
+            "line": 3,
+            "column": 3
+          },
+          "sourceText": "NEXT i"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 32,
+            "end": 43
+          },
+          "position": {
+            "line": 1,
+            "column": 3
+          },
+          "sourceText": "IF i=1 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 30,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 78,
+            "end": 89
+          },
+          "position": {
+            "line": 2,
+            "column": 3
+          },
+          "sourceText": "IF i=2 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 30,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 90,
+            "end": 109
+          },
+          "position": {
+            "line": 2,
+            "column": 15
+          },
+          "sourceText": "LET total=total+100"
+        },
+        {
+          "kind": "mapped",
+          "line": 40,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 113,
+            "end": 119
+          },
+          "position": {
+            "line": 3,
+            "column": 3
+          },
+          "sourceText": "NEXT i"
+        },
+        {
+          "kind": "mapped",
+          "line": 50,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 123,
+            "end": 132
+          },
+          "position": {
+            "line": 4,
+            "column": 3
+          },
+          "sourceText": "GO TO 200"
+        },
+        {
+          "kind": "mapped",
+          "line": 200,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 167,
+            "end": 185
+          },
+          "position": {
+            "line": 6,
+            "column": 4
+          },
+          "sourceText": "IF total<>111 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 210,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 195,
+            "end": 211
+          },
+          "position": {
+            "line": 7,
+            "column": 4
+          },
+          "sourceText": "PRINT \"TRACE OK\""
+        },
+        {
+          "kind": "mapped",
+          "line": 210,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 213,
+            "end": 217
+          },
+          "position": {
+            "line": 7,
+            "column": 22
+          },
+          "sourceText": "STOP"
+        }
+      ]
+    },
+    {
+      "backend": "zesarux-zrcp-loopback-research",
+      "programBase": 23755,
+      "locations": [
+        {
+          "kind": "mapped",
+          "line": 10,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 3,
+            "end": 14
+          },
+          "position": {
+            "line": 0,
+            "column": 3
+          },
+          "sourceText": "LET total=0"
+        },
+        {
+          "kind": "mapped",
+          "line": 10,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 16,
+            "end": 28
+          },
+          "position": {
+            "line": 0,
+            "column": 16
+          },
+          "sourceText": "FOR i=1 TO 2"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 32,
+            "end": 43
+          },
+          "position": {
+            "line": 1,
+            "column": 3
+          },
+          "sourceText": "IF i=1 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 44,
+            "end": 54
+          },
+          "position": {
+            "line": 1,
+            "column": 15
+          },
+          "sourceText": "GO SUB 100"
+        },
+        {
+          "kind": "mapped",
+          "line": 100,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 137,
+            "end": 154
+          },
+          "position": {
+            "line": 5,
+            "column": 4
+          },
+          "sourceText": "LET total=total+1"
+        },
+        {
+          "kind": "mapped",
+          "line": 100,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 156,
+            "end": 162
+          },
+          "position": {
+            "line": 5,
+            "column": 23
+          },
+          "sourceText": "RETURN"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 3,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 56,
+            "end": 74
+          },
+          "position": {
+            "line": 1,
+            "column": 27
+          },
+          "sourceText": "LET total=total+10"
+        },
+        {
+          "kind": "mapped",
+          "line": 30,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 78,
+            "end": 89
+          },
+          "position": {
+            "line": 2,
+            "column": 3
+          },
+          "sourceText": "IF i=2 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 40,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 113,
+            "end": 119
+          },
+          "position": {
+            "line": 3,
+            "column": 3
+          },
+          "sourceText": "NEXT i"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 32,
+            "end": 43
+          },
+          "position": {
+            "line": 1,
+            "column": 3
+          },
+          "sourceText": "IF i=1 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 30,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 78,
+            "end": 89
+          },
+          "position": {
+            "line": 2,
+            "column": 3
+          },
+          "sourceText": "IF i=2 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 30,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 90,
+            "end": 109
+          },
+          "position": {
+            "line": 2,
+            "column": 15
+          },
+          "sourceText": "LET total=total+100"
+        },
+        {
+          "kind": "mapped",
+          "line": 40,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 113,
+            "end": 119
+          },
+          "position": {
+            "line": 3,
+            "column": 3
+          },
+          "sourceText": "NEXT i"
+        },
+        {
+          "kind": "mapped",
+          "line": 50,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 123,
+            "end": 132
+          },
+          "position": {
+            "line": 4,
+            "column": 3
+          },
+          "sourceText": "GO TO 200"
+        },
+        {
+          "kind": "mapped",
+          "line": 200,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 167,
+            "end": 185
+          },
+          "position": {
+            "line": 6,
+            "column": 4
+          },
+          "sourceText": "IF total<>111 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 210,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 195,
+            "end": 211
+          },
+          "position": {
+            "line": 7,
+            "column": 4
+          },
+          "sourceText": "PRINT \"TRACE OK\""
+        },
+        {
+          "kind": "mapped",
+          "line": 210,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 213,
+            "end": 217
+          },
+          "position": {
+            "line": 7,
+            "column": 22
+          },
+          "sourceText": "STOP"
+        }
+      ]
+    },
+    {
+      "backend": "zesarux-zrcp-loopback-research",
+      "programBase": 24012,
+      "locations": [
+        {
+          "kind": "mapped",
+          "line": 10,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 3,
+            "end": 14
+          },
+          "position": {
+            "line": 0,
+            "column": 3
+          },
+          "sourceText": "LET total=0"
+        },
+        {
+          "kind": "mapped",
+          "line": 10,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 16,
+            "end": 28
+          },
+          "position": {
+            "line": 0,
+            "column": 16
+          },
+          "sourceText": "FOR i=1 TO 2"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 32,
+            "end": 43
+          },
+          "position": {
+            "line": 1,
+            "column": 3
+          },
+          "sourceText": "IF i=1 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 44,
+            "end": 54
+          },
+          "position": {
+            "line": 1,
+            "column": 15
+          },
+          "sourceText": "GO SUB 100"
+        },
+        {
+          "kind": "mapped",
+          "line": 100,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 137,
+            "end": 154
+          },
+          "position": {
+            "line": 5,
+            "column": 4
+          },
+          "sourceText": "LET total=total+1"
+        },
+        {
+          "kind": "mapped",
+          "line": 100,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 156,
+            "end": 162
+          },
+          "position": {
+            "line": 5,
+            "column": 23
+          },
+          "sourceText": "RETURN"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 3,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 56,
+            "end": 74
+          },
+          "position": {
+            "line": 1,
+            "column": 27
+          },
+          "sourceText": "LET total=total+10"
+        },
+        {
+          "kind": "mapped",
+          "line": 30,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 78,
+            "end": 89
+          },
+          "position": {
+            "line": 2,
+            "column": 3
+          },
+          "sourceText": "IF i=2 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 40,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 113,
+            "end": 119
+          },
+          "position": {
+            "line": 3,
+            "column": 3
+          },
+          "sourceText": "NEXT i"
+        },
+        {
+          "kind": "mapped",
+          "line": 20,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 32,
+            "end": 43
+          },
+          "position": {
+            "line": 1,
+            "column": 3
+          },
+          "sourceText": "IF i=1 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 30,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 78,
+            "end": 89
+          },
+          "position": {
+            "line": 2,
+            "column": 3
+          },
+          "sourceText": "IF i=2 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 30,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 90,
+            "end": 109
+          },
+          "position": {
+            "line": 2,
+            "column": 15
+          },
+          "sourceText": "LET total=total+100"
+        },
+        {
+          "kind": "mapped",
+          "line": 40,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 113,
+            "end": 119
+          },
+          "position": {
+            "line": 3,
+            "column": 3
+          },
+          "sourceText": "NEXT i"
+        },
+        {
+          "kind": "mapped",
+          "line": 50,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 123,
+            "end": 132
+          },
+          "position": {
+            "line": 4,
+            "column": 3
+          },
+          "sourceText": "GO TO 200"
+        },
+        {
+          "kind": "mapped",
+          "line": 200,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 167,
+            "end": 185
+          },
+          "position": {
+            "line": 6,
+            "column": 4
+          },
+          "sourceText": "IF total<>111 THEN"
+        },
+        {
+          "kind": "mapped",
+          "line": 210,
+          "statement": 1,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 195,
+            "end": 211
+          },
+          "position": {
+            "line": 7,
+            "column": 4
+          },
+          "sourceText": "PRINT \"TRACE OK\""
+        },
+        {
+          "kind": "mapped",
+          "line": 210,
+          "statement": 2,
+          "sourceRange": {
+            "sourceId": "runtime-dispatch.zxbas",
+            "start": 213,
+            "end": 217
+          },
+          "position": {
+            "line": 7,
+            "column": 22
+          },
+          "sourceText": "STOP"
+        }
+      ]
+    }
+  ]
+}
