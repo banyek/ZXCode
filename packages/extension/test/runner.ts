@@ -150,6 +150,31 @@ export async function run(): Promise<void> {
       await waitFor(()=>messages.some(message=>message.event==="terminated"),"Source edits terminate the stale debug binding");
       if(process.env.ZXCODE_TEST_DEBUG_EVIDENCE) await vscode.workspace.fs.writeFile(vscode.Uri.joinPath(vscode.Uri.file(process.env.ZXCODE_TEST_DEBUG_EVIDENCE),"native-basic-debug.json"),Buffer.from(JSON.stringify({schemaVersion:1,entry:entry.stackFrames,statement:statement.stackFrames,nativeStatementBreakpointVerified:true,sourceEditTerminated:true},null,2)+"\n"));
     } finally {vscode.debug.removeBreakpoints([breakpoint]);if(started)await vscode.debug.stopDebugging(started);tracker.dispose();}
+    const variablesUri=vscode.Uri.file(join(testFiles,"debug-variables.zxbas"));
+    const variablesBreakpoint=new vscode.SourceBreakpoint(new vscode.Location(variablesUri,new vscode.Position(6,3)));
+    const variableEvents:string[]=[];const variableTracker=vscode.debug.registerDebugAdapterTrackerFactory("zxcode-basic",{createDebugAdapterTracker:()=>({onDidSendMessage:message=>{const event=(message as DebugMessage).event;if(event)variableEvents.push(event);}})});
+    let variableSession:vscode.DebugSession | undefined;
+    try {
+      vscode.debug.addBreakpoints([variablesBreakpoint]);
+      assert.equal(await vscode.debug.startDebugging(vscode.workspace.getWorkspaceFolder(variablesUri),{type:"zxcode-basic",request:"launch",name:"ZXCode runtime variable smoke",program:variablesUri.fsPath,zesaruxExecutable:process.env.ZXCODE_TEST_ZESARUX,stopOnEntry:false}),true);
+      await waitFor(()=>variableEvents.includes("stopped"),"Actual variable fixture pauses before STOP");variableSession=vscode.debug.activeDebugSession;assert.ok(variableSession);
+      const scopes=await variableSession.customRequest("scopes",{frameId:1}) as {scopes:{name:string;variablesReference:number}[]};assert.equal(scopes.scopes[0]?.name,"48K BASIC variables");
+      type NativeVariable={name:string;value:string;type:string;variablesReference:number;memoryReference?:string};
+      const roots=await variableSession.customRequest("variables",{variablesReference:scopes.scopes[0]!.variablesReference}) as {variables:NativeVariable[]};
+      const find=(name:string):NativeVariable=>{const value=roots.variables.find(item=>item.name===name);assert.ok(value);return value;};
+      assert.equal(find("a").value,"123");assert.equal(find("longname").value,"-456");assert.equal(find("s$").value,'"hi\\x0D\\xFF"');assert.equal(find("e$").value,'""');assert.equal(find("i").value,"1");
+      const romNumeric=JSON.parse(new TextDecoder().decode(await vscode.workspace.fs.readFile(vscode.Uri.file(join(testFiles,"rom-numeric-reference.json"))))) as Record<string,string>;
+      assert.equal(romNumeric[".5"],"7f7fffffff");assert.equal(romNumeric["0.1"],"7d4ccccccc");
+      // Original-ROM DEC-TO-FP, independently pinned in numeric-rom.json, stores
+      // .5 one value below exact 1/2. zmakebas's variable-layout reference uses
+      // a different hidden value; neither reference nor compiler bytes change.
+      assert.equal(find("f").value,String(3435973836/34359738368));
+      const array=await variableSession.customRequest("variables",{variablesReference:find("n").variablesReference,start:1,count:2,filter:"indexed"}) as {variables:NativeVariable[]};
+      assert.deepEqual(array.variables.map(item=>[item.name,item.value]),[["(1,2)","-2"],["(2,1)",String(0.5-2**-33)]]);
+      const raw=await variableSession.customRequest("readMemory",{memoryReference:find("a").memoryReference,count:5}) as {data:string};assert.deepEqual(Array.from(Buffer.from(raw.data,"base64")),[0,0,123,0,0]);
+      const memoryUri=await vscode.commands.executeCommand<vscode.Uri>("zxcode.viewMemory",0x5c4b,16);assert.ok(memoryUri);assert.equal(memoryUri.scheme,"zxcode-memory");const dump=await vscode.workspace.openTextDocument(memoryUri);assert.ok(dump.getText().includes("5C4B:"));assert.ok(dump.getText().includes("historical after execution resumes"));
+      if(process.env.ZXCODE_TEST_DEBUG_EVIDENCE) await vscode.workspace.fs.writeFile(vscode.Uri.joinPath(vscode.Uri.file(process.env.ZXCODE_TEST_DEBUG_EVIDENCE),"native-basic-variables.json"),Buffer.from(JSON.stringify({schemaVersion:1,variables:roots.variables.map(item=>({name:item.name,value:item.value,type:item.type})),arrayPage:array.variables.map(item=>({name:item.name,value:item.value})),rawNumericBytes:Array.from(Buffer.from(raw.data,"base64")),readonlyMemorySnapshot:true},null,2)+"\n"));
+    } finally {vscode.debug.removeBreakpoints([variablesBreakpoint]);if(variableSession)await vscode.debug.stopDebugging(variableSession);variableTracker.dispose();}
   }
   const genericUri = vscode.Uri.file(join(testFiles, "generic.bas"));
   await vscode.workspace.fs.writeFile(genericUri, Buffer.from("10 STOP\n"));

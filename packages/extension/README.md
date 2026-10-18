@@ -105,3 +105,10 @@ Exact-image correlation refuses runtime-mutated FN slots or self-modifying BASIC
 it never guesses a nearby source location. Normal Run Spectrum still uses Fuse.
 See the debug-machine setup guide in the repository for the optional executable
 and its explicit loopback capability prerequisite.
+
+Paused debug scopes expose original-ROM numeric/string scalars, numeric and
+character arrays, and FOR control state with paged children. Numeric displays
+show the exact stored value. Runtime strings preserve raw bytes as escaped debug
+text. **ZXCode: View Memory** opens a read-only paused snapshot; it remains a
+historical snapshot after resume. Malformed/unsupported variable tables do not
+become guessed semantic values; raw memory inspection remains available.

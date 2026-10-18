@@ -30,6 +30,7 @@ export class BasicDebugSession {
   }
   #isClosed():boolean {return this.#state==="closed";}
   get state():"ready"|"running"|"stopped"|"closed" {return this.#state;}
+  get romSha256():string | undefined {return this.#state!=="closed"&&this.#lastStop.epoch===this.#epoch?this.#romHash:undefined;}
   get currentLocation():BasicSourceLocation | undefined {return this.#state==="stopped"?this.#location:undefined;}
   subscribe(listener:(event:BasicDebugEvent)=>void):()=>void {this.#listeners.add(listener);return ()=>{this.#listeners.delete(listener);};}
   #emit(event:BasicDebugEvent):void {for(const listener of this.#listeners) {try {listener(Object.freeze(event));}catch { /* UI errors cannot resume the machine. */ }}}
