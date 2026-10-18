@@ -7,8 +7,21 @@
     "declaration": false,
     "declarationMap": false,
     "noEmit": true,
-    "types": ["node", "vscode"],
-    "paths": { "@zxcode/core": ["../core/src/index.ts"] }
+    "types": [
+      "node",
+      "vscode"
+    ],
+    "paths": {
+      "@zxcode/core": [
+        "../core/src/index.ts"
+      ],
+      "@zxcode/runner": [
+        "../runner/src/index.ts"
+      ]
+    }
   },
-  "include": ["src/**/*.ts", "test/**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts"
+  ]
 }

@@ -21,7 +21,8 @@ line number. Editor conveniences do not add labels or a new BASIC dialect.
 The sample draws a border, prints a heading, defines a variable and loops through
 three values. Its line 50 jump is intentional: navigation uses real BASIC line
 numbers. The generated TAP has header name ZXCODE and no autostart line; after
-loading it on a Spectrum, enter `RUN`. Emulator launching is a later milestone.
+loading it on a Spectrum, enter `RUN`. For one-action execution with a separately installed emulator, follow the
+[Run Spectrum guide](run-spectrum.md).
 
 To collect TAPs in a subdirectory, set this in the workspace's VS Code settings:
 

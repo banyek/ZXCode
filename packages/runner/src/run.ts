@@ -5,7 +5,7 @@ import { isAbsolute, join } from "node:path";
 import { checkProgram, writeBasicTap } from "@zxcode/core";
 import type { Diagnostic, SourceDocument } from "@zxcode/core";
 import type { EmulatorArtifact, EmulatorBackend, EmulatorFailure, EmulatorLaunchOptions, EmulatorSession } from "./index.js";
-export interface RunSource {readonly source: SourceDocument; readonly version: number}
+export interface RunSource {readonly source: SourceDocument; readonly version: number;readonly backend?: EmulatorBackend}
 export interface ManagedRun {
   readonly session: EmulatorSession;
   readonly sourceId: string;
@@ -14,7 +14,7 @@ export interface ManagedRun {
   readonly diagnostics: readonly Diagnostic[];
 }
 export type BuildRunResult = {readonly kind:"success"; readonly run:ManagedRun} | {readonly kind:"build-error";readonly diagnostics:readonly Diagnostic[]} | {readonly kind:"error";readonly failure:EmulatorFailure;readonly diagnostics:readonly Diagnostic[]};
-interface PreparedRun {readonly sourceId:string;readonly version:number;readonly buildId:string;readonly tap:Uint8Array;readonly diagnostics:readonly Diagnostic[]}
+interface PreparedRun {readonly sourceId:string;readonly version:number;readonly buildId:string;readonly tap:Uint8Array;readonly diagnostics:readonly Diagnostic[];readonly backend:EmulatorBackend}
 const error = (code: EmulatorFailure["code"], message: string, diagnostics: readonly Diagnostic[] = []): BuildRunResult => ({kind:"error",failure:{kind:"error",code,message},diagnostics});
 /** Serial owner of build/run replacement and private TAP lifetime, without editor APIs. */
 export class RunCoordinator {
@@ -32,11 +32,12 @@ export class RunCoordinator {
     if (checked.kind === "error") return Promise.resolve({kind:"build-error",diagnostics:checked.diagnostics});
     const first = checked.encodedProgram.lines[0];
     if (first === undefined) return Promise.resolve(error("invalid-request","Add a numbered BASIC line before Run Spectrum.",checked.diagnostics));
-    if (!this.backend.capabilities.features.includes("stop")) return Promise.resolve(error("unsupported-operation","Managed runs require a backend that supports Stop.",checked.diagnostics));
+    const backend = input.backend ?? this.backend;
+    if (!backend.capabilities.features.includes("stop")) return Promise.resolve(error("unsupported-operation","Managed runs require a backend that supports Stop.",checked.diagnostics));
     const program = checked.encodedProgram.programBytes;
     const tap = writeBasicTap(program,{filenameBytes:Uint8Array.from([90,88,67,79,68,69,32,32,32,32]),autostart:first.basicLineNumber,variablesOffset:program.length}).tapBytes;
     const buildId = createHash("sha256").update(JSON.stringify({sourceId:input.source.id,text:input.source.text,version:input.version,target:"spectrum-48k",autostart:first.basicLineNumber})).update(tap).digest("hex");
-    const prepared: PreparedRun = {sourceId:input.source.id,version:input.version,buildId,tap,diagnostics:checked.diagnostics};
+    const prepared: PreparedRun = {sourceId:input.source.id,version:input.version,buildId,tap,diagnostics:checked.diagnostics,backend};
     const sequence = ++this.#sequence;
     this.#starting?.abort();
     const result = this.#queue.then(() => this.#launch(prepared,sequence,options));
@@ -76,7 +77,7 @@ export class RunCoordinator {
       this.#starting = abort;
       let launched;
       const artifact: EmulatorArtifact = Object.freeze({path,format:"tap",target:"spectrum-48k",buildId:prepared.buildId});
-      try {launched = await this.backend.launch({artifact},{signal:abort.signal});}
+      try {launched = await prepared.backend.launch({artifact},{signal:abort.signal});}
       finally {options.signal?.removeEventListener("abort",externalAbort);if (this.#starting === abort) this.#starting = undefined;}
       if (launched.kind === "error") return {kind:"error",failure:launched,diagnostics:prepared.diagnostics};
       const owned = directory;

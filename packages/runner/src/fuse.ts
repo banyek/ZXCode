@@ -29,7 +29,9 @@ async function probe(executable: string, environment: NodeJS.ProcessEnv, options
     if (!info.isFile()) return problem("not-executable", "Fuse executable must be a file, not an application directory.");
     await access(executable,constants.X_OK);
     const result = await execute(executable,["--version"],{env:environment,timeout:2000,killSignal:"SIGKILL",maxBuffer:8192,...(options.signal === undefined ? {} : {signal:options.signal})});
-    if (!/The Free Unix Spectrum Emulator \(Fuse\) version \d+\.\d+/i.test(result.stdout)) return problem("not-executable", `Executable does not identify itself as Spectrum Fuse: ${executable}`);
+    const version = /The Free Unix Spectrum Emulator \(Fuse\) version (\d+)\.(\d+)/i.exec(result.stdout);
+    if (version === null) return problem("not-executable", `Executable does not identify itself as Spectrum Fuse: ${executable}`);
+    if (Number(version[1]) < 1 || Number(version[1]) === 1 && Number(version[2]) < 8) return problem("unsupported-version", "Fuse 1.8 or later is required for private configuration; configure a newer CLI executable.");
     return undefined;
   } catch (error) {
     if (options.signal?.aborted) return problem("cancelled", "Fuse startup was cancelled.");

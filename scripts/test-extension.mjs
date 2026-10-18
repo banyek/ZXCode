@@ -31,7 +31,7 @@ try {
     version:'1.140.0',reuseMachineInstall:false,
     ...(executable?{vscodeExecutablePath:executable}:{}),
     extensionDevelopmentPath:development,
-    extensionTestsEnv:{ZXCODE_TEST_FILES:testFiles,ZXCODE_INSTALLED_ROOT:installed?extensions:""},
+    extensionTestsEnv:{ZXCODE_TEST_FILES:testFiles,ZXCODE_INSTALLED_ROOT:installed?extensions:"",...(process.env.ZXCODE_TEST_FUSE?{ZXCODE_TEST_FUSE:process.env.ZXCODE_TEST_FUSE}:{})},
     extensionTestsPath:fileURLToPath(new URL('../packages/extension/dist/test-runner.cjs',import.meta.url)),
     launchArgs:[testFiles,`--user-data-dir=${userData}`,`--extensions-dir=${extensions}`,'--skip-welcome','--skip-release-notes','--disable-workspace-trust','--disable-gpu','--new-window']
   });

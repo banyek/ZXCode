@@ -19,7 +19,7 @@ else {
 }
 ```
 
-Install Fuse separately. Omit `executable` to discover identifying executables on
+Install Fuse 1.8 or later separately (1.10.0 is the reproduced reference). Omit `executable` to discover identifying executables on
 PATH. Explicit paths must be absolute executable files; application directories
 and shell command strings are rejected. The source TAP must pass the shared BASIC
 TAP reader. The backend does not edit the TAP or add autostart. Configuration has

@@ -22,6 +22,7 @@ try {
     'language-configuration.json':'packages/extension/language-configuration.json',
     'README.md':'packages/extension/README.md',
     'getting-started.md':'docs/guides/getting-started.md',
+    'run-spectrum.md':'docs/guides/run-spectrum.md',
     'examples/getting-started.zxbas':'examples/getting-started.zxbas'
   };
   for(const [destination,source] of Object.entries(files)) {

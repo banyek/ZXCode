@@ -15,8 +15,7 @@ async function protectSource(source: vscode.Uri, output: vscode.Uri): Promise<vo
   const sourceStat = await stat(source.fsPath);
   if (sourceStat.dev === outputStat.dev && sourceStat.ino === outputStat.ino) throw new Error("Output aliases the BASIC source.");
 }
-export function registerCommands(documents: EditorDocuments, diagnostics: EditorDiagnostics): vscode.Disposable {
-  const output = vscode.window.createOutputChannel("ZXCode");
+export function registerCommands(documents: EditorDocuments, diagnostics: EditorDiagnostics, output: vscode.OutputChannel): vscode.Disposable {
   const run = async (build: boolean, sourceUri?: vscode.Uri, outputUri?: vscode.Uri): Promise<EditorCommandResult> => {
     output.show(true);
     try {
@@ -61,7 +60,7 @@ export function registerCommands(documents: EditorDocuments, diagnostics: Editor
       return {kind:"error",message};
     }
   };
-  return vscode.Disposable.from(output,
+  return vscode.Disposable.from(
     vscode.commands.registerCommand("zxcode.check", (source?: vscode.Uri) => run(false, source)),
     vscode.commands.registerCommand("zxcode.build", (source?: vscode.Uri, destination?: vscode.Uri) => run(true, source, destination))
   );

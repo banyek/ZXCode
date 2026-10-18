@@ -114,3 +114,14 @@ test('startup can be cancelled during executable probing',{skip:process.platform
     await assert.rejects(access(probe.configuration),{code:'ENOENT'});
   } finally {await rm(f.directory,{recursive:true,force:true});}
 });
+test('legacy Fuse versions are rejected before they can ignore private XDG configuration',{skip:process.platform==='win32'},async()=>{
+  const f=await fixture();
+  try {
+    const executable=join(f.directory,'old-fuse');
+    await writeFile(executable,fake.replace('version 1.10.0.','version 1.6.0.'));
+    await chmod(executable,0o755);
+    const result=await createFuseBackend({executable}).launch(f.request);
+    assert.equal(result.code,'unsupported-version');assert.match(result.message,/1.8 or later/);
+    await assert.rejects(access(join(f.directory,'launch.json')),{code:'ENOENT'});
+  } finally {await rm(f.directory,{recursive:true,force:true});}
+});
