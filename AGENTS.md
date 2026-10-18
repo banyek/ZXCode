@@ -52,3 +52,16 @@ Unless a later accepted design document explicitly changes these rules:
 - Do not make a test pass by changing expected binary output without establishing why the new output is authentic.
 - Complex grammar rules belong in parser code; declarative metadata may describe tokens, documentation, completion, and simple syntax facts.
 - Design documents may contain open questions. Do not silently resolve them during implementation; document the decision first.
+
+## Agent efficiency
+
+- Start from the issue/ticket or user request and its explicitly referenced files.
+- Read the corresponding expanded issue under `docs/issues/` when one exists.
+- Use targeted filename and symbol searches instead of broad repository scans.
+- Do not read every design document, package or test by default; load only context needed for the change.
+- Reuse context already gathered during the current task.
+- Run targeted tests while implementing and iterating.
+- Run the applicable broader local validation once near completion; repeat it when subsequent changes or failures justify doing so.
+- Debug locally when equivalent checks are available; do not use repeated pushes and GitHub CI as an iterative debugging mechanism.
+- Keep implementation limited to the ticket's acceptance criteria.
+- Report unrelated discoveries separately instead of expanding scope.

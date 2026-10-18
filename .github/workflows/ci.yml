@@ -2,14 +2,43 @@ name: CI
 
 on:
   push:
+    branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+      - '**/*.markdown'
   pull_request:
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+      - '**/*.markdown'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
+  pr-check:
+    name: PR validation
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      # check includes type checking, linting, one build and the normal test suite.
+      - run: npm run check
+
   check:
     name: check (${{ matrix.os }})
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     strategy:
       fail-fast: false
       matrix:
@@ -23,7 +52,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
-      - run: npm run package:extension
+      # npm run check already built the workspaces and extension.
+      - run: node scripts/package-extension.mjs
       - run: node scripts/verify-extension-package.mjs
       - uses: actions/upload-artifact@v4
         with:
@@ -47,6 +77,7 @@ jobs:
 
   service-parity:
     name: M4 service platform parity
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     needs: check
     runs-on: ubuntu-latest
     steps:
@@ -62,6 +93,7 @@ jobs:
 
   extension-smoke:
     name: VS Code development-host smoke
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -70,11 +102,15 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - run: xvfb-run -a npm run test:extension
-      - run: xvfb-run -a npm run test:vsix
+      - run: npm run build
+      - run: xvfb-run -a node scripts/test-extension.mjs
+      - run: node scripts/package-extension.mjs
+      - run: node scripts/verify-extension-package.mjs
+      - run: xvfb-run -a node scripts/test-extension.mjs --installed
 
   package-parity:
     name: M5 VSIX platform parity
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     needs: check
     runs-on: ubuntu-latest
     steps:
