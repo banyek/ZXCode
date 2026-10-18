@@ -57,3 +57,4 @@ export { createFuseBackend, fuseArguments, prepareFuseConfiguration } from "./fu
 export type { FuseConfiguration } from "./fuse.js";
 export { RunCoordinator } from "./run.js";
 export type { RunSource, ManagedRun, BuildRunResult } from "./run.js";
+export type { RunBuildMetadata } from "./identity.js";
