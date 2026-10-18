@@ -114,3 +114,5 @@ export { importTapSource } from "./tap-source-import.js";
 export type { TapSourceImport, TapSourceImportOptions } from "./tap-source-import.js";
 export { rebuildPreservedTap } from "./preserved-tap.js";
 export type { PreservedTapResult } from "./preserved-tap.js";
+export { workspaceSymbols } from "./service/workspace.js";
+export type { WorkspaceSymbol, WorkspaceSymbolResult } from "./service/workspace.js";

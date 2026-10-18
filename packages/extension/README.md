@@ -84,3 +84,10 @@ and its command, such as `10PRINT 1` → `10 PRINT 1`. The native code-action pr
 shows the exact edits. Multiple missing separators can be repaired together;
 action proposals must pass the shared complete-program check. No line numbers or
 jump destinations are guessed, and querying a quick fix never changes source.
+
+Workspace symbol search discovers `.zxbas` programs in workspace folders and
+already-open Spectrum BASIC buffers. Results are qualified by file; dirty buffers
+take precedence over disk. Unopened generic `.bas` files are excluded. Use
+**ZXCode: Open BASIC Program** to pick a discovered file. Each file keeps its own
+line numbers, variables, references and build/run behavior; navigation never links
+programs together. Generated/dependency directories are excluded from discovery.
