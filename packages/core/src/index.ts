@@ -105,3 +105,4 @@ export { documentSignatureHelp } from "./service/signatures.js";
 export { documentSymbols } from "./service/document-symbols.js";
 export { languageService } from "./service/service.js";
 export type { RenumberOptions, RenumberCommand, RenumberLineChange, RenumberReference, RenumberIssueCode, RenumberIssue, RenumberBlocked, RenumberPreview, RenumberResult, RenumberApplyResult } from "./transform/renumber-contract.js";
+export { previewRenumber, applyRenumber } from "./transform/renumber.js";

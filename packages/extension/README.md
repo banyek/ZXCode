@@ -63,3 +63,12 @@ reproduced reference). Failed source keeps an existing run alive; a valid repeat
 stops/replaces it. Run uses current unsaved text and a private TAP with autostart;
 normal Build TAP output/settings are independent. See the repository's
 [Run Spectrum guide](https://github.com/banyek/ZXCode/blob/main/docs/guides/run-spectrum.md).
+
+Use **ZXCode: Preview Renumber BASIC** for a read-only diff. Enter start, step,
+first old line and last old line (defaults `10,10,1,9999`), then run
+**ZXCode: Apply Renumber** to accept the complete plan. Edits invalidate a preview.
+The transform preserves stored order and proven literal line destinations,
+including GO TO, GO SUB, RUN, RESTORE, LIST/LLIST and SAVE LINE. It blocks computed
+targets, collisions and order crossings. Other numeric values, strings and REM
+contents stay unchanged. Programs inspecting their own source or RAM, or modifying
+the stored program at runtime, are outside this structural guarantee.

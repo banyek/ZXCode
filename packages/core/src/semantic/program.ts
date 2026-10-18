@@ -1,3 +1,4 @@
+import { numericLiteralNumber } from "./numeric.js";
 import { SPECTRUM_48K_TARGET } from "../source/target-profile.js";
 import type { TargetProfile } from "../source/target-profile.js";
 import { analyzeCassetteStatement, analyzeListingStatement } from "./storage-statements.js";
@@ -99,10 +100,7 @@ export function analyzeBasic(parsed: ParsedDocument<BasicSyntaxProgram>, options
   for (const line of parsed.syntax.lines) if (line.kind === "numbered" && !definitions.has(line.lineNumber)) definitions.set(line.lineNumber, line.numberRange);
   const lineReference = (target: TypedExpression): StaticLineReference | undefined => {
     if (target.kind !== "number" && target.kind !== "binary-literal") return undefined;
-    const storage = target.value.storage;
-    const exponent = storage[0]!, a = storage[1]!, b = storage[2]!, c = storage[3]!, d = storage[4]!;
-    const value = exponent === 0 ? b + c * 256 - (a === 255 ? 65536 : 0)
-      : (a & 128 ? -1 : 1) * (1 + ((a & 127) * 2 ** 24 + b * 65536 + c * 256 + d) / 2 ** 31) * 2 ** (exponent - 129);
+    const value = numericLiteralNumber(target.value);
     if (!Number.isInteger(value) || value < 1 || value > 9999) return undefined;
     const definitionRange = definitions.get(value);
     if (definitionRange === undefined) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.missingLineTarget, severity: "warning", category: "semantic", message: `No stored BASIC line numbered ${value}.`, range: target.range }));

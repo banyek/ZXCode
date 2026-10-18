@@ -75,6 +75,14 @@
         "command": "zxcode.stop",
         "title": "ZXCode: Stop Spectrum",
         "icon": "$(debug-stop)"
+      },
+      {
+        "command": "zxcode.previewRenumber",
+        "title": "ZXCode: Preview Renumber BASIC"
+      },
+      {
+        "command": "zxcode.applyRenumber",
+        "title": "ZXCode: Apply Renumber"
       }
     ],
     "menus": {
