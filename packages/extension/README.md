@@ -72,3 +72,9 @@ including GO TO, GO SUB, RUN, RESTORE, LIST/LLIST and SAVE LINE. It blocks compu
 targets, collisions and order crossings. Other numeric values, strings and REM
 contents stay unchanged. Programs inspecting their own source or RAM, or modifying
 the stored program at runtime, are outside this structural guarantee.
+
+**Format Document** conservatively normalizes existing spaces/tabs outside string
+and REM content, removes declaration indentation and uses one space after the
+line number. It preserves case, numeric spelling, line-number spelling, physical
+order and line endings. Every result must compile to identical BASIC bytes;
+invalid input receives no formatting edits. Repeated formatting makes no edits.
