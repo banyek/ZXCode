@@ -1,0 +1,11 @@
+{
+  "backend": "fuse",
+  "target": "spectrum-48k",
+  "buildId": "975c282990f43389e72aa154a1360676a993a0e76c08dcf2c72213ef3d140060",
+  "exit": {
+    "state": "stopped",
+    "code": 0,
+    "signal": null
+  },
+  "sourceTapUnchanged": true
+}

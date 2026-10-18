@@ -1,8 +1,18 @@
 {
   "extends": "./tests/tsconfig.json",
   "compilerOptions": {
-    "types": ["node"],
-    "paths": { "@zxcode/core": ["./packages/core/src/index.ts"] }
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "@zxcode/core": [
+        "./packages/core/src/index.ts"
+      ]
+    }
   },
-  "include": ["packages/cli/src/**/*.ts", "tests/*.test.ts"]
+  "include": [
+    "packages/cli/src/**/*.ts",
+    "tests/*.test.ts",
+    "packages/runner/src/**/*.ts"
+  ]
 }

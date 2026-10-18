@@ -51,3 +51,7 @@ export interface EmulatorBackend {
   readonly capabilities: EmulatorCapabilities;
   launch(request: EmulatorLaunchRequest, options?: EmulatorLaunchOptions): Promise<EmulatorLaunchResult>;
 }
+export { startExternalProcess } from "./process.js";
+export type { ExternalProcessInvocation } from "./process.js";
+export { createFuseBackend, fuseArguments, prepareFuseConfiguration } from "./fuse.js";
+export type { FuseConfiguration } from "./fuse.js";
