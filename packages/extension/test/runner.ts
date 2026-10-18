@@ -171,6 +171,12 @@ export async function run(): Promise<void> {
       assert.equal(find("f").value,String(3435973836/34359738368));
       const array=await variableSession.customRequest("variables",{variablesReference:find("n").variablesReference,start:1,count:2,filter:"indexed"}) as {variables:NativeVariable[]};
       assert.deepEqual(array.variables.map(item=>[item.name,item.value]),[["(1,2)","-2"],["(2,1)",String(0.5-2**-33)]]);
+      for(const [expression,expected] of [["a","123"],["LONG NAME","-456"],["n(2,1)",String(0.5-2**-33)],["i","1"]]) {
+        const watch=await variableSession.customRequest("evaluate",{expression,context:"watch",frameId:1}) as {result:string};assert.equal(watch.result,expected);
+      }
+      await assert.rejects(Promise.resolve(variableSession.customRequest("evaluate",{expression:"RND",context:"watch"})));
+      await assert.rejects(Promise.resolve(variableSession.customRequest("evaluate",{expression:"n(3,1)",context:"watch"})));
+      const screen=await vscode.commands.executeCommand<vscode.WebviewPanel>("zxcode.showScreen");assert.ok(screen);assert.equal(screen.title,"Spectrum Screen");screen.dispose();
       const raw=await variableSession.customRequest("readMemory",{memoryReference:find("a").memoryReference,count:5}) as {data:string};assert.deepEqual(Array.from(Buffer.from(raw.data,"base64")),[0,0,123,0,0]);
       const memoryUri=await vscode.commands.executeCommand<vscode.Uri>("zxcode.viewMemory",0x5c4b,16);assert.ok(memoryUri);assert.equal(memoryUri.scheme,"zxcode-memory");const dump=await vscode.workspace.openTextDocument(memoryUri);assert.ok(dump.getText().includes("5C4B:"));assert.ok(dump.getText().includes("historical after execution resumes"));
       if(process.env.ZXCODE_TEST_DEBUG_EVIDENCE) await vscode.workspace.fs.writeFile(vscode.Uri.joinPath(vscode.Uri.file(process.env.ZXCODE_TEST_DEBUG_EVIDENCE),"native-basic-variables.json"),Buffer.from(JSON.stringify({schemaVersion:1,variables:roots.variables.map(item=>({name:item.name,value:item.value,type:item.type})),arrayPage:array.variables.map(item=>({name:item.name,value:item.value})),rawNumericBytes:Array.from(Buffer.from(raw.data,"base64")),readonlyMemorySnapshot:true},null,2)+"\n"));

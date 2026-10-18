@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import {isAbsolute,basename} from "node:path";
-import {createZrcpBackend,startBasicDebugging,inspectBasicVariables,readPausedMemory,runtimeVariableNodes} from "@zxcode/runner";
+import {createZrcpBackend,startBasicDebugging,inspectBasicVariables,readPausedMemory,runtimeVariableNodes,selectBasicWatch} from "@zxcode/runner";
 import type {BasicDebugSession,BasicBreakpointRequest,RuntimeVariableNode,MachineStop} from "@zxcode/runner";
 import type {DocumentAnalysisSnapshot} from "@zxcode/core";
 import type {EditorDocuments} from "./documents.js";
@@ -53,7 +53,7 @@ class BasicInlineAdapter implements vscode.DebugAdapter {
     switch(request.command) {
       case "initialize":
         this.#supportsInvalidated=args.supportsInvalidatedEvent===true;
-        this.#response(request,{supportsReadMemoryRequest:true,supportsConfigurationDoneRequest:true,supportsBreakpointLocationsRequest:true,supportsTerminateRequest:true,supportsRestartRequest:false,supportsConditionalBreakpoints:false,supportsHitConditionalBreakpoints:false,supportsLogPoints:false,exceptionBreakpointFilters:[]});return;
+        this.#response(request,{supportsEvaluateForHovers:true,supportsReadMemoryRequest:true,supportsConfigurationDoneRequest:true,supportsBreakpointLocationsRequest:true,supportsTerminateRequest:true,supportsRestartRequest:false,supportsConditionalBreakpoints:false,supportsHitConditionalBreakpoints:false,supportsLogPoints:false,exceptionBreakpointFilters:[]});return;
       case "launch": {
         if(!vscode.workspace.isTrusted)throw new Error("Trust this workspace before launching the debugger.");
         if(args.noDebug===true)throw new Error("Use ZXCode: Run Spectrum for a non-debug emulator run.");
@@ -111,7 +111,7 @@ class BasicInlineAdapter implements vscode.DebugAdapter {
       }
       case "scopes": {
         if(!this.#controller)throw new Error("No active BASIC debug machine.");
-        if(this.#variableStop===undefined) {
+        if(this.#variableRoot===0) {
           const result=await inspectBasicVariables(this.#controller);if(result.kind==="error")throw new Error(result.message);
           this.#variableStop=result.value.stop;this.#variableRoot=this.#nextVariableReference++;this.#variableNodes.set(this.#variableRoot,runtimeVariableNodes(result.value));
         }
@@ -127,6 +127,14 @@ class BasicInlineAdapter implements vscode.DebugAdapter {
         if(!Number.isSafeInteger(start)||!Number.isSafeInteger(count)||start<0||count<0)throw new Error("Use nonnegative variable page bounds.");
         const nodes=Array.isArray(handle)?handle.slice(start,count===0?undefined:start+count):(handle as RuntimeVariableNode).children(start,count);
         this.#response(request,{variables:nodes.map(node=>this.#variable(node))});return;
+      }
+      case "evaluate": {
+        if(!this.#controller||typeof args.expression!=="string")throw new Error("Pause a BASIC debug session before inspecting watches.");
+        const result=await inspectBasicVariables(this.#controller);if(result.kind==="error")throw new Error(result.message);
+        const node=selectBasicWatch(result.value,args.expression),current=await this.#controller.inspect({});
+        if(current.kind==="error"||current.value.stop!==result.value.stop)throw new Error("Watch snapshot is no longer current.");
+        if(this.#variableStop!==result.value.stop){this.#clearVariables();this.#variableStop=result.value.stop;}
+        const value=this.#variable(node);this.#response(request,{...value,result:node.display});return;
       }
       case "readMemory": {
         if(!this.#controller)throw new Error("No active debug machine.");

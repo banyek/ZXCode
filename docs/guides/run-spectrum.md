@@ -74,3 +74,7 @@ are also exercised. No user extension profile or emulator settings are changed.
 The normal `npm run test:vsix` uses a private fixture executable and needs no Fuse
 installation. Its result verifies the editor/process integration, while the
 explicit reference command above verifies authentic sample execution as well.
+
+While paused in a ZXCode BASIC debug session, use **ZXCode: Show Spectrum Screen** to view or refresh the 256×192 display. The view reads the bitmap and attributes together through the debug API. The Flash phase selector shows either static attribute phase. Retained pixels are labelled historical after execution resumes or the session ends; pause and refresh to capture new pixels.
+
+Native Watch entries support numeric/string variable names, FOR current values, and numeric array elements with positive decimal integer indices, such as `total`, `s$`, and `n(2,1)`. Values describe stored machine numbers exactly. Arithmetic, functions and string slicing are explicitly unavailable; watch inspection never executes BASIC. Raw memory and variable scopes remain available separately.

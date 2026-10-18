@@ -120,3 +120,4 @@ export { readSpectrumNumber } from "./source/spectrum-number.js";
 export type { SpectrumNumberRead } from "./source/spectrum-number.js";
 export { decodeBasicVariables, displayRuntimeString } from "./runtime/variables.js";
 export type { RuntimeVariable, RuntimeVariableIssue, RuntimeVariableTable } from "./runtime/variables.js";
+export { decodeSpectrumScreen } from "./runtime/screen.js";

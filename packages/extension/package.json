@@ -95,6 +95,10 @@
         "icon": "$(debug-start)"
       },
       {
+        "command": "zxcode.showScreen",
+        "title": "ZXCode: Show Spectrum Screen"
+      },
+      {
         "command": "zxcode.viewMemory",
         "title": "ZXCode: View Memory"
       }

@@ -69,3 +69,4 @@ export { inspectBasicVariables, readPausedMemory } from "./basic-inspection.js";
 export type { PausedMemoryReader, BasicVariableInspection } from "./basic-inspection.js";
 export { runtimeVariableNodes } from "./basic-variable-view.js";
 export type { RuntimeVariableNode } from "./basic-variable-view.js";
+export { selectBasicWatch } from "./basic-watch.js";

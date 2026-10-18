@@ -1,0 +1,5 @@
+# Paused screen snapshots and read-only watches
+
+The screen view reads exactly 6912 bytes at 0x4000 through the debug adapter's coherent paused-memory API. Bitmap addressing follows the original 48K display layout; attributes select ink, paper, bright and flash. Flash phase is an explicit static selector, not a simulated running clock. RGB levels 205/255 are a display convention, not a claim about analogue hardware colour. Continuing or terminating labels retained pixels as historical. Refresh requires a paused machine.
+
+Watches use the existing BASIC expression parser. Supported selectors are bare numeric/string variables (including FOR current values), and fully indexed numeric arrays whose indices are positive decimal integer literals. Names use the shared canonical identity. Array rank and bounds are checked against the paused variable table. No arithmetic, functions, string slicing or execution is implemented. Unsupported expressions fail explicitly; nothing is evaluated in the emulator. Watches require a fully decoded original-ROM variable table and the same live stop token as other inspection requests.
