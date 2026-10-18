@@ -151,7 +151,12 @@ class BasicInlineAdapter implements vscode.DebugAdapter {
         if(result.kind==="error")throw new Error(result.message);this.#response(request,request.command==="continue"?{allThreadsContinued:true}:undefined);return;
       }
       case "disconnect":case "terminate":await this.#controller?.close();this.#response(request);return;
-      case "next":case "stepIn":case "stepOut":throw new Error("BASIC stepping is not available yet; use Continue or source breakpoints.");
+      case "stepIn": {
+        if(!this.#controller)throw new Error("No active BASIC debug session.");
+        if(args.granularity!==undefined&&args.granularity!=="statement")throw new Error("BASIC stepping supports statement dispatches only.");
+        const result=await this.#controller.stepStatement();if(result.kind==="error")throw new Error(result.message);this.#response(request);return;
+      }
+      case "next":case "stepOut":throw new Error("BASIC step-over and step-out are unavailable. Step Into stops at the next verified BASIC statement dispatch.");
       default:throw new Error(`Unsupported BASIC debugger request: ${request.command}.`);
     }
   }
@@ -184,7 +189,13 @@ export class EditorDebugger implements vscode.Disposable {
       const adapter=new BasicInlineAdapter(documents,session.workspaceFolder,()=>this.#adapters.delete(adapter));this.#adapters.add(adapter);return new vscode.DebugAdapterInlineImplementation(adapter);
     }}),vscode.debug.registerDebugConfigurationProvider("zxcode-basic",{resolveDebugConfiguration(_folder,configuration){
       if(!configuration.type)return {type:"zxcode-basic",request:"launch",name:"ZXCode: Debug BASIC",program:vscode.window.activeTextEditor?.document.uri.toString(),stopOnEntry:true};return configuration;
-    }}),vscode.commands.registerCommand("zxcode.debug",async()=>{
+    }}),vscode.commands.registerCommand("zxcode.resetDebug",async()=>{
+      const session=vscode.debug.activeDebugSession;if(this.#stopping||session?.type!=="zxcode-basic")return false;
+      const configuration={...session.configuration,stopOnEntry:true};const folder=session.workspaceFolder;
+      await vscode.debug.stopDebugging(session);
+      if(this.#stopping)return false;
+      return vscode.debug.startDebugging(folder,configuration);
+    }),vscode.commands.registerCommand("zxcode.debug",async()=>{
       if(this.#stopping)return false;
       const document=vscode.window.activeTextEditor?.document;if(document?.languageId!==LANGUAGE_ID)return false;
       return vscode.debug.startDebugging(vscode.workspace.getWorkspaceFolder(document.uri),{type:"zxcode-basic",request:"launch",name:"ZXCode: Debug BASIC",program:document.uri.toString(),stopOnEntry:true});

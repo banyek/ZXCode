@@ -95,6 +95,10 @@
         "icon": "$(debug-start)"
       },
       {
+        "command": "zxcode.resetDebug",
+        "title": "ZXCode: Reset BASIC Debug Session"
+      },
+      {
         "command": "zxcode.showScreen",
         "title": "ZXCode: Show Spectrum Screen"
       },

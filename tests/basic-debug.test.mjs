@@ -42,3 +42,13 @@ test('invalid and empty BASIC cannot launch a machine or invent debug line numbe
  for(const text of ['PRINT 1\n','10 PRINT "\n',''])assert.equal((await startBasicDebugging({source:new SourceDocument('bad',text),version:1},backend)).kind,'error');
  assert.equal(launches,0);
 });
+test('BASIC step refuses raw, running and invalidated machine state without claiming a source location',async()=>{
+ const built=image(),machine=(await fakeDebugBackend().open({mode:'launch'})).value,stop=(await machine.pause()).value;
+ const directory=await mkdtemp(join(tmpdir(),'zxcode-debug-step-'));const session=new BasicDebugSession(built.image,built.metadata,machine,stop,directory,join(directory,'program.tap'));
+ try {
+  assert.equal((await session.stepStatement()).kind,'error');assert.equal(machine.phase,'paused');
+  assert.equal((await session.continue()).kind,'success');assert.equal((await session.stepStatement()).kind,'error');assert.equal(machine.phase,'running');
+  session.invalidateSource();assert.equal((await session.stepStatement()).kind,'error');assert.equal(session.currentLocation,undefined);
+ } finally {await session.close();}
+ await assert.rejects(access(directory));
+});

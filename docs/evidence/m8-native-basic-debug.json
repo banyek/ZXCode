@@ -5,7 +5,8 @@
       "id": 1,
       "name": "BASIC 10:1",
       "source": {
-        "name": "debug-runtime.zxbas"
+        "name": "debug-runtime.zxbas",
+        "path": "debug-runtime.zxbas"
       },
       "line": 1,
       "column": 4,
@@ -18,7 +19,8 @@
       "id": 1,
       "name": "BASIC 20:2",
       "source": {
-        "name": "debug-runtime.zxbas"
+        "name": "debug-runtime.zxbas",
+        "path": "debug-runtime.zxbas"
       },
       "line": 2,
       "column": 16,
@@ -27,5 +29,10 @@
     }
   ],
   "nativeStatementBreakpointVerified": true,
+  "stepped": [
+    "BASIC 100:1",
+    "BASIC 100:2",
+    "BASIC 20:3"
+  ],
   "sourceEditTerminated": true
 }

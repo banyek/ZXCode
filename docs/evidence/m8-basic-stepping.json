@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "backend": "real loopback ZRCP/original 48K ROM",
+  "verified": [
+    "17 independently observed BASIC dispatches",
+    "colon/IF/loops/GO SUB/RETURN",
+    "exact stored watch and screen reads while stepping",
+    "report completion without fabricated source stop",
+    "cold reset creates a new owned build at entry",
+    "breakpoint/inspect/step into/continue"
+  ],
+  "stops": [
+    [
+      10,
+      1
+    ],
+    [
+      10,
+      2
+    ],
+    [
+      20,
+      1
+    ],
+    [
+      20,
+      2
+    ],
+    [
+      100,
+      1
+    ],
+    [
+      100,
+      2
+    ],
+    [
+      20,
+      3
+    ],
+    [
+      30,
+      1
+    ],
+    [
+      40,
+      1
+    ],
+    [
+      20,
+      1
+    ],
+    [
+      30,
+      1
+    ],
+    [
+      30,
+      2
+    ],
+    [
+      40,
+      1
+    ],
+    [
+      50,
+      1
+    ],
+    [
+      200,
+      1
+    ],
+    [
+      210,
+      1
+    ],
+    [
+      210,
+      2
+    ]
+  ]
+}

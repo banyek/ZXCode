@@ -145,10 +145,18 @@ export async function run(): Promise<void> {
       await waitFor(()=>messages.filter(message=>message.event==="stopped").length>before,"Actual debugger hits IF-tail GO SUB source breakpoint");
       const statement=await started.customRequest("stackTrace",{threadId:1}) as {stackFrames:{name:string;line:number;column:number}[]};
       assert.equal(statement.stackFrames[0]?.name,"BASIC 20:2");assert.equal(statement.stackFrames[0]?.line,2);assert.equal(statement.stackFrames[0]?.column,16);
+      const stepped:string[]=[];
+      for(const expected of ["BASIC 100:1","BASIC 100:2","BASIC 20:3"]) {
+        const count=messages.filter(message=>message.event==="stopped").length;
+        await started.customRequest("stepIn",{threadId:1,granularity:"statement"});
+        await waitFor(()=>messages.filter(message=>message.event==="stopped").length>count,"Native BASIC Step Into reaches the next dispatch");
+        const frame=await started.customRequest("stackTrace",{threadId:1}) as {stackFrames:{name:string}[]};assert.equal(frame.stackFrames[0]?.name,expected);stepped.push(expected);
+      }
+      await assert.rejects(Promise.resolve(started.customRequest("next",{threadId:1})));
       const document=await vscode.workspace.openTextDocument(debugUri),editor=await vscode.window.showTextDocument(document);
       await editor.edit(builder=>builder.insert(new vscode.Position(0,0)," "));
       await waitFor(()=>messages.some(message=>message.event==="terminated"),"Source edits terminate the stale debug binding");
-      if(process.env.ZXCODE_TEST_DEBUG_EVIDENCE) await vscode.workspace.fs.writeFile(vscode.Uri.joinPath(vscode.Uri.file(process.env.ZXCODE_TEST_DEBUG_EVIDENCE),"native-basic-debug.json"),Buffer.from(JSON.stringify({schemaVersion:1,entry:entry.stackFrames,statement:statement.stackFrames,nativeStatementBreakpointVerified:true,sourceEditTerminated:true},null,2)+"\n"));
+      if(process.env.ZXCODE_TEST_DEBUG_EVIDENCE) await vscode.workspace.fs.writeFile(vscode.Uri.joinPath(vscode.Uri.file(process.env.ZXCODE_TEST_DEBUG_EVIDENCE),"native-basic-debug.json"),Buffer.from(JSON.stringify({schemaVersion:1,entry:entry.stackFrames,statement:statement.stackFrames,nativeStatementBreakpointVerified:true,stepped,sourceEditTerminated:true},null,2)+"\n"));
     } finally {vscode.debug.removeBreakpoints([breakpoint]);if(started)await vscode.debug.stopDebugging(started);tracker.dispose();}
     const variablesUri=vscode.Uri.file(join(testFiles,"debug-variables.zxbas"));
     const variablesBreakpoint=new vscode.SourceBreakpoint(new vscode.Location(variablesUri,new vscode.Position(6,3)));
@@ -179,7 +187,14 @@ export async function run(): Promise<void> {
       const screen=await vscode.commands.executeCommand<vscode.WebviewPanel>("zxcode.showScreen");assert.ok(screen);assert.equal(screen.title,"Spectrum Screen");screen.dispose();
       const raw=await variableSession.customRequest("readMemory",{memoryReference:find("a").memoryReference,count:5}) as {data:string};assert.deepEqual(Array.from(Buffer.from(raw.data,"base64")),[0,0,123,0,0]);
       const memoryUri=await vscode.commands.executeCommand<vscode.Uri>("zxcode.viewMemory",0x5c4b,16);assert.ok(memoryUri);assert.equal(memoryUri.scheme,"zxcode-memory");const dump=await vscode.workspace.openTextDocument(memoryUri);assert.ok(dump.getText().includes("5C4B:"));assert.ok(dump.getText().includes("historical after execution resumes"));
-      if(process.env.ZXCODE_TEST_DEBUG_EVIDENCE) await vscode.workspace.fs.writeFile(vscode.Uri.joinPath(vscode.Uri.file(process.env.ZXCODE_TEST_DEBUG_EVIDENCE),"native-basic-variables.json"),Buffer.from(JSON.stringify({schemaVersion:1,variables:roots.variables.map(item=>({name:item.name,value:item.value,type:item.type})),arrayPage:array.variables.map(item=>({name:item.name,value:item.value})),rawNumericBytes:Array.from(Buffer.from(raw.data,"base64")),readonlyMemorySnapshot:true},null,2)+"\n"));
+      const oldSessionId=variableSession.id,stopCount=variableEvents.filter(event=>event==="stopped").length;
+      assert.equal(await vscode.commands.executeCommand("zxcode.resetDebug"),true);
+      await waitFor(()=>vscode.debug.activeDebugSession?.id!==oldSessionId&&variableEvents.filter(event=>event==="stopped").length>stopCount,"Cold reset reaches entry in a fresh native debug session");
+      variableSession=vscode.debug.activeDebugSession;assert.ok(variableSession);assert.notEqual(variableSession.id,oldSessionId);
+      const resetFrame=await variableSession.customRequest("stackTrace",{threadId:1}) as {stackFrames:{name:string}[]};assert.equal(resetFrame.stackFrames[0]?.name,"BASIC 10:1");
+      const resetScopes=await variableSession.customRequest("scopes",{frameId:1}) as {scopes:{variablesReference:number}[]};
+      const resetVariables=await variableSession.customRequest("variables",{variablesReference:resetScopes.scopes[0]!.variablesReference}) as {variables:unknown[]};assert.equal(resetVariables.variables.length,0);
+      if(process.env.ZXCODE_TEST_DEBUG_EVIDENCE) await vscode.workspace.fs.writeFile(vscode.Uri.joinPath(vscode.Uri.file(process.env.ZXCODE_TEST_DEBUG_EVIDENCE),"native-basic-variables.json"),Buffer.from(JSON.stringify({schemaVersion:1,variables:roots.variables.map(item=>({name:item.name,value:item.value,type:item.type})),arrayPage:array.variables.map(item=>({name:item.name,value:item.value})),rawNumericBytes:Array.from(Buffer.from(raw.data,"base64")),readonlyMemorySnapshot:true,coldResetNewSession:true,resetEntry:resetFrame.stackFrames,resetVariableCount:resetVariables.variables.length},null,2)+"\n"));
     } finally {vscode.debug.removeBreakpoints([variablesBreakpoint]);if(variableSession)await vscode.debug.stopDebugging(variableSession);variableTracker.dispose();}
   }
   const genericUri = vscode.Uri.file(join(testFiles, "generic.bas"));
