@@ -1,3 +1,4 @@
+import { registerCodeActions } from "./code-actions.js";
 import { registerFormatting } from "./format.js";
 import { registerRenumber } from "./renumber.js";
 import * as vscode from "vscode";
@@ -23,7 +24,7 @@ export function activate(context: vscode.ExtensionContext): ZXCodeExtensionApi {
   const output = vscode.window.createOutputChannel("ZXCode");
   const runner = new EditorRunner(documents,diagnostics,output);
   runnerForShutdown = runner;
-  context.subscriptions.push(registerFormatting(documents), registerRenumber(documents), registerCommands(documents, diagnostics, output), runner, registerCompletion(documents), registerNavigation(documents), diagnostics, documents, output);
+  context.subscriptions.push(registerCodeActions(documents), registerFormatting(documents), registerRenumber(documents), registerCommands(documents, diagnostics, output), runner, registerCompletion(documents), registerNavigation(documents), diagnostics, documents, output);
   return Object.freeze({ documents, queries: languageService, toEditorRange, runner });
 }
 

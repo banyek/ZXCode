@@ -78,3 +78,9 @@ and REM content, removes declaration indentation and uses one space after the
 line number. It preserves case, numeric spelling, line-number spelling, physical
 order and line endings. Every result must compile to identical BASIC bytes;
 invalid input receives no formatting edits. Repeated formatting makes no edits.
+
+Quick fixes can insert a missing space between an existing valid BASIC line number
+and its command, such as `10PRINT 1` → `10 PRINT 1`. The native code-action preview
+shows the exact edits. Multiple missing separators can be repaired together;
+action proposals must pass the shared complete-program check. No line numbers or
+jump destinations are guessed, and querying a quick fix never changes source.

@@ -89,6 +89,7 @@ export interface LanguageSignatureHelp {
 export interface LanguageReferenceOptions { readonly includeDeclaration?: boolean }
 /** Synchronous host-independent queries. Offset arguments are checked UTF-16 offsets. */
 export interface LanguageServiceQueries {
+  codeActions(snapshot: DocumentAnalysisSnapshot, range?: SourceRange): LanguageQueryResult<readonly LanguageCodeAction[]>;
   diagnostics(snapshot: DocumentAnalysisSnapshot): LanguageQueryResult<readonly Diagnostic[]>;
   completions(snapshot: DocumentAnalysisSnapshot, offset: number): LanguageQueryResult<LanguageCompletionList>;
   hover(snapshot: DocumentAnalysisSnapshot, offset: number): LanguageQueryResult<LanguageHover | undefined>;
@@ -96,4 +97,13 @@ export interface LanguageServiceQueries {
   references(snapshot: DocumentAnalysisSnapshot, offset: number, options?: LanguageReferenceOptions): LanguageQueryResult<readonly SourceRange[]>;
   symbols(snapshot: DocumentAnalysisSnapshot): LanguageQueryResult<readonly LanguageSymbol[]>;
   signatureHelp(snapshot: DocumentAnalysisSnapshot, offset: number): LanguageQueryResult<LanguageSignatureHelp | undefined>;
+}
+
+export interface LanguageCodeAction {
+  readonly id:"zxcode.insert-line-separator" | "zxcode.insert-line-separators";
+  readonly kind:"quickfix";
+  readonly title:string;
+  readonly diagnostics:readonly Diagnostic[];
+  readonly edits:readonly LanguageTextEdit[];
+  readonly resultText:string;
 }

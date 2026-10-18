@@ -108,3 +108,5 @@ export type { RenumberOptions, RenumberCommand, RenumberLineChange, RenumberRefe
 export { previewRenumber, applyRenumber } from "./transform/renumber.js";
 export { formatDocument } from "./transform/format.js";
 export type { FormatResult } from "./transform/format.js";
+export { documentCodeActions } from "./service/code-actions.js";
+export type { LanguageCodeAction } from "./service/contract.js";

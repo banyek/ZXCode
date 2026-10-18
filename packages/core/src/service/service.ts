@@ -1,3 +1,4 @@
+import { documentCodeActions } from "./code-actions.js";
 import type { LanguageServiceQueries } from "./contract.js";
 import { documentDiagnostics } from "./diagnostics.js";
 import { documentCompletions } from "./completion.js";
@@ -7,6 +8,7 @@ import { documentSymbols } from "./document-symbols.js";
 /** Complete host-independent query facade; sessions own document/version state. */
 export const languageService = Object.freeze({
   diagnostics: documentDiagnostics,
+  codeActions: documentCodeActions,
   completions: documentCompletions,
   hover: documentHover,
   definitions: documentDefinitions,
