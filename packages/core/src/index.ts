@@ -110,3 +110,5 @@ export { formatDocument } from "./transform/format.js";
 export type { FormatResult } from "./transform/format.js";
 export { documentCodeActions } from "./service/code-actions.js";
 export type { LanguageCodeAction } from "./service/contract.js";
+export { importTapSource } from "./tap-source-import.js";
+export type { TapSourceImport, TapSourceImportOptions } from "./tap-source-import.js";

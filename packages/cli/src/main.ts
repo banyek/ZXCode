@@ -1,3 +1,4 @@
+import { runImport, ImportUsageError } from "./import.js";
 import { readFileSync, statSync, writeFileSync } from "node:fs";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { buildTap, checkProgram, SourceDocument, spectrumLiteralByte } from "@zxcode/core";
@@ -7,6 +8,7 @@ const help = `ZXCode — 1982 BASIC. 2026 developer experience.
 
 Usage: zxcode check <file>
        zxcode build <file> [options]
+       zxcode import <file.tap> [--output path.zxbas] [--source-only]
        zxcode --help
 
 Build options:
@@ -93,6 +95,7 @@ function run(args: readonly string[]): void {
     process.stdout.write(help);
     return;
   }
+  if (command === "import") {runImport(args.slice(1));return;}
   const options = parseOptions(args);
   const input = resolve(options.file);
   const text = new TextDecoder("utf-8", { fatal: true, ignoreBOM: true }).decode(readFileSync(input));
@@ -117,5 +120,5 @@ function run(args: readonly string[]): void {
 try { run(process.argv.slice(2)); }
 catch (error) {
   process.stderr.write(`zxcode: ${error instanceof Error ? error.message : String(error)}\n`);
-  process.exitCode = error instanceof UsageError ? 2 : 1;
+  process.exitCode = error instanceof UsageError || error instanceof ImportUsageError ? 2 : 1;
 }

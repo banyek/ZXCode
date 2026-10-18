@@ -54,6 +54,10 @@ The experimental `decodeBasicProgram`, `exportBasicSource` and `inspectBasicTap`
 APIs retain raw bytes and saved variables. Source export reports exact success
 only after recompilation reproduces the original BASIC image; see the
 [import feasibility contract](docs/design/029-import-feasibility.md).
+The product `zxcode import input.tap` command creates verified editable source
+and a provenance report, refusing unsupported input and existing output paths.
+Saved variables require explicit `--source-only` consent; see the
+[TAP import guide](docs/guides/import-tap.md).
 Container names and payloads remain opaque bytes; see the
 [TAP contract](docs/design/019-tap-container.md).
 Printable literals include Spectrum £, © and ↑ alongside the existing ASCII
