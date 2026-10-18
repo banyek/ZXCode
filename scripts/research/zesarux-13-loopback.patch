@@ -1,0 +1,11 @@
+--- a/src/zrcp/remote.c
++++ b/src/zrcp/remote.c
+@@ -6423,7 +6423,7 @@
+ //#endif
+ 
+ 
+-    int result=assignar_adr_internet(sock_listen,NULL,remote_protocol_port);
++    int result=assignar_adr_internet(sock_listen,"127.0.0.1",remote_protocol_port);
+ 
+ //#ifndef MINGW
+   if (result<0) {
