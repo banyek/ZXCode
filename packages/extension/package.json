@@ -19,7 +19,8 @@
     "workspace"
   ],
   "activationEvents": [
-    "onLanguage:zx-spectrum-basic"
+    "onLanguage:zx-spectrum-basic",
+    "onDebug:zxcode-basic"
   ],
   "main": "./dist/extension.cjs",
   "files": [
@@ -87,6 +88,11 @@
       {
         "command": "zxcode.openProgram",
         "title": "ZXCode: Open BASIC Program"
+      },
+      {
+        "command": "zxcode.debug",
+        "title": "ZXCode: Debug Spectrum BASIC",
+        "icon": "$(debug-start)"
       }
     ],
     "menus": {
@@ -103,6 +109,11 @@
         },
         {
           "command": "zxcode.run",
+          "when": "editorLangId == zx-spectrum-basic",
+          "group": "zxcode"
+        },
+        {
+          "command": "zxcode.debug",
           "when": "editorLangId == zx-spectrum-basic",
           "group": "zxcode"
         }
@@ -165,8 +176,55 @@
           "scope": "machine-overridable",
           "restricted": true,
           "description": "Private Fuse configuration format. Auto uses the backend platform default; choose the format required by your Fuse build."
+        },
+        "zxcode.debug.executable": {
+          "type": "string",
+          "default": "",
+          "scope": "machine-overridable",
+          "restricted": true,
+          "description": "Absolute optional ZEsarUX 13.0 executable with the loopback-only option. Debugging requires workspace trust; normal Run uses Fuse independently."
         }
       }
-    }
+    },
+    "debuggers": [
+      {
+        "type": "zxcode-basic",
+        "label": "ZXCode Spectrum BASIC",
+        "languages": [
+          "zx-spectrum-basic"
+        ],
+        "configurationAttributes": {
+          "launch": {
+            "required": [
+              "program"
+            ],
+            "properties": {
+              "program": {
+                "type": "string",
+                "description": "The independent Spectrum BASIC source document. Dirty editor text is compiled."
+              },
+              "zesaruxExecutable": {
+                "type": "string",
+                "description": "Optional absolute loopback-capable ZEsarUX executable, overriding zxcode.debug.executable."
+              },
+              "stopOnEntry": {
+                "type": "boolean",
+                "default": true,
+                "description": "Stop at the first verified BASIC statement."
+              }
+            }
+          }
+        },
+        "initialConfigurations": [
+          {
+            "type": "zxcode-basic",
+            "request": "launch",
+            "name": "ZXCode: Debug BASIC",
+            "program": "${file}",
+            "stopOnEntry": true
+          }
+        ]
+      }
+    ]
   }
 }

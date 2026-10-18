@@ -10,6 +10,7 @@ const isolated=mkdtempSync(join(tmpdir(),'zxcode-vscode-'));
 const userData=join(isolated,'user-data');
 const testFiles=join(isolated,'files');
 mkdirSync(testFiles);
+writeFileSync(join(testFiles,'debug-runtime.zxbas'),readFileSync(new URL('../examples/debug/runtime-dispatch.zxbas',import.meta.url)));
 const existingCase=JSON.parse(readFileSync(new URL('../tests/fixtures/core-corpus.json',import.meta.url),'utf8')).cases.find(item=>item.name==='arrays-functions');
 assert.ok(existingCase);
 const existingProgram=Buffer.from(existingCase.programHex,'hex');
@@ -44,7 +45,7 @@ try {
     version:'1.140.0',reuseMachineInstall:false,
     ...(executable?{vscodeExecutablePath:executable}:{}),
     extensionDevelopmentPath:development,
-    extensionTestsEnv:{ZXCODE_TEST_FILES:testFiles,ZXCODE_INSTALLED_ROOT:installed?extensions:"",...Object.fromEntries(["ZXCODE_TEST_FUSE","ZXCODE_TEST_EVIDENCE","ZXCODE_TEST_RUN_HOLD_MS","ZXCODE_TEST_WORKFLOW_EVIDENCE"].flatMap((key)=>process.env[key]===undefined?[]:[[key,process.env[key]]]))},
+    extensionTestsEnv:{ZXCODE_TEST_FILES:testFiles,ZXCODE_INSTALLED_ROOT:installed?extensions:"",...Object.fromEntries(["ZXCODE_TEST_FUSE","ZXCODE_TEST_EVIDENCE","ZXCODE_TEST_RUN_HOLD_MS","ZXCODE_TEST_WORKFLOW_EVIDENCE","ZXCODE_TEST_ZESARUX","ZXCODE_TEST_DEBUG_EVIDENCE"].flatMap((key)=>process.env[key]===undefined?[]:[[key,process.env[key]]]))},
     extensionTestsPath:fileURLToPath(new URL('../packages/extension/dist/test-runner.cjs',import.meta.url)),
     launchArgs:[testFiles,`--user-data-dir=${userData}`,`--extensions-dir=${extensions}`,'--skip-welcome','--skip-release-notes','--disable-workspace-trust','--disable-gpu','--new-window']
   });

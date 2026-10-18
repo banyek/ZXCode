@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "entry": [
+    {
+      "id": 1,
+      "name": "BASIC 10:1",
+      "source": {
+        "name": "debug-runtime.zxbas"
+      },
+      "line": 1,
+      "column": 4,
+      "endLine": 1,
+      "endColumn": 15
+    }
+  ],
+  "statement": [
+    {
+      "id": 1,
+      "name": "BASIC 20:2",
+      "source": {
+        "name": "debug-runtime.zxbas"
+      },
+      "line": 2,
+      "column": 16,
+      "endLine": 2,
+      "endColumn": 26
+    }
+  ],
+  "nativeStatementBreakpointVerified": true,
+  "sourceEditTerminated": true
+}

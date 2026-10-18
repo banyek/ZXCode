@@ -61,3 +61,7 @@ export type { RunBuildMetadata } from "./identity.js";
 export type { MachineFeature, Z80Register, MachinePhase, MachineFailureCode, MachineFailure, MachineResult, MachineOperationOptions, MachineCapabilities, MachineStop, MachineMemoryRequest, MachineMemoryRegion, MachineInspectionRequest, MachineInspection, MachineCondition, MachineBreakpointRequest, MachineBreakpoint, MachineImage, MachineExit, MachineEvent, DebugMachineSession, DebugMachineOpenOptions, DebugMachineBackend } from "./debug-machine.js";
 export { createZrcpBackend } from "./zrcp.js";
 export type { ZrcpConfiguration } from "./zrcp.js";
+export { startBasicDebugging, BasicDebugSession } from "./basic-debug.js";
+export type { BasicBreakpointRequest, BasicBreakpoint, BasicDebugEvent } from "./basic-debug.js";
+export { correlateBasicDispatch, ORIGINAL_48K_ROM_SHA256 } from "./basic-location.js";
+export type { BasicDebugImage, BasicDispatchObservation, BasicSourceLocation, BasicLocationResult } from "./basic-location.js";
