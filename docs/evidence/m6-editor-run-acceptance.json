@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "host": "macOS arm64",
+  "installedVsixWorkflow": "open/edit/diagnose/complete/navigate/build/run/replace/stop/identity/shutdown",
+  "sourceSha256": "05c8eda9d44edd0270847c8bb93001ae4bef9e288d99c8260502cbfaa0944f6e",
+  "tapSha256": "975c282990f43389e72aa154a1360676a993a0e76c08dcf2c72213ef3d140060",
+  "programSha256": "82d3bfd476a6f5e9095ed934798176574262239bd5bf82b8556aa444fd19a479",
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "autostart": 10,
+  "sourceMapLines": 6,
+  "capture": {
+    "backend": "Fuse null UI development automation",
+    "frames": 500,
+    "pixelCrc32": "c3956903",
+    "screenSha256": "48200ba82707c658eef0918c323e36d22e4510a893de646c0e75a0a98d96ce6a",
+    "expectedRows": [
+      "ZXCODE: 1982 BASIC, 2026 TOOLS",
+      "COUNT 1",
+      "COUNT 2",
+      "COUNT 3",
+      "9 STOP statement, 60:1"
+    ]
+  },
+  "desktopVisualInspection": "not captured; captured execution uses the exact native Run TAP in Fuse null UI",
+  "hostedChecks": "pending external CI availability",
+  "nativeWindowsExecution": "not verified",
+  "activeRomCrc32": "ddee531f",
+  "romVerification": "SHA-256-pinned reference file matched against active 16K ROM CRC"
+}

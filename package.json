@@ -24,7 +24,8 @@
     "test:service": "npm run build && node scripts/compatibility/run-service.mjs",
     "test:extension": "npm run build && node scripts/test-extension.mjs",
     "package:extension": "npm run build && node scripts/package-extension.mjs",
-    "test:vsix": "npm run package:extension && node scripts/verify-extension-package.mjs && node scripts/test-extension.mjs --installed"
+    "test:vsix": "npm run package:extension && node scripts/verify-extension-package.mjs && node scripts/test-extension.mjs --installed",
+    "test:run": "node scripts/acceptance/run-spectrum.mjs"
   },
   "devDependencies": {
     "@types/node": "24.19.2",

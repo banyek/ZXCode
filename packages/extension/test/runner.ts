@@ -243,13 +243,22 @@ export async function run(): Promise<void> {
   if (process.platform !== "win32" || process.env.ZXCODE_TEST_FUSE) {
     const currentRun = (): ZXCodeExtensionApi["runner"]["active"] => api.runner.active;
     const currentBuild = (): ZXCodeExtensionApi["runner"]["currentBuild"] => api.runner.currentBuild;
-    const emulatorSettings = vscode.workspace.getConfiguration("zxcode", navigationUri);
+    let runUri = navigationUri;
+    let runDocument = navigationDocument;
+    if (process.env.ZXCODE_TEST_FUSE && process.env.ZXCODE_INSTALLED_ROOT) {
+      runUri = vscode.Uri.file(join(testFiles, "getting-started.zxbas"));
+      const sample = await vscode.workspace.fs.readFile(vscode.Uri.joinPath(extension.extensionUri, "examples/getting-started.zxbas"));
+      await vscode.workspace.fs.writeFile(runUri, sample);
+      runDocument = await vscode.workspace.openTextDocument(runUri);
+      assert.equal(runDocument.languageId, "zx-spectrum-basic");
+    }
+    const emulatorSettings = vscode.workspace.getConfiguration("zxcode", runUri);
     const fakeUri = vscode.Uri.file(join(testFiles, "fuse-fixture.cjs"));
     await vscode.workspace.fs.writeFile(fakeUri, Buffer.from("#!/usr/bin/env node\nif(process.argv.includes('--version')) console.log('The Free Unix Spectrum Emulator (Fuse) version 1.10.0.'); else {process.on('SIGTERM',()=>process.exit(0));setInterval(()=>{},1000);}"));
     if (process.platform !== "win32") await chmod(fakeUri.fsPath, 0o755);
     try {
       await emulatorSettings.update("emulator.executable", process.env.ZXCODE_TEST_FUSE ?? fakeUri.fsPath, vscode.ConfigurationTarget.Workspace);
-      await vscode.window.showTextDocument(navigationDocument);
+      await vscode.window.showTextDocument(runDocument);
       const run = await vscode.commands.executeCommand<EditorRunResult>("zxcode.run");
       assert.equal(run?.kind, "success", run?.message);
       const firstRun = api.runner.active;
@@ -258,14 +267,26 @@ export async function run(): Promise<void> {
       assert.ok(firstBuild);
       assert.equal(firstBuild.buildId, firstRun.buildId);
       assert.equal(firstBuild.sourceVersion, firstRun.version);
-      assert.equal(firstBuild.source.text, navigationDocument.getText());
+      assert.equal(firstBuild.source.text, runDocument.getText());
       assert.ok(firstBuild.source.textInRange(firstBuild.sourceMap[0]!.sourceRange).length > 0);
       const sidecar = JSON.parse(new TextDecoder().decode(await vscode.workspace.fs.readFile(vscode.Uri.file(firstRun.metadataPath)))) as {buildId:string};
       assert.equal(sidecar.buildId, firstRun.buildId);
       const runTap = readBasicTap(await vscode.workspace.fs.readFile(vscode.Uri.file(firstRun.session.artifact.path)));
       assert.equal(runTap.kind, "success");
       assert.equal(runTap.autostartLine, 10);
-      const repeated = await vscode.commands.executeCommand<EditorRunResult>("zxcode.run", navigationUri);
+      if (process.env.ZXCODE_TEST_FUSE && process.env.ZXCODE_TEST_EVIDENCE) {
+        const evidence = vscode.Uri.file(process.env.ZXCODE_TEST_EVIDENCE);
+        await vscode.workspace.fs.createDirectory(evidence);
+        await vscode.workspace.fs.writeFile(vscode.Uri.joinPath(evidence, "native-run.tap"), await vscode.workspace.fs.readFile(vscode.Uri.file(firstRun.session.artifact.path)));
+        await vscode.workspace.fs.writeFile(vscode.Uri.joinPath(evidence, "native-build.json"), await vscode.workspace.fs.readFile(vscode.Uri.file(firstRun.metadataPath)));
+        await vscode.workspace.fs.writeFile(vscode.Uri.joinPath(evidence, "native-session.json"), Buffer.from(JSON.stringify({schemaVersion:1,buildId:firstRun.buildId,version:firstRun.version,sourceId:firstRun.sourceId,backendId:firstRun.session.backendId,emulator:process.env.ZXCODE_TEST_FUSE,installedExtension:extension.extensionPath},null,2)));
+        const hold = Number(process.env.ZXCODE_TEST_RUN_HOLD_MS ?? "10000");
+        assert.ok(Number.isSafeInteger(hold) && hold >= 1000 && hold <= 30000);
+        console.log("ZXCODE_NATIVE_SAMPLE_READY: inspect the Fuse window during the bounded hold");
+        await new Promise((resolve) => setTimeout(resolve, hold));
+        assert.equal(firstRun.session.state, "running");
+      }
+      const repeated = await vscode.commands.executeCommand<EditorRunResult>("zxcode.run", runUri);
       assert.equal(repeated?.kind, "success", repeated?.message);
       const secondRun = api.runner.active;
       assert.ok(secondRun);
@@ -276,28 +297,28 @@ export async function run(): Promise<void> {
       assert.equal((await firstRun.session.finished).state, "stopped");
       await assert.rejects(Promise.resolve(vscode.workspace.fs.stat(vscode.Uri.file(firstRun.session.artifact.path))));
       const malformedRun = new vscode.WorkspaceEdit();
-      malformedRun.replace(navigationUri, new vscode.Range(navigationDocument.positionAt(0), navigationDocument.positionAt(navigationDocument.getText().length)), "10 PRINT AT 10,");
+      malformedRun.replace(runUri, new vscode.Range(runDocument.positionAt(0), runDocument.positionAt(runDocument.getText().length)), "10 PRINT AT 10,");
       assert.equal(await vscode.workspace.applyEdit(malformedRun), true);
       await waitFor(() => currentBuild() === undefined, "Editing invalidates current mapping before another Run");
-      assert.equal((await vscode.commands.executeCommand<EditorRunResult>("zxcode.run", navigationUri))?.kind, "build-error");
+      assert.equal((await vscode.commands.executeCommand<EditorRunResult>("zxcode.run", runUri))?.kind, "build-error");
       assert.strictEqual(api.runner.active, secondRun, "Invalid source does not replace the running emulator");
       assert.equal((await vscode.commands.executeCommand<EditorRunResult>("zxcode.stop"))?.kind, "success");
       assert.equal(api.runner.active, undefined);
       await assert.rejects(Promise.resolve(vscode.workspace.fs.stat(vscode.Uri.file(secondRun.session.artifact.path))));
       const repaired = new vscode.WorkspaceEdit();
-      repaired.replace(navigationUri, new vscode.Range(navigationDocument.positionAt(0), navigationDocument.positionAt(navigationDocument.getText().length)), "10 STOP");
+      repaired.replace(runUri, new vscode.Range(runDocument.positionAt(0), runDocument.positionAt(runDocument.getText().length)), "10 STOP");
       assert.equal(await vscode.workspace.applyEdit(repaired), true);
       await emulatorSettings.update("emulator.executable", join(testFiles, "missing-fuse"), vscode.ConfigurationTarget.Workspace);
-      const missingEmulator = await vscode.commands.executeCommand<EditorRunResult>("zxcode.run", navigationUri);
+      const missingEmulator = await vscode.commands.executeCommand<EditorRunResult>("zxcode.run", runUri);
       assert.equal(missingEmulator?.kind, "error");
       assert.equal(missingEmulator.code, "not-found");
       assert.match(missingEmulator.message, /not found/);
       await emulatorSettings.update("emulator.executable", process.env.ZXCODE_TEST_FUSE ?? fakeUri.fsPath, vscode.ConfigurationTarget.Workspace);
-      assert.equal((await vscode.commands.executeCommand<EditorRunResult>("zxcode.run", navigationUri))?.kind, "success");
+      assert.equal((await vscode.commands.executeCommand<EditorRunResult>("zxcode.run", runUri))?.kind, "success");
       const shutdownRun = currentRun();
       assert.ok(shutdownRun);
       assert.ok(currentBuild());
-      const plain = await vscode.languages.setTextDocumentLanguage(await vscode.workspace.openTextDocument(navigationUri), "plaintext");
+      const plain = await vscode.languages.setTextDocumentLanguage(await vscode.workspace.openTextDocument(runUri), "plaintext");
       await waitFor(() => currentBuild() === undefined, "Closing the source instance invalidates its map while the process remains owned");
       assert.strictEqual(currentRun(), shutdownRun);
       await vscode.languages.setTextDocumentLanguage(plain, "zx-spectrum-basic");

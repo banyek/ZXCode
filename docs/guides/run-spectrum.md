@@ -47,3 +47,30 @@ If a distribution's CLI is unsuitable, use Build TAP, open the TAP manually in a
 48K emulator, load it with `LOAD ""` and enter `RUN`. The
 [selection record](https://github.com/banyek/ZXCode/blob/main/docs/design/047-first-external-emulator.md) includes the reproduced
 source/build provenance and the independent captured screen.
+
+## Reproduce the editor/emulator acceptance
+
+With Node 24 and dependencies installed, use a separately built reference Fuse
+1.10.0 SDL2 executable plus its null-UI automation build and original 48K ROM:
+
+```sh
+npm run test:run -- \
+  --fuse /absolute/sdl2-prefix/bin/fuse \
+  --headless-fuse /absolute/null-prefix/bin/fuse \
+  --rom /absolute/null-prefix/share/fuse/48.rom \
+  --output /absolute/empty/evidence
+```
+
+The output directory must be empty. The command builds/installs the actual VSIX in
+a clean temporary profile, opens its packaged sample and uses native Run/Stop.
+It retains the exact launched TAP/metadata and verifies source/image hashes and
+map bounds. That same TAP runs for 500 frames in the reference original-ROM
+capture backend and must match the reviewed screen pixels. `--hold-ms 1000..30000`
+controls the bounded desktop inspection interval (default 10000). The automated
+report does not claim a live desktop screenshot; inspect that window separately
+when desktop access is available. Missing-emulator/build-error and cleanup paths
+are also exercised. No user extension profile or emulator settings are changed.
+
+The normal `npm run test:vsix` uses a private fixture executable and needs no Fuse
+installation. Its result verifies the editor/process integration, while the
+explicit reference command above verifies authentic sample execution as well.
