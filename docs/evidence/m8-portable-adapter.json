@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "backend": "portable @zxcode/runner ZRCP adapter",
+  "romSha256": "d55daa439b673b0e3f5897f99ac37ecb45f974d1862b4dadb85dec34af99cb42",
+  "verified": [
+    "owned loopback launch",
+    "coherent ROM read",
+    "verified RAM/register write",
+    "asynchronous machine breakpoint",
+    "machine step",
+    "stale-stop refusal",
+    "Z80 snapshot load epoch",
+    "original-ROM BASIC dispatch state",
+    "reset",
+    "owned close",
+    "fresh restart identity",
+    "weaker actual attach",
+    "attach detach preserves process and paused state",
+    "fresh attach identity"
+  ],
+  "normalRun": "separate unchanged Fuse backend"
+}

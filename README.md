@@ -151,7 +151,7 @@ the extension bundles CommonJS for the desktop editor host:
 - `packages/core/src/tap`: container writing from bytes and explicit metadata.
 - `packages/extension`: VS Code document/lifecycle/range adapter and isolated host tests.
 - `packages/cli`: host I/O and orchestration through core APIs.
-- `packages/runner`: editor-independent emulator contract, process ownership and Fuse backend.
+- `packages/runner`: editor-independent emulator/process ownership, Fuse Run and optional ZRCP machine control.
 - `tests`: integration and core tests using Node's built-in test runner.
 
 The BASIC core runs through one shared pipeline; later milestones extend fidelity
@@ -171,3 +171,8 @@ The extension development scaffold targets VS Code 1.140.0; see its
 generic `.bas` uses explicit or workspace language selection. Problems, completion, hover, navigation, references, outline and build/check
 commands share the core language model. Follow the [getting-started guide](docs/guides/getting-started.md)
 with [the sample](examples/getting-started.zxbas) to build your first TAP.
+
+The optional [debug-machine backend guide](docs/guides/debug-machine-setup.md)
+describes separately installed ZRCP machine control, capability negotiation and
+owned/attached lifecycle. BASIC source debugging remains above that machine API;
+normal Fuse Run is independent.
