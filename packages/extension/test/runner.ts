@@ -7,10 +7,13 @@ import type { EditorRunResult } from "../src/run.js";
 import type { EditorCommandResult } from "../src/commands.js";
 import type { ZXCodeExtensionApi } from "../src/extension.js";
 import { toEditorDiagnostic } from "../src/diagnostics.js";
-async function waitFor(predicate: () => boolean, message: string): Promise<void> {
+async function waitFor(predicate: () => boolean | Promise<boolean>, message: string): Promise<void> {
   const deadline = Date.now() + 10000;
-  while (!predicate() && Date.now() < deadline) await new Promise((resolve) => setTimeout(resolve, 25));
-  assert.ok(predicate(), message);
+  while (Date.now() < deadline) {
+    if (await predicate()) return;
+    await new Promise((resolve) => setTimeout(resolve, 25));
+  }
+  assert.ok(await predicate(), message);
 }
 /** Invoked by the real Extension Development Host; rejection fails the smoke run. */
 export async function run(): Promise<void> {
@@ -84,8 +87,14 @@ export async function run(): Promise<void> {
   const dirtyWorkspace = await vscode.workspace.openTextDocument(workspaceA);
   const dirtyWorkspaceEditor = await vscode.window.showTextDocument(dirtyWorkspace);
   await dirtyWorkspaceEditor.edit(builder=>builder.replace(new vscode.Range(0,7,0,21),"dirtyworkspace"));
-  const dirtySymbols=(await vscode.commands.executeCommand<vscode.SymbolInformation[]>("vscode.executeWorkspaceSymbolProvider","dirtyworkspace")) ?? [];
-  assert.ok(dirtySymbols.some(item=>item.location.uri.toString() === workspaceA.toString()),"Workspace navigation uses unsaved text");
+  assert.ok(dirtyWorkspace.isDirty,"Workspace fixture remains unsaved");
+  assert.ok(dirtyWorkspace.getText().includes("dirtyworkspace"));
+  // A queued file/editor event may invalidate a query during discovery. Require
+  // the unsaved symbol from a stable query, rather than assuming no event races.
+  await waitFor(async () => {
+    const symbols=(await vscode.commands.executeCommand<vscode.SymbolInformation[]>("vscode.executeWorkspaceSymbolProvider","dirtyworkspace")) ?? [];
+    return symbols.some(item=>item.location.uri.toString() === workspaceA.toString());
+  },"Workspace navigation uses unsaved text after discovery events settle");
   assert.ok(api.queries.diagnostics(api.documents.snapshot(dirtyWorkspace)).value.some(diagnostic=>diagnostic.code === "ZX3001"),"Other files do not resolve missing local lines");
   const genericUri = vscode.Uri.file(join(testFiles, "generic.bas"));
   await vscode.workspace.fs.writeFile(genericUri, Buffer.from("10 STOP\n"));

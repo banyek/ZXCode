@@ -32,3 +32,11 @@ observed while gathering results invalidates that query. File navigation opens
 the selected URI; it does not inject its lines into the active program. No
 manifest, cross-file execution semantics, implicit linker or modules are added.
 Single-file queries and unsaved editing keep their existing behavior.
+
+Native CI can deliver a queued file/editor event while the first dirty-buffer
+query is gathering disk files. Returning an empty invalidated query is the
+specified behavior above. The native smoke test therefore waits, with a fixed
+10-second deadline, for a stable query to include the unsaved symbol; it also
+asserts that the editor remains dirty and contains the edited name. This keeps
+both dirty-buffer precedence and stale-result rejection as requirements rather
+than making event ordering part of the contract.
