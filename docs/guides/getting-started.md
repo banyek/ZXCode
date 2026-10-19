@@ -3,11 +3,14 @@
 ZXCode uses original ZX Spectrum 48K ROM BASIC: every program line needs a real
 line number. Editor conveniences do not add labels or a new BASIC dialect.
 
-1. Open the ZXCode repository in VS Code. With Node 24, run `npm ci` and
-   `npm run build`, then press F5 and choose **ZXCode Extension Development Host**.
-2. In that window, open `examples/getting-started.zxbas`. The status bar should say
-   **ZX Spectrum BASIC**. `.zxbas` selects the language automatically; for another
-   `.bas` file, choose that language mode explicitly.
+1. Install the `.vsix` from [GitHub Releases](https://github.com/banyek/ZXCode/releases/latest)
+   using VS Code's **Extensions: Install from VSIX...** command. No source build
+   or Node.js installation is needed.
+2. Save [the sample](https://github.com/banyek/ZXCode/blob/main/examples/getting-started.zxbas)
+   as `getting-started.zxbas` in your workspace and open it in VS Code. The status
+   bar should say **ZX Spectrum BASIC**. `.zxbas` selects the language automatically;
+   for another `.bas` file, choose that language mode explicitly. The installed
+   package also includes `examples/getting-started.zxbas`.
 3. Hover over `PRINT` for Sinclair syntax/help. Cmd/Ctrl-click the `40` in
    `GO TO 40` to jump to its line. Use Find All References on `count` and open the
    Outline to see numbered lines and definitions.
@@ -43,3 +46,6 @@ for source diagnostics.
 Generic `.bas` associations remain opt-in. To select ZX Spectrum BASIC for all
 `.bas` files in this workspace, add
 `"files.associations": {"*.bas": "zx-spectrum-basic"}` to workspace settings.
+
+To work on ZXCode itself, see the [development guide](../development.md) for
+source builds, the F5 extension host and tests.
