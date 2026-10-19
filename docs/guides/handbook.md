@@ -28,8 +28,8 @@ compatibility and language-service tests need neither an emulator nor a ROM.
 
 ## 2. Clone and build
 
-Run commands from the repository root. A private repository requires authenticated
-GitHub access when cloning.
+Run commands from the repository root. The repository is public; cloning does
+not require GitHub authentication.
 
 ```sh
 git clone https://github.com/banyek/ZXCode.git
@@ -123,14 +123,15 @@ entire TAP. Use ordinary `build` after edits that change the BASIC image. See th
 
 ### Install a VSIX
 
-```sh
-npm run package:extension
-```
+Download the `.vsix` from [GitHub Releases](https://github.com/banyek/ZXCode/releases/latest).
+In VS Code, run **Extensions: Install from VSIX...**, select the file and reload
+if prompted. Alternatively, run `code --install-extension zxcode-vscode-0.1.0.vsix`
+using the downloaded filename. Installation requires no Node.js, npm or source build.
 
-The package is written to `artifacts/zxcode-vscode-0.0.0.vsix`, with the version
-taken from the extension manifest. In VS Code, run **Extensions: Install from
-VSIX**, select that file and reload if prompted. Packaging does not publish to
-Marketplace. You can copy the VSIX to another compatible VS Code installation.
+To build your own package from a checkout, run `npm run package:extension`.
+The output is `artifacts/zxcode-vscode-<version>.vsix`, where `<version>` comes
+from the extension manifest. See the [development guide](../development.md).
+Packaging does not publish to Marketplace.
 
 Open a `.zxbas` file, for example `examples/getting-started.zxbas`. Its language
 mode should be **ZX Spectrum BASIC**. Generic `.bas` files are opt-in: choose the
@@ -170,7 +171,9 @@ Open the Command Palette and search for `ZXCode`:
 Renumber input is `start,step,first old line,last old line`, defaulting to
 `10,10,1,9999`. It preserves proven line destinations and blocks unsafe computed
 targets, collisions and order crossings. Editing the source invalidates a preview.
-Formatting preserves strings, REM tails, numeric spelling, case and line endings.
+Formatting preserves strings, REM tails, numeric spelling and line endings.
+It preserves keyword case except that jump aliases `GOTO`/`GOSUB` normalize to
+canonical `GO TO`/`GO SUB`.
 
 Each BASIC file is an independent program. Workspace navigation uses unsaved
 buffers where available; it never links line numbers or variables across files.
