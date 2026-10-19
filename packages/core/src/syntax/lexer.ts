@@ -71,9 +71,9 @@ export function lexBody(source: SourceDocument, bodyRange: SourceRange): LexedBo
   const tokens: BodyToken[] = [];
   const diagnostics: Diagnostic[] = [];
   const range = (start: number, end: number): SourceRange => source.range(bodyRange.start + start, bodyRange.start + end);
-  const plain = (kind: PlainToken["kind"], start: number, end: number): void => {
+  const plain = (kind: PlainToken["kind"], start: number, end: number, canonical?: string): void => {
     const spelling = text.slice(start, end);
-    const romToken = kind === "word" || kind === "punctuation" ? romTokenBySpelling(spelling) : undefined;
+    const romToken = kind === "word" || kind === "punctuation" ? romTokenBySpelling(canonical ?? spelling) : undefined;
     tokens.push(Object.freeze({ kind, text: spelling, range: range(start, end), ...(romToken === undefined ? {} : { romToken }) }));
   };
   let cursor = 0;
@@ -121,8 +121,9 @@ export function lexBody(source: SourceDocument, bodyRange: SourceRange): LexedBo
       const number = numericEnd(text, cursor);
       if (word !== null) {
         cursor += word[0].length;
-        plain("word", start, cursor);
         const keyword = word[0].toUpperCase();
+        const alias = statementStart ? keyword === "GOTO" ? "GO TO" : keyword === "GOSUB" ? "GO SUB" : undefined : undefined;
+        plain("word", start, cursor, alias);
         if (statementStart && keyword === "IF") ifCondition = true;
         if (ifCondition && keyword === "THEN") {
           statementStart = true;

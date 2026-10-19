@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
-import { analyzeBasic, checkProgram, DiagnosticCodes, parseBasic, SourceDocument } from "@zxcode/core";
+import { analyzeBasic, buildTap, checkProgram, createDocumentSession, exportBasicSource, formatDocument, DiagnosticCodes, parseBasic, SourceDocument } from "@zxcode/core";
 
 function parsed(text) { return parseBasic(new SourceDocument("control", text)); }
 
@@ -82,7 +82,7 @@ test("numeric conditions/targets and malformed tails cannot bypass validation", 
   const incomplete = parsed('10 IF 1 PRINT 2: STOP\n20 CLS');
   assert.equal(incomplete.syntax.lines[0].statements[0].complete, false);
   assert.equal(incomplete.syntax.lines[0].statements[0].thenStatements[0].kind, "stop");
-  for (const body of ['GOTO 100', 'GOSUB 100', 'IF 1 THEN STOP ELSE CLS']) assert.equal(checkProgram(parsed(`10 ${body}`).source).kind, "error");
+  for (const body of ['IF 1 THEN STOP ELSE CLS']) assert.equal(checkProgram(parsed(`10 ${body}`).source).kind, "error");
 });
 
 test("REM after a real THEN retains its raw tail while names in LET do not trigger that mode", () => {
@@ -93,4 +93,55 @@ test("REM after a real THEN retains its raw tail while names in LET do not trigg
   const assignment = parsed('10 LET some THEN REM name=1');
   assert.deepEqual(assignment.diagnostics, []);
   assert.equal(assignment.syntax.lines[0].statements[0].target.identity.canonicalName, "somethenremname");
+});
+
+
+test("jump aliases share canonical bytes, formatting and original source ranges", () => {
+  for (const [alias, canonical] of [["GOTO", "GO TO"], ["GOSUB", "GO SUB"], ["goto", "GO TO"], ["GoSuB", "GO SUB"]]) {
+    const source = new SourceDocument("alias", `10 IF 1 THEN ${alias} 100: PRINT "GOTO GOSUB"\n100 REM GOTO GOSUB : "raw`);
+    const canonicalSource = new SourceDocument("canonical", source.text.replace(alias + " 100", canonical + " 100"));
+    const options = { filenameBytes: new TextEncoder().encode("ALIASES   "), autostart: 10 };
+    const actual = buildTap(source, options), expected = buildTap(canonicalSource, options);
+    assert.equal(actual.kind, "success");
+    assert.equal(expected.kind, "success");
+    assert.deepEqual(actual.encodedProgram.programBytes, expected.encodedProgram.programBytes);
+    assert.deepEqual(actual.tap, expected.tap);
+    const formatted = formatDocument(createDocumentSession({source, version: 1}).current).value;
+    assert.equal(formatted.kind, "formatted");
+    assert.equal(formatted.resultText, canonicalSource.text);
+    const exported = exportBasicSource(actual.encodedProgram.programBytes);
+    assert.equal(exported.kind, "exact");
+    assert.ok(exported.candidateSource.includes(canonical + " "));
+    const input = parseBasic(source);
+    const jump = input.syntax.lines[0].statements[0].thenStatements[0];
+    assert.equal(source.textInRange(jump.range), `${alias} 100`);
+    assert.equal(source.textInRange(jump.target.range), "100");
+    const token = input.syntax.lines[0].tokens.find(token => token.text === alias);
+    assert.equal(token.romToken.spelling, canonical);
+    assert.equal(source.textInRange(token.range), alias);
+  }
+});
+
+test("malformed aliases produce the same diagnostics on the same source fragments", () => {
+  for (const [alias, canonical] of [["GOTO", "GO TO"], ["GOSUB", "GO SUB"]]) {
+    for (const tail of ["", ' "x"', " a$", " 1,2", " (1", " +"]) {
+      const diagnostics = command => {
+        const source = new SourceDocument("bad", `10 ${command}${tail}`);
+        const result = checkProgram(source);
+        assert.equal(result.kind, "error", source.text);
+        return result.diagnostics.map(({code, severity, message, range}) => ({code, severity, message, text: source.textInRange(range).replace(command, canonical)}));
+      };
+      assert.deepEqual(diagnostics(alias), diagnostics(canonical));
+    }
+  }
+  for (const body of ["GOTO100", "GOSUB100", "GO2 100"]) assert.equal(checkProgram(parsed(`10 ${body}`).source).kind, "error");
+});
+
+
+test("alias spellings in variable names, strings and raw tails retain their text", () => {
+  const source = new SourceDocument("contexts", '10 LET goto=1: LET gosub=2: PRINT "GOTO GOSUB"\n20 IF goto THEN REM GOTO GOSUB : "raw');
+  const result = formatDocument(createDocumentSession({source, version: 1}).current).value;
+  assert.equal(result.kind, "formatted");
+  assert.equal(result.resultText, source.text);
+  assert.ok(parseBasic(source).syntax.lines[0].tokens.filter(token => ["goto", "gosub"].includes(token.text)).every(token => token.romToken === undefined));
 });

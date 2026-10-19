@@ -50,7 +50,7 @@ test('combined and focused independent fixtures cover every ROM command and buil
   for (const kind of ['array-access','string-access','number','binary-literal','string','name','builtin-value','builtin-call','user-function-call','unary','binary','parenthesized','scalar-target','indexed-target','print-empty','print-separator','print-expression','print-at','print-tab','print-control','print-channel','input-target','input-display','input-group','input-separator','input-empty','empty']) assert.ok(kinds.has(kind), kind);
 });
 test('unsupported dialect constructs and malformed combinations fail structurally', () => {
-  for (const body of ['WHILE a: PRINT 1', 'WEND', 'GOTO 10', 'GOSUB 10', 'IF a THEN 20', 'PRINT LEFT$(a$,2)', 'LET a=1 ELSE PRINT 2', 'DIM a(2),b(2)', 'NEXT', 'READ a+1', 'SAVE "x" CODE']) {
+  for (const body of ['WHILE a: PRINT 1', 'WEND', 'IF a THEN 20', 'PRINT LEFT$(a$,2)', 'LET a=1 ELSE PRINT 2', 'DIM a(2),b(2)', 'NEXT', 'READ a+1', 'SAVE "x" CODE']) {
     const parsed = parseBasic(new SourceDocument('unsupported', `10 ${body}\n20 PRINT 2`));
     assert.ok(parsed.diagnostics.some((item) => item.severity === 'error'), body);
     assert.equal(parsed.syntax.lines[1].statements[0].kind, 'print', body);
