@@ -10,6 +10,41 @@ Start with the **[build, use and test handbook](docs/guides/handbook.md)** for
 installation, CLI workflows, editor commands, emulator/debugger setup and testing.
 For a short editor walkthrough, see [your first program](docs/guides/getting-started.md).
 
+## Releases and VSIX installation
+
+Download the `.vsix` from [GitHub Releases](https://github.com/banyek/ZXCode/releases).
+Install it with `code --install-extension zxcode-vscode-0.1.0.vsix`, or open
+VS Code's Command Palette, choose **Extensions: Install from VSIX...**, and select
+the downloaded file. The adjacent `.vsix.json` report includes the SHA-256 checksum.
+VS Code must satisfy the extension's `engines.vscode` requirement.
+
+To prepare the first release, use Node 24 and update the extension version and
+lockfile on a release preparation branch:
+
+```sh
+npm version 0.1.0 --workspace packages/extension --no-git-tag-version
+npm run check
+npm run package:extension
+node scripts/verify-extension-package.mjs
+```
+
+Commit `packages/extension/package.json` and `package-lock.json`, merge the
+validated change into `main`, and wait for main CI to pass. Then tag that commit:
+
+```sh
+git switch main
+git pull --ff-only origin main
+git tag -a v0.1.0 -m "ZXCode 0.1.0"
+git push origin v0.1.0
+```
+
+The **Release VSIX** workflow checks out the tag, builds/packages/verifies on one
+Ubuntu runner, and publishes the VSIX and report to the GitHub Release. It runs
+only when a `v*` tag is pushed. Tags must use stable `vMAJOR.MINOR.PATCH` versions
+and exactly match the committed extension manifest; mismatches fail before
+packaging. Other workspace versions do not need to change. For subsequent releases,
+replace `0.1.0` throughout these commands. No Marketplace publication or PAT is used.
+
 ## Direction
 
 ZXCode provides:

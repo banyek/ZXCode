@@ -1,0 +1,41 @@
+name: Release VSIX
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - name: Validate release version
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import {readFileSync} from 'node:fs';
+          const tag = process.env.RELEASE_TAG;
+          assert.match(tag, /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/, 'Use a stable vMAJOR.MINOR.PATCH tag');
+          const manifest = JSON.parse(readFileSync('packages/extension/package.json', 'utf8'));
+          assert.equal(manifest.version, tag.slice(1), 'Tag must match the committed extension version');
+          NODE
+      - run: npm ci
+      # The existing package command builds once; verification also checks reproducibility.
+      - run: npm run package:extension
+      - run: node scripts/verify-extension-package.mjs
+      - name: Publish verified VSIX and checksum report
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$RELEASE_TAG" artifacts/*.vsix artifacts/*.vsix.json \
+            --verify-tag --title "$RELEASE_TAG" --generate-notes
