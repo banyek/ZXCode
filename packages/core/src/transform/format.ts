@@ -5,7 +5,7 @@ export type FormatResult = LanguageQueryResult<
   {readonly kind:"formatted";readonly guarantee:"identical-basic-bytes";readonly edits:readonly LanguageTextEdit[];readonly resultText:string}
   | {readonly kind:"blocked";readonly reason:"invalid-program" | "result-invalid" | "bytes-changed"}
 >;
-/** Conservative source whitespace only, with a mandatory complete binary proof. */
+/** Conservative source whitespace and jump alias normalization, with a mandatory complete binary proof. */
 export function formatDocument(snapshot: DocumentAnalysisSnapshot): FormatResult {
   const blocked = (reason:"invalid-program" | "result-invalid" | "bytes-changed"):FormatResult => Object.freeze({snapshot:snapshot.identity,value:Object.freeze({kind:"blocked",reason})});
   const original = checkProgram(snapshot.source,{targetProfile:snapshot.targetProfile});
@@ -20,7 +20,7 @@ export function formatDocument(snapshot: DocumentAnalysisSnapshot): FormatResult
       for (let i=0;i<tokens.length;i++) {
         const token = tokens[i]!;
         if (token.kind === "whitespace") {if (i < tokens.length-1) body += " ";}
-        else body += token.text;
+        else body += token.kind === "word" && (token.romToken?.spelling === "GO TO" || token.romToken?.spelling === "GO SUB") ? token.romToken.spelling : token.text;
       }
       replacement = snapshot.source.textInRange(line.numberRange)+" "+body;
     } else return blocked("invalid-program");

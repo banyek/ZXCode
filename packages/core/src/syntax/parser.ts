@@ -77,10 +77,10 @@ function parseStatement(source: SourceDocument, tokens: readonly BodyToken[], ra
     if (tokens.length !== 1) return fail(`${keyword} does not accept operands.`, true);
     return Object.freeze({ kind: keyword === "CLS" ? "cls" : "stop", range });
   }
-  if (keyword === "GO") {
-    const direction = tokens[1]?.text.toUpperCase();
+  if (keyword === "GO" || keyword === "GOTO" || keyword === "GOSUB") {
+    const direction = keyword === "GO" ? tokens[1]?.text.toUpperCase() : keyword === "GOTO" ? "TO" : "SUB";
     if (direction !== "TO" && direction !== "SUB") return fail("Expected TO or SUB after GO.", true);
-    const parsed = readExpression(source, tokens, 2, range.end, diagnostics);
+    const parsed = readExpression(source, tokens, keyword === "GO" ? 2 : 1, range.end, diagnostics);
     const complete = parsed.next === parsed.tokens.length;
     if (!complete) diagnostics.push(createDiagnostic({ code: DiagnosticCodes.unexpectedToken, severity: "error", category: "syntax", message: "Unexpected token after jump target expression.", range: parsed.tokens[parsed.next]!.range }));
     return Object.freeze({ kind: direction === "TO" ? "goto" : "gosub", range, target: parsed.expression, complete });
