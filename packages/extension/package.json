@@ -2,7 +2,7 @@
   "name": "zxcode-vscode",
   "displayName": "ZXCode",
   "description": "Authentic ZX Spectrum 48K BASIC with modern language tooling.",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "publisher": "banyek",
   "private": true,
   "repository": {
