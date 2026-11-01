@@ -16,10 +16,10 @@ and build your first program.
 
 - [Build, test and architecture guide](development.md)
 - [Publish a VSIX release](releases.md)
-- [Repository engineering rules](../AGENTS.md)
+- [Engineering baseline](engineering-baseline.md)
 - [Design and compatibility decisions](design/)
-- [Historical issue specifications](issues/README.md)
+- [Historical capability acceptance criteria](historical-acceptance.md)
 - [Compatibility and acceptance evidence](evidence/)
 
 M1–M8 are completed historical implementation work. The design documents and
-issue specifications retain their decisions, provenance and acceptance criteria.
+capability acceptance baseline retain product decisions and acceptance criteria.

@@ -1,6 +1,6 @@
 # ZXCode Roadmap — M1 to M8
 
-Status: architecture planning baseline.
+Status: historical product/architecture baseline; M1–M8 are implemented. This document describes capability scope and architectural constraints, not current task order.
 
 ## Roadmap principle
 
@@ -356,14 +356,3 @@ M5 VS Code          |
 ```
 
 The graph is intentionally mostly linear for delivery clarity, but architecture work for M7/M8 constrains M1–M3 from day one.
-
-# Readiness labels
-
-Future issues should carry one of:
-
-- `dev-ready` — contract sufficiently specified to implement;
-- `research-required` — historical/ROM behaviour must be established first;
-- `design-required` — product/API decision still open;
-- `blocked` — dependency not yet satisfied.
-
-A later milestone can have tickets in the repository without pretending all of them are dev-ready.
