@@ -54,7 +54,7 @@ compatible local installation.
 `npm run package:extension` creates the VSIX and payload hash report under
 `artifacts/`. `npm run test:vsix` verifies reproducibility and installs the package
 into an isolated profile to test the actual editor workflow. See the
-[packaging design](design/045-editor-package-acceptance.md).
+[packaging design](https://github.com/banyek/ZXCode/blob/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design/045-editor-package-acceptance.md).
 
 ## Implementation layout
 
@@ -116,16 +116,16 @@ parser-context completion uses checked text edits and typed candidates. The VS C
 extension consumes those same snapshots. Shared original-manual help covers every ROM token, and
 `documentSignatureHelp` supplies typed built-in/FN argument information, and
 `documentSymbols` exposes an immutable outline in physical source order.
-See the [service contract](design/032-language-service-contract.md) and
-[M4 headless acceptance gate](design/037-m4-headless-acceptance.md).
+See the [service contract](https://github.com/banyek/ZXCode/blob/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design/032-language-service-contract.md) and
+[M4 headless acceptance gate](https://github.com/banyek/ZXCode/blob/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design/037-m4-headless-acceptance.md).
 
-The [M2 acceptance corpus](design/026-m2-core-acceptance.md) covers all commands
+The [M2 acceptance corpus](https://github.com/banyek/ZXCode/blob/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design/026-m2-core-acceptance.md) covers all commands
 and built-in signatures with independent byte fixtures. A combined arrays, DATA,
 functions and channels program loads/runs in the original ROM, displays `CORE OK`,
 and returns `0 OK, 100:1`. M1's hello bytes and load/run acceptance remain intact.
 
 Decimal conversion reproduces original-ROM storage and rounding; see the
-[numeric contract](design/020-numeric-literals.md). M3 numeric lexical hardening now includes the ROM’s contextual fraction/exponent
+[numeric contract](https://github.com/banyek/ZXCode/blob/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design/020-numeric-literals.md). M3 numeric lexical hardening now includes the ROM’s contextual fraction/exponent
 whitespace rules. The shared 256-byte Spectrum character map is implemented; controls, graphics/UDG
 notation and named/raw text escapes are active in quoted strings and REM tails. Control packets now have checked internal
 encoding and lossless text-byte decoding, including truncated-packet diagnostics.
@@ -134,13 +134,13 @@ checksum and BASIC metadata validation and structured byte-offset failures.
 The experimental `decodeBasicProgram`, `exportBasicSource` and `inspectBasicTap`
 APIs retain raw bytes and saved variables. Source export reports exact success
 only after recompilation reproduces the original BASIC image; see the
-[import feasibility contract](design/029-import-feasibility.md).
+[import feasibility contract](https://github.com/banyek/ZXCode/blob/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design/029-import-feasibility.md).
 The product `zxcode import input.tap` command creates verified editable source
 and a provenance report, refusing unsupported input and existing output paths.
 Saved variables require explicit `--source-only` consent; see the
 [TAP import guide](guides/import-tap.md).
 Container names and payloads remain opaque bytes; see the
-[TAP contract](design/019-tap-container.md).
+[TAP contract](https://github.com/banyek/ZXCode/blob/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design/019-tap-container.md).
 Printable literals include Spectrum £, © and ↑ alongside the existing ASCII
 coverage (backtick is excluded); strings support doubled quotes and REM tails
 retain literal source bytes. Production and normal CI require
@@ -149,17 +149,17 @@ neither an emulator nor a ROM.
 CAT, FORMAT, MOVE and ERASE build with nonfatal runtime-capability warnings on the
 default 48K target. OPEN # and CLOSE # support base-ROM channels. Explicit core
 `targetProfile` options declare execution capabilities without changing grammar;
-see the [capability policy](design/025-runtime-capability-policy.md).
+see the [capability policy](https://github.com/banyek/ZXCode/blob/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design/025-runtime-capability-policy.md).
 
 Text escapes use `{INK 2}`, `{AT 1,2}`, `{TAB 258}`, `{UDG A}`, `{BLOCK 15}` and
 `{BYTE 0xFF}`. Double literal braces as `{{` and `}}`; backslashes remain literal.
 Byte 13 is supported in REM; quoted strings use ordinary `CHR$ 13` expressions.
-See the [source escape contract](design/028-text-source-escapes.md) and
+See the [source escape contract](https://github.com/banyek/ZXCode/blob/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design/028-text-source-escapes.md) and
 [working example](../examples/escapes.bas).
 
 `npm run test:compatibility` checks the pinned 448-case independent M3 corpus.
 Its deterministic report records exact export guarantees and known limits; see
-the [corpus contract](design/030-m3-compatibility-corpus.md).
+the [corpus contract](https://github.com/banyek/ZXCode/blob/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design/030-m3-compatibility-corpus.md).
 
-See [docs/design](design/).
+See [historical technical design sources](https://github.com/banyek/ZXCode/tree/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design).
 

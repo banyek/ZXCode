@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { writeBasicTap, writeTapBlock } from "@zxcode/core";
 
-// Independent field/parity derivation: docs/design/019-tap-container.md.
+// Independent field/parity derivation: https://github.com/banyek/ZXCode/blob/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design/019-tap-container.md.
 const filenameBytes = Uint8Array.from([0x58, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20]);
 const metadata = { filenameBytes, autostart: 0x8000, variablesOffset: 2 };
 const payload = Uint8Array.of(1, 2, 3);

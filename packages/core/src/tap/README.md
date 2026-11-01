@@ -6,5 +6,5 @@ metadata, independently of source, syntax, semantic analysis, and editor APIs.
 grammar. `writeTapBlock` writes a length prefix, flag, payload, and XOR parity.
 
 All metadata is explicit and filename bytes must already be encoded/padded to
-ten bytes. See [the TAP contract](../../../../docs/design/019-tap-container.md)
+ten bytes. See [the TAP contract](https://github.com/banyek/ZXCode/blob/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design/019-tap-container.md)
 for field provenance, limits, ownership, and independent unit-fixture derivation.
