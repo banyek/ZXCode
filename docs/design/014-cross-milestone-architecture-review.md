@@ -105,7 +105,3 @@ BASIC execution does not map as cleanly to source breakpoints as machine-code de
 ### Scope risk
 
 The project can become an emulator project. M8 should prefer integrating a proven emulator core/backend unless building an emulator becomes an explicit separate goal.
-
-## Conclusion
-
-Proceed with M1–M8. Before implementation, convert this roadmap into GitHub milestones and issue groups, then perform a dependency/readiness pass. M1 can become fully dev-ready; later milestones may intentionally retain research/design tickets.

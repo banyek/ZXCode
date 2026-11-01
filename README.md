@@ -99,4 +99,4 @@ Bug reports and contributions are welcome through
 Build/test commands, architecture and compatibility references live in the
 [development guide](docs/development.md). Maintainers can follow the
 [release procedure](docs/releases.md). Browse [all documentation](docs/README.md)
-for design documents and historical implementation specifications.
+for design contracts and historical capability acceptance criteria.

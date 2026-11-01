@@ -2,7 +2,7 @@
 
 Build and test instructions for contributors. For installation and everyday use,
 start with the [project README](../README.md) or [user guides](README.md).
-Follow the repository [engineering rules](../AGENTS.md).
+Follow the repository [engineering baseline](engineering-baseline.md).
 
 ## Build and test
 
