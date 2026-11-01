@@ -4,7 +4,7 @@ Physical-line scanning, lexer modes, recoverable CST, and parsing live here.
 This layer may consume source/diagnostic contracts. It preserves original text
 and ranges and must not import semantics, encoding, TAP, CLI, or editor code.
 `scanPhysicalLines` implements the M1-04 header contract in
-[the source-format design](../../../../docs/design/011-text-source-format.md).
+[the source-format design](https://github.com/banyek/ZXCode/blob/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design/011-text-source-format.md).
 Its `ParsedDocument<PhysicalProgram>` preserves every physical line, including
 blank and recoverable invalid nodes, in file order. Numbered nodes retain number,
 body, whole-line, content, and line-ending ranges. `parseBasic` adds the lexer/CST
@@ -16,5 +16,5 @@ The physical scanner itself does not tokenize bodies.
 and immutable `Expression` CST. Error/missing-delimiter nodes retain insertion
 ranges; multi-character comparisons are lexical units. Original-ROM reduction
 fixtures and the parser contract are in
-[the expression design](../../../../docs/design/006-expression-grammar.md).
+[the expression design](https://github.com/banyek/ZXCode/blob/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design/006-expression-grammar.md).
 Nonliteral nodes remain unbuildable until semantic typing and encoding support.

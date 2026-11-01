@@ -318,7 +318,7 @@ node --test tests/renumber.test.mjs
 
 Compatibility fixtures are contracts, not snapshots to regenerate after a failure.
 Establish original-ROM behavior or independent provenance before changing expected
-bytes. See [design documents](../design/) and [retained evidence](../evidence/).
+bytes. See [design documents](https://github.com/banyek/ZXCode/tree/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design) and [retained evidence](../evidence/).
 
 ## 8. Optional real-emulator acceptance
 
@@ -350,7 +350,7 @@ inspection, breakpoint/step/continue behavior and a fresh-machine cold reset.
 
 For Fuse plus original-ROM pixel capture, follow the exact `test:run` invocation
 in the [run guide](run-spectrum.md#reproduce-the-editoremulator-acceptance). For
-TAP import/edit/run evidence, see [M7 acceptance](../design/060-m7-existing-program-acceptance.md).
+TAP import/edit/run evidence, see [M7 acceptance](https://github.com/banyek/ZXCode/blob/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design/060-m7-existing-program-acceptance.md).
 Older Python research probes have their own pinned SkoolKit/reference-tool and ROM
 requirements; they are not prerequisites for `npm run check`.
 
@@ -402,4 +402,4 @@ refuse a job before any test steps run; that is distinct from a failing test.
 - [Run Spectrum and Fuse acceptance](run-spectrum.md)
 - [Optional debug backend setup](debug-machine-setup.md)
 - [Extension development notes](../../packages/extension/README.md)
-- [BASIC stepping contract and acceptance evidence](../design/069-basic-stepping-acceptance.md)
+- [BASIC stepping contract and acceptance evidence](https://github.com/banyek/ZXCode/blob/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design/069-basic-stepping-acceptance.md)

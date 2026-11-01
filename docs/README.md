@@ -17,8 +17,8 @@ and build your first program.
 - [Build, test and architecture guide](development.md)
 - [Publish a VSIX release](releases.md)
 - [Engineering baseline](engineering-baseline.md)
-- [Design and compatibility decisions](design/)
-- [Historical capability acceptance criteria](historical-acceptance.md)
+- [Design and compatibility decisions](https://github.com/banyek/ZXCode/tree/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/design)
+- [Historical capability acceptance criteria](https://github.com/banyek/ZXCode/blob/8d570e38455cd8dc0459eb299d8b98cc83cf390e/docs/historical-acceptance.md)
 - [Compatibility and acceptance evidence](evidence/)
 
 M1–M8 are completed historical implementation work. The design documents and
